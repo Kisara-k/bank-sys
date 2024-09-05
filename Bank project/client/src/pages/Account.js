@@ -10,6 +10,7 @@ export default function Account(){
         const getData=localStorage.getItem("logdetails");
         if(getData){
             setDetail(JSON.parse(getData));
+            console.log(detail);
             
         }
         
@@ -17,6 +18,9 @@ export default function Account(){
     
     console.log(detail);
     return(
-        <p>log success!!!!!.</p>
+        <>
+        <p>log success!!!!!.This page use to create user profile.</p>
+
+        </>
     )
 }

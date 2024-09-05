@@ -38,7 +38,7 @@ export default function Home(){
                         
                     <Link className="link" to="/">Home</Link>
                     <Link className="link" to="/branches">Branches</Link>
-                    <Link className="link" to="/loan">Loans</Link>
+                    <Link className="link" to="/loans">Loans</Link>
                     <Link className="link" to="/contact">Contact Us</Link>
                 </nav>
             </div>

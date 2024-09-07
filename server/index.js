@@ -10,15 +10,15 @@ const db=mysql.createConnection({
     user:"root",
     host:"localhost",
     password:"20020927",
-    database:"banksys",
+    database:"bank",
 });
 
 app.post("/log",(req,res)=>{
     const username=req.body.username;
     const passkey=req.body.passkey;
 
-    db.query("SELECT * FROM customer join individualcustomer on customer.CustomerID=individualcustomer.CustomerID WHERE customer.CustomerID=? AND Password=?",
-        [username,passkey,username,passkey],
+    db.query("SELECT * FROM customer join individual_customer on customer.Customer_ID=individual_customer.Customer_ID  join account on account.Customer_ID=customer.Customer_ID WHERE customer.Customer_ID=? AND Pass_Word=?",
+        [username,passkey],
         (err,result)=>{
             if(err){
                 console.log(err);
@@ -27,7 +27,7 @@ app.post("/log",(req,res)=>{
                     res.send(result);
                 }
                 else{
-                    db.query("SELECT * FROM customer join organizationcustomer on customer.CustomerID=organizationcustomer.CustomerID WHERE customer.CustomerID=? AND Password=?",
+                    db.query("SELECT * FROM customer join organization_customer on customer.Customer_ID=organization_customer.Customer_ID join account on account.Customer_ID=customer.Customer_ID WHERE customer.Customer_ID=? AND Pass_Word=?",
                         [username,passkey],
                         (err,result)=>{
                             if(err){

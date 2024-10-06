@@ -20,6 +20,7 @@ export default function Home(){
 
             if(response.data.length==0){
                 console.log("invalid input");
+                document.getElementById("err").style.display="block";
             }else{
                 localStorage.setItem("logdetails",JSON.stringify(response.data));
                 window.location.href="account";
@@ -28,6 +29,10 @@ export default function Home(){
             console.log(error);
         })
         
+    }
+
+    const gotoBMS=()=>{
+        window.location.href="bmslogin";
     }
 
     return(
@@ -40,6 +45,7 @@ export default function Home(){
                     <Link className="link" to="/branches">Branches</Link>
                     <Link className="link" to="/loan">Loans</Link>
                     <Link className="link" to="/contact">Contact Us</Link>
+                    <input type="button" value="BMS" onClick={gotoBMS} id="BMS"></input>
                 </nav>
             </div>
 
@@ -58,6 +64,10 @@ export default function Home(){
 
                     <div id="msg">
                         <a href="#">Forgot password ?</a>
+                    </div>
+
+                    <div id="err">
+                        <span id="errMsg">*Enter correct username and passwors.Try again</span>
                     </div>
 
                     <button type="submit" onClick={log} className="btn btn-primary" id="btn">Login</button>

@@ -36,6 +36,14 @@
     transition-duration: 1000ms; 
 
 }
+#BMS{
+    border: 1px solid white;
+    float:right;
+    margin-right: 2rem;
+    width: 6rem;
+    font-weight: 600;
+    background-color: aliceblue;
+}
 
 #form{
     margin-left: 5rem;
@@ -54,11 +62,13 @@
     margin-top: 2rem;
     border: 1px solid grey;
     height: 3rem;
+    font-family: monospace;
 }
 #pass{
     margin-top: 3rem;
     border: 1px solid grey;
     height: 3rem;
+    font-family: monospace;
 }
 #btn{
     margin-top: 5rem;
@@ -74,6 +84,12 @@
     color: rgba(52, 102, 230, 1);
     margin-top: 0.5rem;
     margin-left: 16.3rem;
+}
+#errMsg{
+    color: red;
+}
+#err{
+    display: none;
 }
 
 @media screen and (max-width:600px){

@@ -1,0 +1,254 @@
+body{
+    background-color: rgb(238, 246, 249);
+}
+#nav2{
+    background: white;
+    width: 100%;
+    height: 2.8rem;
+    padding-top: 0.5rem;
+
+}
+#fdBtn{
+    float: right;
+    margin-right: 2rem;
+    height: 2rem;
+    background-color: black;
+    color: white;
+    font-weight: 600;
+    border: 1px solid black;
+}
+#userImg{
+    width: 2rem;
+    float: right;
+    margin-right: 2rem;
+}
+#logoutImg{
+    width: 2rem;
+    float: right;
+    margin-right: 2rem;
+    cursor: pointer;
+}
+.logout{
+    color: gray;
+    float: right;
+    margin-right: 3rem;
+    text-decoration: none;
+    font-weight: 600;
+}
+#nav2 .link2{
+    text-decoration: none;
+    color: gray;
+    font-weight: 600;
+    margin-left: 2rem;
+}
+#nav2 .link2:hover{
+    color:rgb(50, 50, 210) ;
+}
+select{
+    color: grey;
+    font-weight: 600;
+    margin-left: 2rem;
+    border: 1px solid white;
+}
+
+#detail{
+    border-left: 6px solid rgb(50, 50, 210);
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    width: 15rem;
+    margin-left: 2rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    align-items: center;
+    background-color: white;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+}
+#AccDetail{
+    border-left: 6px solid rgb(50, 50, 210);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    width: 15rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    align-items: center;
+    background-color: white;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+}
+
+#name{
+    font-weight: 600;
+    font-size: 1.5rem;
+    
+}
+#accNo{
+    font-weight: 400;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+#acc{
+    font-size: 0.6rem;
+    color: gray;
+    padding-left: 1rem;
+    font-weight: 600;
+    
+}
+#balance{
+    font-size: 0.9rem;
+    color: gray;
+    font-weight: 600;
+}
+#Rs{
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+#withdraw,#Deposite{
+    padding-left: 2rem;
+    padding-top: 1rem;
+    margin-top: 3rem;
+    padding-bottom: 1rem;
+    width: 20rem;
+    background-color: white;
+    border-radius: 10px;
+    margin-left: 2rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: gray;
+}
+#transfer{
+    background-color: white;
+    border-radius: 10px;
+    margin-top: 3rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: gray;
+    width: 20rem;
+    padding-left: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    position: relative;
+    right: 8rem;
+}
+#T1{
+    margin-left:3rem ;
+    font-weight: 600;
+}
+#withBtn{
+    margin-left: 9rem;
+    background-color: rgb(50, 50, 210);
+    color: white;
+    border: 1px solid rgb(50, 50, 210);
+    border-radius: 5px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 0.7rem;
+    padding: 0.3rem;
+    font-weight: 600;
+}
+#msgW,#msgD,#msgT,#msgt{
+    color: red;
+    border: 1px solid rgb(254, 224, 224);
+    background-color: rgb(254, 224, 224);
+    margin-bottom: 0.5rem;
+    width: 15rem;
+    padding: 0.2rem;
+    font-size: 0.8rem;
+    display: none;
+}
+#msgT,#msgt{
+    margin-top: 0.5rem;
+}
+#transferBtn{
+    background-color: rgb(50, 50, 210);
+    border: 1px solid rgb(50, 50, 210);
+    color: white;
+    border-radius: 5px;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 0.7rem;
+    padding: 0.3rem;
+    font-weight: 600;
+    margin-left: 9rem;
+}
+
+#history{
+    margin-top: 2rem;
+    position: relative;
+    right: 3rem;
+}
+.Transaction_detail table{
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+}
+.Transaction_detail thead{
+    color: white;
+    background-color:rgb(50, 50, 210) ;
+    padding: 0.6rem;
+    border-radius: 10px;
+    
+}
+.Transaction_detail th{
+    width: 4rem;
+    height: 3rem;
+    padding-left: 1rem;
+}
+#history td{
+    margin-right: 5rem;
+    margin-left: 2rem;
+}
+.Transaction_detail th, .Transaction_detail td {
+    padding: 6px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+#history tr{
+    width: 9rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 0.8rem;
+    background-color: white;
+    margin-right: 1rem;
+    border-radius: 10px;
+    height: 3rem;
+} 
+
+#withSuccess,#depoSuccess,#transferSuccess{
+    position: fixed;
+    left: 30vw;
+    top:5vh;
+    z-index: 2;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    background-color: beige;
+    font-weight: 600;
+    display: none;
+}
+#sucImg{
+    width: 5rem;
+    margin-left: 8rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+#ok{
+    margin-left: 9rem;
+    width: 4rem;
+    background-color:rgb(50, 50, 210);
+    color: white;
+    margin-bottom: 2rem;
+}
+
+@media screen and (max-width:600px){
+    #userImg,#logoutImg{
+        width: 1.5rem;
+    }
+    #logoutImg{
+        margin-top: 0.2rem;
+    }
+    .logout{
+        margin-right: 2rem;
+    }
+    #transfer{
+        left: 3rem;
+    }
+    #history{
+        left: 2rem;
+    }
+}

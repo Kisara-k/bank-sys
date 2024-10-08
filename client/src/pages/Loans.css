@@ -1,0 +1,93 @@
+#top{
+    background-image: url('./img/loan.jpeg');
+    background-size: cover;
+    height: 80vh;
+    width: 100vw;
+}
+
+#x1,#x2{
+    color: white;
+    font-weight: 600;
+    font-size: 5.5rem;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    position: relative;
+    top:4rem;
+}
+#icons{
+    margin-top: 3rem;
+    margin-left: 1rem;
+}
+#personal,#deposite,#loan{
+    margin-left: 1rem;
+    width: 25rem;
+}
+
+#personalImg{
+    width: 7rem;
+    color: rgb(50, 50, 210);
+    margin-left: 2rem;
+}
+#d1{
+    font-weight: 600;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 1.5rem;
+    width: 0.5rem;
+}
+#loanDetail{
+    margin-top: 5rem;
+    font-weight: 300;
+    margin-left: 4rem;
+    padding-right: 4rem;
+    padding-left: 0.2rem;
+    border-left: 6px solid rgb(50, 50, 210);
+}
+#loanform{
+    width: 50rem;
+    margin-left: 18vw;
+    margin-top: 6rem;
+    border: 1px solid black;
+    padding: 3rem;
+    color: white;
+    background-color: black;
+}
+#loanhead{
+    margin-bottom: 2rem;
+    position: relative;
+    right: 8rem;
+}
+#loanform label{
+    color: gray;
+    font-weight: 600;
+}
+#accNo,#lamount{
+    margin-left: 2.3rem;
+}
+#accNo,#lamount,#ltype,#duration{
+    width: 35rem;
+}
+#reqBtn{
+    width: 10rem;
+    margin-top: 3rem;
+    background-color: rgb(50, 50, 210);
+    color: white;
+    font-weight: 600;
+}
+@media screen and (max-width:600px){
+    #personal,#deposite,#loan{
+        margin-top: 2.5rem;
+        margin-left: 4rem;
+    }
+    #loanform{
+        width: 100vw;
+        margin-left: 0rem;
+    }
+    #accNo,#lamount,#ltype,#duration{
+        width: 70vw;
+    }
+    #reqBtn{
+        width: 7rem;
+    }
+    #icons{
+        display: flex;
+    }
+}

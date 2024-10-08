@@ -1,0 +1,49 @@
+#body{
+    background-image: url("./img/bank2.jpg");
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+#form2{
+   
+    width: 42rem;
+    float: right;
+    margin-top: 2rem;
+    margin-left: 3rem;
+    height: 20rem;
+    border-radius: 30px;
+    color: white;
+}
+#input1,#input2{
+    width: 35rem;
+    align-items: center;
+    font-weight: 600;
+    margin-top: 2rem;
+    padding-left: 9rem;
+}
+h1{
+    font-weight: 600;
+    font-family: monospace;
+    margin-left: 15rem;
+}
+#emlog{
+    background-color: black;
+    color: white;
+    font-weight: 600;
+    margin-left: 20rem;
+    margin-top: 1.5rem;
+    border: 1px solid black;
+}
+#emlog:hover{
+    background-color: aqua;
+    color: black;
+}
+@media screen and (max-width:600px){
+    #form2{
+        width: 25rem;
+        margin-right: 12rem;
+        margin-top: 6rem;
+    }
+}

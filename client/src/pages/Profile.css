@@ -1,0 +1,53 @@
+h2{
+    display: flex;
+    justify-content: center;
+    color: rgb(50, 50, 210);
+}
+#set{
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+#fname,#lname,#bd,#no,#address,#email{
+    width: 15rem;
+}
+#ac,#ac_type,#nic,#bid{
+    border: 1px solid grey;
+    height: 2rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    padding-left: 0.2rem;
+    padding-right: 3rem;
+    width: 0rem;
+    background-color: white;
+    color: gray;
+}
+#btns{
+    margin-left: 14rem;
+    margin-top: 4rem;
+}
+#save{
+    background-color: rgb(50, 50, 210);
+    color: white;
+    width: 5rem;
+}
+#back{
+    background-color: black;
+    border: 1px solid black;
+    color: white;
+    width: 5rem;
+}
+
+@media screen and (max-width:600px){
+    #Right{
+        margin-top: 3rem;
+    }
+    #btns{
+        margin-left: 4rem;
+        margin-top: 2rem;
+    }
+    #set{
+        margin-left: 3rem;
+    }
+}

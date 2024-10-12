@@ -145,6 +145,14 @@ select{
     padding: 0.3rem;
     font-weight: 600;
 }
+#withBtn:hover{
+    background-color: black;
+    transform: scale(1.1,1.1);
+    transition: transform 0.2s ease;
+}
+#fdBtn:hover{
+    background-color: rgb(50, 50, 210);
+}
 #msgW,#msgD,#msgT,#msgt{
     color: red;
     border: 1px solid rgb(254, 224, 224);
@@ -168,6 +176,11 @@ select{
     padding: 0.3rem;
     font-weight: 600;
     margin-left: 9rem;
+}
+#transferBtn:hover{
+    background-color: black;
+    transform: scale(1.1,1.1);
+    transition: transform 0.2s ease;
 }
 
 #history{

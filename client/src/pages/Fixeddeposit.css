@@ -1,0 +1,59 @@
+
+#fdForm{
+    width: 60vw;
+    background-color: rgba(200, 200, 200, 0.309);
+    padding: 2rem;
+    align-items: center;
+    margin-left: 20vw;
+    margin-top: 20vh;
+    font-family: monospace;
+    font-weight: 600;
+}
+
+#fdplans{
+    width: 55vw;
+    height: 2.5rem;
+    position: relative;
+    right: 2rem;
+    margin-top: 1rem;
+}
+#startFD{
+    margin-top: 2rem;
+}
+#backFD{
+    margin-top: 2rem;
+    background-color: red;
+    border: 1px solid red;
+    margin-left: 1rem;
+    width: 4rem;
+    color: white;
+}
+#fdsuccess,#fderror{
+    width: 1rem;
+    margin-left: 7rem;
+    margin-bottom: 1rem;
+    
+}
+#success_msg,#error_msg,#error_msg2{
+    width: 20rem;
+    position: fixed;
+    left: 35%;
+    top: 0%;
+    font-family: monospace;
+    font-weight: 600;
+    border: 1px solid black;
+    padding: 1rem;
+    background-color: black;
+    color: white;
+    display: none;
+    font-size: small;
+}
+#fdOk,#fderror{
+    width: 5rem;
+    margin-left: 6rem;
+}
+@media screen and (max-width:600px){
+    #fdplans{
+        width: 47vw;
+    }
+}

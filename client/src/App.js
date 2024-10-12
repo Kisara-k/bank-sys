@@ -9,6 +9,7 @@ import Fixeddeposite from './pages/Fixeddeposite';
 import Loans from './pages/Loans';
 import Bmslogin from './pages/Bmslogin';
 import Bms from './pages/Bms';
+import BranchReport from './pages/BranchReport';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/loans" element={<Loans/>}></Route>
           <Route path="/bmslogin" element={<Bmslogin/>}></Route>
           <Route path="/BMS" element={<Bms/>}></Route>
+          <Route path='/branch_transaction' element={<BranchReport/>}></Route>
         </Routes>
       </div>
     </Router>

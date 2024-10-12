@@ -28,7 +28,7 @@ export default function Account(){
             setDetail(pasedData);
             setID(pasedData[0].account_id)
             setType(pasedData[0].type)
-            setBalance(pasedData[0].balance)
+            //setBalance(pasedData[0].balance)
             setCustomerType(pasedData[0].customer_type)
             
             
@@ -38,18 +38,23 @@ export default function Account(){
 
     useEffect(() => {
         if (Acc_ID) {
-            console.log("got", Acc_ID);
+            
             Axios.get("http://localhost:3002/trans_detail", {
                 params: { Id: Acc_ID }
             })
             .then((response) => {
                 console.log(response.data);
-                setTransDetail(response.data);
+                setTransDetail(response.data.transactions);
+                setBalance(response.data.balance);
 
             })
             .catch((error) => {
                 console.error("Error fetching transaction details:", error);
             });
+
+        }
+        if(Acc_type=="checking"){
+            document.getElementById("fdBtn").style.display="none";
         }
     }, [Acc_ID]); 
 
@@ -74,8 +79,8 @@ export default function Account(){
                     document.getElementById("withSuccess").style.display="block";
                     setBalance(response.data.Balance);
                 }
-                else if(response.data.success===2){
-                    alert("Insufficient balance or minimum balance not met");
+                else if(response.data.success===0){
+                    alert("Insufficient balance or number of withdrawals not enough.");
                 }
                 
             })

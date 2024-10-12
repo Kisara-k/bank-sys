@@ -2,6 +2,11 @@ const express=require('express');
 const app=express();
 const cors=require('cors');
 const mysql=require('mysql2');
+const bcrypt=require('bcrypt');
+
+const generateUnique10DigitNumber=require('./generateCustomID');
+const generateUnique8DigitNumber=require('./generateAccountID');
+const calculateSavingPlan=require('./savingPlans');
 
 app.use(cors());
 app.use(express.json());
@@ -13,8 +18,19 @@ const db=mysql.createConnection({
     database:"project",
 });
 
+// password hashing function
+const createHashPassword= async(planPassword)=>{
+    try{
+        const saltRounds=10;
+        const hashpassword=await bcrypt.hash(planPassword,saltRounds);
+        return hashpassword;
+    }catch(err){
+        throw new Error("Error in hashing password",err.message);
+    }
+}
+
  //login request
-app.post("/log",(req,res)=>{
+app.post("/log",async(req,res)=>{
     const username=req.body.username;
     const passkey=req.body.passkey;
 
@@ -32,8 +48,9 @@ app.post("/log",(req,res)=>{
                         [username,passkey],
                         (err,result)=>{
                             if(err){
-                                console.log(err);
+                                console.log('balance getting error',err);
                             }else{
+                                console.log(result[0].balance);
                                 res.send(result);
                             }
                         }
@@ -45,74 +62,7 @@ app.post("/log",(req,res)=>{
     )
 });
 
-  //create trigger to update account table when change the saving account table
-/* const withdrawFromSaving=`
-    CREATE TRIGGER account_update_after_withdraw_saving
-    AFTER UPDATE ON \`saving account\`
-    FOR EACH ROW
-    BEGIN
-        UPDATE account SET Balance=NEW.Amount WHERE account.Account_ID=NEW.Account_ID;
-    END;
-`;  
 
-db.query(withdrawFromSaving,(err)=>{
-    if(err)
-        console.log(err);
-    else
-        console.log("Trigger created");
-});
-
-const withdrawFromchecking=`
-    CREATE TRIGGER account_update_after_withraw_checking
-    AFTER UPDATE ON checking_account
-    FOR EACH ROW
-    BEGIN
-        UPDATE account SET Balance=NEW.Amount WHERE account.Account_ID=NEW.Account_ID;
-    END;
-`; */
-
-// when the withdraw or deposite happen, update saving and checking accounts
-const update_saving_checking=`
-CREATE TRIGGER update_account_after_saving_or_checking_update
-AFTER UPDATE ON account
-FOR EACH ROW
-BEGIN
-    IF EXISTS (SELECT 1 FROM saving_account WHERE saving_account.account_id = NEW.account_id) THEN
-        UPDATE saving_account SET balance = NEW.balance WHERE account_id = NEW.account_id;
-    ELSEIF EXISTS (SELECT 1 FROM checking_account WHERE checking_account.account_id = NEW.account_id) THEN
-        UPDATE checking_account SET balance = NEW.balance WHERE account_id = NEW.account_id;
-    END IF;
-END;
-`;
-
-
-db.query(update_saving_checking,(err)=>{
-    if(err)
-        console.log(err);
-    else
-        console.log("Trigger success!");
-});
-
-function Withdraw(amount, Id, callback) {
-    const withdrawMoney = "UPDATE account SET balance = balance - ? WHERE account_id = ?";
-    db.execute(withdrawMoney, [amount, Id], (err, result) => {
-        if (err) {
-            return callback(err);
-        }
-
-        const insertLog = `
-            INSERT INTO transaction_log (account_id, date, amount, type) 
-            VALUES (?, NOW(), ?, 'withdrawal')`;
-        db.execute(insertLog, [Id, amount], (err, result) => {
-            if (err) {
-                return callback(err);
-            }
-
-            console.log("savingWithdraw executed");
-            callback(null);
-        });
-    });
-}
 
 // Cash withdraw request
 app.post("/withdraw", (req, res) => {
@@ -120,72 +70,28 @@ app.post("/withdraw", (req, res) => {
     const Id = req.body.Acc_ID;
     const acc_type = req.body.Acc_type;
 
-    db.beginTransaction((err) => {
-        if (err) {
-            console.log("Transaction start error");
-            return res.status(500).send({ success: 0, message: "Transaction start error" });
+    const withdraw=`CALL withdraw_money(?,?,?,@status_w)`;
+    db.execute(withdraw,[
+        amount,Id,acc_type
+    ],(err,result)=>{
+        if(err){
+            console.log("error in executing",err);
+            return;
         }
-
-        db.query("SELECT balance FROM account WHERE account_id = ?", [Id], (err, result) => {
-            if (err) {
-                return db.rollback(() => {
-                    console.log("Error of getting balance");
-                    res.status(500).send({ success: 0, message: "Error of getting balance" });
-                });
+        console.log(result);
+        db.query("SELECT @status_w AS status",(err,result)=>{
+            if(err){
+                console.log("err fetching status");
+                return;
             }
-
-            const current = Number(result[0].balance);
-            console.log(current);
-
-            db.query("SELECT min_balance FROM saving_account_plans JOIN saving_account ON saving_account_plans.plan_id = saving_account.plan_id WHERE saving_account.account_id = ?", [Id],
-                (err, result) => {
-                    if (err) {
-                        return db.rollback(() => {
-                            console.log("Error retrieving minimum balance");
-                            res.status(500).send({ success: 0, message: "Error retrieving minimum balance" });
-                        });
-                    }
-
-                    const min_balance = acc_type === "savings" ? Number(result[0].min_balance) : 0;
-                    console.log(min_balance);
-
-                    if ((acc_type === "savings" && min_balance <= current - amount) || (acc_type === "checking" && current >= amount)) {
-                        Withdraw(amount, Id, (err) => {
-                            if (err) {
-                                return db.rollback(() => {
-                                    console.log("Error of withdrawing money");
-                                    res.status(500).send({ success: 0, message: "Error of withdrawing money" });
-                                });
-                            }
-
-                            db.commit((err) => {
-                                if (err) {
-                                    return db.rollback(() => {
-                                        console.log("Error committing transaction");
-                                        res.status(500).send({ success: 0, message: "Error committing transaction" });
-                                    });
-                                }
-                                
-                                console.log("Withdraw success!");
-                                db.query("SELECT balance FROM account WHERE account_id = ?", [Id], (err, result) => {
-                                    if (err) {
-                                        console.log("Getting balance after withdraw error");
-                                        return res.status(500).send({ success: 0, message: "Error getting balance after withdraw" });
-                                    }
-
-                                    res.send({ Balance: result[0].balance, success: 1 });
-                                });
-                            });
-                        });
-                    } else {
-                        return db.rollback(() => {
-                            console.log("Insufficient balance or minimum balance not met");
-                            res.send({ success: 2, message: "Insufficient balance or minimum balance not met" });
-                        });
-                    }
-                });
-        });
-    });
+            const status=result[0].status;
+            if(status===1){
+                res.send({success:1});
+            }else{
+                res.send({success:0});
+            }
+        })
+    })
 });
 
 
@@ -195,74 +101,29 @@ app.post("/deposite", (req, res) => {
     const ID = req.body.Acc_ID;
     const Acc_type = req.body.Acc_type;
 
-    db.beginTransaction((err)=>{
+    const deposit=`CALL deposit(?,?,@status_d)`;
+    db.execute(deposit,[
+        deposite_amount,ID
+    ],(err,result)=>{
         if(err){
-            console.log("Transaction start error!");
+            console.log("error in deposit money",err);
         }
-
-        const depositeMoney="UPDATE account SET balance=balance+? WHERE account_id=?";
-        db.execute(depositeMoney,[deposite_amount,ID],(err,result)=>{
+        console.log(result);
+        db.query("SELECT @status_d AS status",(err,result)=>{
             if(err){
-                return db.rollback(()=>{
-                    console.log("Error updating balance");
-                })
+                console.log("error fetching status");
+                return;
             }
-
-            const enterLog=`
-                INSERT INTO transaction_log (account_id, date, amount, type) 
-                VALUES (?, NOW(), ?, 'deposite')`;
-            db.execute(enterLog,[ID,deposite_amount],(err,result)=>{
-                if(err){
-                    return db.rollback(()=>{
-                        console.log("log insert error!",err);
-                    })
-                }
-
-                db.commit();
-                console.log("deposite success");
-                db.query("SELECT balance FROM account WHERE account_id=?",[ID],
-                    (err,result)=>{
-                        if(err){
-                            console.log(err);
-                        }else{
-                            res.send({Balance:result[0].balance,success:1});
-                        }
-                    }
-                )
-            })
+            const status=result[0].status;
+            if(status===1){
+                res.send({success:1});
+            }else{
+                res.send({success:0});
+            }
         })
     })
     
 });
-
-function Transfer(amount,from,to,callback){
-
-    const send="UPDATE account SET balance=balance-? WHERE account_id=?";
-    db.execute(send,[amount,from],(err,result)=>{
-        if(err){
-            return callback(err);
-        }
-
-        const receive="UPDATE account SET balance=balance+? WHERE account_id=?";
-        db.execute(receive,[amount,to],(err,result)=>{
-            if(err){
-                return callback(err);
-            }
-
-            const enterLog=`
-                        INSERT INTO transaction_log (account_id, date, amount, type) 
-                        VALUES (?, NOW(), ?, 'transfer')`;
-            db.execute(enterLog,[from,amount],(err,result)=>{
-                if(err){
-                    return callback(err);
-                }
-
-                console.log("Tranfer executed");
-                callback(null);
-            })
-        })
-    })
-}
 
 
 app.post("/transfer", (req, res) => {
@@ -271,88 +132,63 @@ app.post("/transfer", (req, res) => {
     const amount = req.body.amount;
     const acc_type=req.body.Acc_type;
 
-    db.beginTransaction((err) => {
-        if (err) {
-            console.log("Transaction start error");
-            return res.status(500).send({ success: 0, message: "Transaction start error" });
+    const transfer=`CALL transaction_money(?,?,?,?,@status_p)`;
+    db.execute(transfer,[
+        amount,from,to,acc_type
+    ],(err,result)=>{
+        if(err){
+            console.log("oops!!! transaction error",err);
+            console.log(result);
+            return;
+            
         }
-
-        db.query("SELECT balance FROM account WHERE account_id = ?", [from], (err, result) => {
-            if (err) {
-                return db.rollback(() => {
-                    console.log("Error of getting balance");
-                    res.status(500).send({ success: 0, message: "Error of getting balance" });
-                });
+        console.log(result);
+        db.execute("SELECT @status_p AS status",(err,result)=>{
+            if(err){
+                console.log("Error fetching status");
             }
+            const status=result[0].status;
+            if(status===1){
+                res.send({success:1});
+            }
+        })
+    })
 
-            const current = Number(result[0].balance);
-            console.log(current);
+});
 
-            db.query("SELECT min_balance FROM saving_account_plans JOIN saving_account ON saving_account_plans.plan_id = saving_account.plan_id WHERE saving_account.account_id = ?", [from],
-                (err, result) => {
-                    if (err) {
-                        return db.rollback(() => {
-                            console.log("Error retrieving minimum balance");
-                            res.status(500).send({ success: 0, message: "Error retrieving minimum balance" });
-                        });
-                    }
+app.get("/trans_detail", (req, res) => {
+    const ID = req.query.Id;
 
-                    const min_balance = acc_type === "savings" ? Number(result[0].min_balance) : 0;
-                    console.log(min_balance);
-
-                    if ((acc_type === "savings" && min_balance <= current - amount) || (acc_type === "checking" && current >= amount)) {
-                        Transfer(amount,from, to,(err) => {
-                            if (err) {
-                                return db.rollback(() => {
-                                    console.log("Error of withdrawing money");
-                                    res.status(500).send({ success: 0, message: "Error of withdrawing money" });
-                                });
-                            }
-
-                            db.commit((err) => {
-                                if (err) {
-                                    return db.rollback(() => {
-                                        console.log("Error committing transaction");
-                                        res.status(500).send({ success: 0, message: "Error committing transaction" });
-                                    });
-                                }
-                                
-                                console.log("Withdraw success!");
-                                db.query("SELECT balance FROM account WHERE account_id = ?", [from], (err, result) => {
-                                    if (err) {
-                                        console.log("Getting balance after withdraw error");
-                                        return res.status(500).send({ success: 0, message: "Error getting balance after withdraw" });
-                                    }
-
-                                    res.send({ Balance: result[0].balance, success: 1 });
-                                });
-                            });
-                        });
-                    } else {
-                        return db.rollback(() => {
-                            console.log("Insufficient balance or minimum balance not met");
-                            res.send({ success: 2, message: "Insufficient balance or minimum balance not met" });
-                        });
-                    }
-                });
-        });
+    // Use Promise.all to handle both queries
+    Promise.all([
+        new Promise((resolve, reject) => {
+            db.query("SELECT * FROM transaction_log WHERE account_id = ?", [ID], (err, result) => {
+                if (err) {
+                    reject(err); // Reject the promise if there's an error
+                } else {
+                    resolve(result); // Resolve with the result
+                }
+            });
+        }),
+        new Promise((resolve, reject) => {
+            db.query("SELECT balance FROM account WHERE account_id = ?", [ID], (err, result) => {
+                if (err) {
+                    reject(err); // Reject the promise if there's an error
+                } else {
+                    resolve(result.length > 0 ? result[0].balance : null); // Resolve with the balance or null if not found
+                }
+            });
+        })
+    ])
+    .then(([transactionDetails, balance]) => {
+        res.send({ transactions: transactionDetails, balance: balance }); // Send a single response with both results
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(500).send({ error: "An error occurred while fetching transaction details." }); // Send error response
     });
-
-
 });
 
-app.get("/trans_detail",(req,res)=>{
-    const ID=req.query.Id;
-    db.query("select * from transaction_log where account_id=?",
-        [ID],
-        (err,result)=>{
-            if(err)
-                console.log(err);
-            else
-                res.send(result);
-        }
-    )
-});
 
 app.post("/employeelog",(req,res)=>{
     const employeeId=req.body.employeeId;
@@ -369,8 +205,143 @@ app.post("/employeelog",(req,res)=>{
             }
         }
     )
-})
+});
 
+app.post("/createAcc",async (req,res)=>{
+    const fname=req.body.fname;
+    const lname=req.body.lname;
+    const bDay=req.body.Bday;
+    const nic=req.body.nic;
+    const contactNo=req.body.contactNo;
+    const email=req.body.email;
+    const address=req.body.address;
+    const password=req.body.password;
+    const acc_type=req.body.Acctype;
+    const Amount=req.body.Amount;
+    const Date=req.body.Date;
+    const customer_type=req.body.customer_type;
+    const branch_id=req.body.branch_id;
+    const reg_no=req.body.reg_no;
+    const ContactPerson=req.body.contPerson;
+    const position=req.body.position;
+
+    const hashpassword= await createHashPassword(password);
+    const customer_ID=generateUnique10DigitNumber();
+    const acc_ID=generateUnique8DigitNumber();
+    const plan_id=calculateSavingPlan(bDay);
+    
+    if(customer_type=="individual"){
+        const addcustomer=`CALL create_account(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+        db.query(addcustomer,[
+            customer_ID,customer_type,contactNo,hashpassword,email,address,
+            fname,lname,bDay,nic,acc_ID,branch_id,acc_type,Amount,Date,"","","","",plan_id
+        ],(err,result)=>{
+            if(err){
+                console.error("error calling procedure.",err);
+                res.send({success:0});
+                return
+            }
+            console.log('Procedure result:', result);
+            res.send({success:1});
+        })
+    }
+    else{
+        const addcustomer=`CALL create_account(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+        db.query(addcustomer,[
+            customer_ID,customer_type,contactNo,hashpassword,email,address,"","",null,"",
+            acc_ID,branch_id,acc_type,Amount,Date,fname,reg_no,ContactPerson,position,plan_id
+        ],(err,result)=>{
+            if(err){
+                console.error("error calling procedure.",err);
+                return
+            }
+            console.log('Procedure result:', result);
+            res.send({success:1});
+        })
+    }
+    
+    
+});
+
+app.post("/insertEmployee",async(req,res)=>{
+    const em_id=req.body.em_id;
+    const name=req.body.name;
+    const role=req.body.role;
+    const branch_id=req.body.branch_id;
+    const password=req.body.password;
+    const email=req.body.email;
+    const address=req.body.address;
+    const number=req.body.contactNo;
+
+    const hashPasskey=await createHashPassword(password);
+
+    const insertEmployee=`CALL insert_employee(?,?,?,?,?,?,?,?)`;
+    db.query(insertEmployee,[
+        em_id,name,role,branch_id,hashPasskey,email,address,number
+    ],(err,result)=>{
+        if(err){
+            console.error("error calling procedure.",err);
+            res.send({success:0});
+            return
+        }
+        console.log('Procedure result:', result);
+        res.send({success:1});
+    })
+});
+
+app.post("/fixdepo",(req,res)=>{
+    console.log("fixed");
+    const acc_id=req.body.acc_id;
+    const plan=req.body.plan;
+    const date=req.body.date;
+    const amount=req.body.amount;
+    const acc_type=req.body.acc_type;
+
+    console.log(acc_id,plan,date,amount,acc_type);
+
+    const start_FD=`CALL insert_into_fixed_deposit(?,?,?,?,?,@status_f)`;
+    db.query(start_FD,[
+        amount,acc_id,acc_type,plan,date
+    ],(err,result)=>{
+        if(err){
+            console.log("FD create error",err);
+            res.send({success:2});
+            return
+        }
+        console.log(result);
+        db.execute("SELECT @status_f AS status",(err,result)=>{
+            if(err){
+                console.log("Error fetching status");
+            }
+            const status=result[0].status;
+            console.log(status);
+            if(status===1){
+                res.send({success:1});
+            }
+            else{
+                res.send({success:0});
+            }
+        })
+    });
+    
+    
+});
+
+app.post("/trans_report",(req,res)=>{
+    const branch_id=req.body.branch_id;
+
+    const trans_report=`CALL transaction_report(?)`;
+    db.execute(trans_report,[
+        branch_id
+    ],(err,result)=>{
+        if(err){
+            console.log("procudure call error.");
+            return;
+        }
+        console.log(result);
+        res.send(result);
+    })
+})
 
 
 

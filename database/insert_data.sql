@@ -109,8 +109,7 @@ INSERT INTO intra_bank_transfer_log (transaction_id, receive_transaction_id)
 VALUES 
 (5, 2);
 
--- Insert data into `physical_loan`
-INSERT INTO
+
 
 -- Insert data into `physical_loan`
 INSERT INTO physical_loan (loan_id, account_id, approved_by)

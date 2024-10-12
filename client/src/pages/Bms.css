@@ -1,0 +1,155 @@
+#full{
+    background-image: url('./img/bank2.jpg');
+    height:100vh;
+    background-size: cover;
+    overflow-y: hidden;
+}
+#BMSTopic{
+    font-family: monospace;
+    font-weight: 600;
+    border-top: 4px solid white;
+    border-bottom: 4px solid white;
+    width: 40rem;
+    padding-left: 5rem;
+    margin-top: 1rem;
+    color: white;
+    margin-left: 20rem;
+}
+#employeeDetail{
+    font-family: monospace;
+    margin-top: 1.5rem;
+    margin-left: 1rem;
+    color: white;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+#AccDetailEnter,#addEmployee{
+    margin-left: 15rem;
+    border: 2px solid rgb(50, 50, 210);
+    width: 50rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    position: fixed;
+    top: 10rem;
+    font-family: monospace;
+    background-image: url('./img/create.webp');
+    background-size: cover;
+    color: white;
+    font-weight: 600;
+    display: none;
+    padding-bottom: 2rem;
+}
+#amount,#startDate,#createAccount{
+    margin-left: 2rem;
+}
+#createAccount{
+    margin-top: 2rem;
+    background-color:rgb(50, 50, 210) ;
+    color: white;
+}
+#createAccount:hover{
+    background-color: rgb(20, 20, 109);
+}
+#closeimg{
+    width: 2rem;
+    background-color: white;
+    float: right;
+    position: relative;
+    bottom: 2rem;
+    cursor: pointer;
+}
+#closeimg:hover{
+    background-color: red;
+}
+#employeeAdd{
+    display: none;
+}
+
+#createBtn,#loan2,#createOrganizeBtn,#employeeAdd{
+    height: 4rem;
+    margin-top: 0.5rem;
+    width: 30rem;
+    margin-left: 3rem;
+    font-family: monospace;
+    font-weight: 600;
+    box-shadow: 2px 2px 2px 2px  aqua ;
+}
+#createBtn:hover,#loan2:hover,#createOrganizeBtn:hover,#employeeAdd:hover{
+    background-color: aqua;
+}
+
+#fname2,#lname2,#bday,#nic2,#phone,#email2,#address2,#passwordO{
+    width: 40rem;
+}
+#oname,#regNo,#person,#position,#phoneO,#emailO,#addressO{
+    width: 40rem;
+}
+#createForm,#createorganizationForm,#addEmployee{
+    margin-left: 15rem;
+    border: 2px solid rgb(50, 50, 210);
+    width: 50rem;
+    padding-left: 4rem;
+    padding-top: 2rem;
+    position: fixed;
+    top: 0rem;
+    font-family: monospace;
+    display: none;
+    background-image: url('./img/create.webp');
+    background-size: cover;
+    color: white;
+    font-weight: 600;
+}
+#next1,#createOrganizationacc,#next2,#employee_Add{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    background-color: rgb(50, 50, 210);
+    color: white;
+}
+#next1:hover,#createOrganizationacc:hover,#employee_Add:hover{
+    background-color: rgb(20, 20, 109);
+}
+#success_create,#success_employee{
+    width: 20rem;
+    position: fixed;
+    left: 35%;
+    top: 0%;
+    font-family: monospace;
+    font-weight: 600;
+    border: 1px solid black;
+    padding: 1rem;
+    padding-left: 3rem;
+    background-color: black;
+    color: white;
+    font-size: small;
+    display: none;
+}
+#create_success,#em_success{
+    width: 2rem;
+    margin-left: 5rem;
+    margin-bottom: 1rem;
+}
+#createOk,#addOk{
+    margin-left: 4rem;
+    width: 4rem;
+}
+#branch_trans{
+    width: 30rem;
+    color: white;
+    font-family: monospace;
+    font-weight: 600;
+    background: transparent;
+    backdrop-filter: blur(20px);
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid white;
+}
+#branches{
+    position: relative;
+    right: 2rem;
+}
+#findBtn{
+    width: 10rem;
+    margin-left: 8rem;
+    margin-top: 1rem;
+}

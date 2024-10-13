@@ -10,4 +10,4 @@ function generateUnique10DigitNumber() {
     return number;
 }
 
-module.exports = generateUnique10DigitNumber;
+export default generateUnique10DigitNumber;

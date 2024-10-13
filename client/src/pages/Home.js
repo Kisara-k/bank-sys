@@ -11,7 +11,7 @@ export default function Home(){
 
     const log=(event)=>{
         event.preventDefault();
-        Axios.post("http://localhost:3002/log",{
+        Axios.post("http://localhost:3002/auth/log",{
             username:username,
             passkey:passkey,
         }).then((response)=>{

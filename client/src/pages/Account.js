@@ -39,7 +39,7 @@ export default function Account(){
     useEffect(() => {
         if (Acc_ID) {
             
-            Axios.get("http://localhost:3002/trans_detail", {
+            Axios.get("http://localhost:3002/transaction/trans_detail", {
                 params: { Id: Acc_ID }
             })
             .then((response) => {
@@ -69,7 +69,7 @@ export default function Account(){
             document.getElementById("msgW").style.display="block";
         }
         else{
-            Axios.post("http://localhost:3002/withdraw",{
+            Axios.post("http://localhost:3002/account/withdraw",{
                 withdraw_amount:withdraw_amount,
                 Acc_ID:Acc_ID,
                 Acc_type:Acc_type,
@@ -89,12 +89,15 @@ export default function Account(){
 
     const ok1=()=>{
         document.getElementById("withSuccess").style.display="none";
+        window.location.href="/account";
     }
     const ok2=()=>{
         document.getElementById("depoSuccess").style.display="none";
+        window.location.href="/account";
     }
     const ok3=()=>{
         document.getElementById("transferSuccess").style.display="none";
+        window.location.href="/account";
     }
 
     const deposite=()=>{
@@ -102,7 +105,7 @@ export default function Account(){
             document.getElementById("msgD").style.display="block";
         }
         else{
-            Axios.post("http://localhost:3002/deposite",{
+            Axios.post("http://localhost:3002/account/deposite",{
                 deposite_amount:deposite_amounnt,
                 Acc_ID:Acc_ID,
                 Acc_type:Acc_type,
@@ -125,7 +128,7 @@ export default function Account(){
             document.getElementById("msgt").style.display="block";
         }
         else{
-            Axios.post("http://localhost:3002/transfer",{
+            Axios.post("http://localhost:3002/account/transfer",{
                 from:Acc_ID,
                 to:tranferAcc,
                 amount:tranfer_amount,

@@ -10,4 +10,4 @@ function generateUnique8DigitNumber() {
     return number;
 }
 
-module.exports = generateUnique8DigitNumber;
+export default generateUnique8DigitNumber;

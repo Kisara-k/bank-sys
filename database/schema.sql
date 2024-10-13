@@ -123,7 +123,7 @@ CREATE TABLE `transaction_log` (
   `account_id` INT UNSIGNED NOT NULL,
   `date` TIMESTAMP NOT NULL,
   `amount` NUMERIC(15,2) NOT NULL,
-  `type` ENUM('withdrawal', 'deposit') NOT NULL,
+  `type` ENUM('withdrawal', 'deposit','transfer') NOT NULL,
   FOREIGN KEY (`account_id`) REFERENCES `account`(`account_id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE

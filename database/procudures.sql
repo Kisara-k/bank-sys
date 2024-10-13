@@ -54,7 +54,6 @@ END //
 DELIMITER ;
 
 -------------- withdraw money
-
 DELIMITER //
 CREATE PROCEDURE withdraw_money(IN amount DECIMAL(15,2),IN acc_id INT,IN acc_type ENUM('saving','checking'),OUT status_w INT)
 BEGIN
@@ -126,7 +125,7 @@ DELIMITER ;
 
 
 -------------- deposite money
-use project;
+use bank;
 DELIMITER //
 CREATE PROCEDURE deposite(IN amount DECIMAL(15,2),IN acc_id INT,OUT status_d INT)
 BEGIN
@@ -151,6 +150,7 @@ DELIMITER ;
 
 
 ------- open fixed deposite account
+
 
 DELIMITER //
 CREATE PROCEDURE insert_into_fixed_deposit(IN amount DECIMAL(15,2), IN acc_id INT, IN acc_type ENUM('saving','checking'), IN plan_id SMALLINT, IN date DATE,OUT status_f INT)
@@ -255,7 +255,7 @@ BEGIN
             VALUES(last_id,to_acc);
             SELECT ROW_COUNT() INTO affected_rows;
           END IF;
-        END IF
+        END IF;
       END IF;
     ELSE
       SELECT 'Insufficient funds for checking account';  -- Debug output

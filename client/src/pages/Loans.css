@@ -41,6 +41,10 @@
     padding-left: 0.2rem;
     border-left: 6px solid rgb(50, 50, 210);
 }
+#password {
+    margin-left: 2.3rem; /* Same as #accNo and #lamount */
+    width: 35rem; /* Same width as other input fields */
+}
 #loanform{
     width: 50rem;
     margin-left: 18vw;

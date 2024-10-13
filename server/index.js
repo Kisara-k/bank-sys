@@ -13,9 +13,9 @@ app.use(express.json());
 
 const db=mysql.createConnection({
     user:"root",
-    host:"localhost",
-    password:"20020927",
-    database:"project",
+    host:"127.0.0.1",
+    password:"Sandali6254560@",
+    database:"bank",
 });
 
 // password hashing function

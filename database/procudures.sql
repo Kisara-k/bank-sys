@@ -256,7 +256,7 @@ BEGIN
             VALUES(last_id,to_acc);
             SELECT ROW_COUNT() INTO affected_rows;
           END IF;
-        END IF
+        END IF;
       END IF;
     ELSE
       SELECT 'Insufficient funds for checking account';  -- Debug output

@@ -14,7 +14,7 @@ export default function Bmslogin(){
         if(employeeId==="" || employeepasskey===""){
             alert("Please enter your login details.")
         }
-        Axios.post("http://localhost:3002/employeelog",{
+        Axios.post("http://localhost:3002/auth/employeelog",{
             employeeId:employeeId,
             employeepasskey:employeepasskey
         }).then((response)=>{

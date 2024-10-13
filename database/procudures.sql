@@ -54,7 +54,6 @@ END //
 DELIMITER ;
 
 -------------- withdraw money
-use bank;
 DELIMITER //
 CREATE PROCEDURE withdraw_money(IN amount DECIMAL(15,2),IN acc_id INT,IN acc_type ENUM('saving','checking'),OUT status_w INT)
 BEGIN
@@ -152,7 +151,7 @@ DELIMITER ;
 
 ------- open fixed deposite account
 
-use bank;
+
 DELIMITER //
 CREATE PROCEDURE insert_into_fixed_deposit(IN amount DECIMAL(15,2), IN acc_id INT, IN acc_type ENUM('saving','checking'), IN plan_id SMALLINT, IN date DATE,OUT status_f INT)
 BEGIN

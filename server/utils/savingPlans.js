@@ -23,4 +23,4 @@ function calculateSavingPlan(birthday) {
     return plan_id;
 }
 
-module.exports=calculateSavingPlan;
+export default calculateSavingPlan;

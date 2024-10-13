@@ -225,27 +225,30 @@ select{
 
 #withSuccess,#depoSuccess,#transferSuccess{
     position: fixed;
-    left: 30vw;
-    top:5vh;
+    left: 35vw;
+    top:1vh;
     z-index: 2;
     padding-left: 2rem;
     padding-right: 2rem;
-    background-color: beige;
+    background-color: black;
+    color: white;
     font-weight: 600;
     display: none;
+    font-size: small;
 }
 #sucImg{
-    width: 5rem;
+    width: 3rem;
     margin-left: 8rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
 #ok{
-    margin-left: 9rem;
+    margin-left: 7.5rem;
     width: 4rem;
-    background-color:rgb(50, 50, 210);
-    color: white;
+    background-color:aqua;
+    color: black;
     margin-bottom: 2rem;
+    font-weight: 600;
 }
 
 @media screen and (max-width:600px){
@@ -263,5 +266,8 @@ select{
     }
     #history{
         left: 2rem;
+    }
+    #withSuccess,#depoSuccess,#transferSuccess{
+        left: 12vw;
     }
 }

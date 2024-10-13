@@ -54,6 +54,7 @@ export default function Bms(){
         document.getElementById("createorganizationForm").style.display="none";
         document.getElementById("createForm").style.display="none";
         document.getElementById("addEmployee").style.display="none";
+        document.getElementById("physical_loan").style.display="none";
     }
 
     const next1=()=>{
@@ -72,8 +73,12 @@ export default function Bms(){
         document.getElementById("addEmployee").style.display="block";
     }
 
+    const loanApply=()=>{
+        document.getElementById("physical_loan").style.display="block";
+    }
+
     const createAcc=()=>{
-        Axios.post("http://localhost:3002/createAcc",{
+        Axios.post("http://localhost:3002/customer/createAcc",{
             fname:first_name,
             lname:last_name,
             Bday:bDay,
@@ -100,7 +105,7 @@ export default function Bms(){
     };
 
     const insertEmployee=()=>{
-        Axios.post("http://localhost:3002/insertEmployee",{
+        Axios.post("http://localhost:3002/employee/insertEmployee",{
             em_id:em_id,
             name:first_name,
             role:"employee",
@@ -117,16 +122,20 @@ export default function Bms(){
     };
 
     const branch_transaction_report=()=>{
-        Axios.post("http://localhost:3002/trans_report",{
-            branch_id:branch
-        }).then((response)=>{
-            localStorage.setItem("branch_transaction",JSON.stringify(response.data[0]));
-            console.log(response.data);
-            window.location.href="/branch_transaction";
-        })
-    }
-
-
+        if(branch===""){
+            alert("please select branch first!!");
+        }
+        else{
+            Axios.post("http://localhost:3002/transaction/trans_report",{
+                branch_id:branch
+            }).then((response)=>{
+                localStorage.setItem("branch_transaction",JSON.stringify(response.data[0]));
+                console.log(response.data);
+                window.location.href="/branch_transaction";
+            })
+        }
+        
+    };
 
     const ok=()=>{
         document.getElementById("success_create").style.display="none";
@@ -161,7 +170,7 @@ export default function Bms(){
                             <input type="button" id="createOrganizeBtn" onClick={showCreateOrganization}  value="Create new organization account"></input>
                         </div>
                         <div className="row">
-                            <input type="button" id="loan2" value="Apply a loan"></input>
+                            <input type="button" id="loan2" onClick={loanApply} value="Apply a loan"></input>
                         </div>
                         <div className="row">
                             <input type="button" id="employeeAdd" onClick={addEmployee} value="Add new employee"></input>
@@ -329,6 +338,29 @@ export default function Bms(){
                     <div className="form-group">
                         <input type="button" onClick={insertEmployee} className="form-control" id="employee_Add" value="add employee"></input>
                     </div>
+                </div>
+
+                {/* form for apply loan */}
+                <div id="physical_loan">
+                    <img src="close.png" id="closeimg" onClick={hideCreate}></img>
+                    <div id="acc_no" className="form-group">
+                        <label for="acc_no">Account no :</label>
+                        <input type="text" id="lAcc" className="form-control"></input>
+                    </div>
+                    <div id="loanamount" className="form-group">
+                        <label for="loanamount">loan amount :</label>
+                        <input type="text" id="loanamount" className="form-control"></input>
+                    </div>
+                    <div id="lduration" className="form-group">
+                        <label for="lduration">duration months :</label>
+                        <input type="number" id="lduration" className="form-control"></input>
+                    </div>
+                    <div id="date" className="form-group">
+                        <label for="date">Date :</label>
+                        <input type="date" id="lDate" className="form-control"></input>
+                    </div>
+
+                    <input type="button" id="loanBtn" value="Apply" className="form-control"></input>
                 </div>
 
                 {/* success messages*/}

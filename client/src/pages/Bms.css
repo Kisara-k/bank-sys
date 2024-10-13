@@ -85,7 +85,7 @@
 #oname,#regNo,#person,#position,#phoneO,#emailO,#addressO{
     width: 40rem;
 }
-#createForm,#createorganizationForm,#addEmployee{
+#createForm,#createorganizationForm,#addEmployee,#physical_loan{
     margin-left: 15rem;
     border: 2px solid rgb(50, 50, 210);
     width: 50rem;
@@ -100,13 +100,18 @@
     color: white;
     font-weight: 600;
 }
-#next1,#createOrganizationacc,#next2,#employee_Add{
+#physical_loan input{
+    width: 40rem;
+}
+
+
+#next1,#createOrganizationacc,#next2,#employee_Add,#loanBtn{
     margin-top: 2rem;
     margin-bottom: 2rem;
     background-color: rgb(50, 50, 210);
     color: white;
 }
-#next1:hover,#createOrganizationacc:hover,#employee_Add:hover{
+#next1:hover,#createOrganizationacc:hover,#employee_Add:hover,#loanBtn:hover{
     background-color: rgb(20, 20, 109);
 }
 #success_create,#success_employee{
@@ -152,4 +157,6 @@
     width: 10rem;
     margin-left: 8rem;
     margin-top: 1rem;
+    color: white;
+    font-weight: 600;
 }

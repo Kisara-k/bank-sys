@@ -26,6 +26,7 @@ function App() {
           <Route path="/bmslogin" element={<Bmslogin/>}></Route>
           <Route path="/BMS" element={<Bms/>}></Route>
           <Route path='/branch_transaction' element={<BranchReport/>}></Route>
+          <Route path='/apply-loan' element={<Loans/>}></Route>
         </Routes>
       </div>
     </Router>

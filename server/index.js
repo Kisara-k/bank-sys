@@ -3,6 +3,7 @@ import dotenv from 'dotenv'; // Load environment variables
 dotenv.config();
 import express, { json } from 'express';
 import cors from 'cors';
+import db from './config/database.js';
 
 const app = express();
 
@@ -34,3 +35,41 @@ const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}.`);
 });
+
+
+// Endpoint to apply for an online loan
+app.post('/apply-loan', (req, res) => {
+    const { accountNo, loanAmount, duration } = req.body;
+
+    // Validate input
+    // if (!accountNo || !requested_loan_amount || !duration) {
+    //     return res.status(400).json({ message: 'Missing required fields' });
+    // }
+
+    const loanStatus = {};
+
+    // Call the stored procedure
+    db.query(
+        'CALL apply_online_loan(?, ?, ?, @loan_status);',
+        [accountNo, loanAmount, duration],
+        (error) => {
+            if (error) {
+                console.error('Error executing stored procedure:', error);
+                return res.status(500).json({ message: 'Internal server error' });
+            }
+
+            // Now, retrieve the loan status from the output variable
+            db.query('SELECT @loan_status AS loan_status;', (err, results) => {
+                if (err) {
+                    console.error('Error retrieving loan status:', err);
+                    return res.status(500).json({ message: 'Internal server error' });
+                }
+
+                // Get loan status from the result
+                const loanStatus = results[0].loan_status; // This contains the loan status
+                res.status(200).json({ message: loanStatus }); // Return the loan status message
+            });
+        }
+    );
+});
+

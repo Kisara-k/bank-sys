@@ -52,11 +52,12 @@ app.post('/apply-loan', (req, res) => {
     db.query(
         'CALL apply_online_loan(?, ?, ?, @loan_status);',
         [accountNo, loanAmount, duration],
-        (error) => {
+        (error,result) => {
             if (error) {
-                console.error('Error executing stored procedure:', error);
+                console.log('Error executing stored procedure:', error);
                 return res.status(500).json({ message: 'Internal server error' });
             }
+            console.log(result);
 
             // Now, retrieve the loan status from the output variable
             db.query('SELECT @loan_status AS loan_status;', (err, results) => {

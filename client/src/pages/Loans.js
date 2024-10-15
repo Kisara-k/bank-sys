@@ -1,48 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import './Loans.css';
 
 export default function Loans() {
     const [accountNo, setAccountNo] = useState('');
     const [loanType, setLoanType] = useState('Personal loan');
-    const [duration, setDuration] = useState('6 months');
+    const [duration, setDuration] = useState('');
     const [loanAmount, setLoanAmount] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    const [hasFD, setHasFD] = useState(true); // New state to track if the customer has FD
-    const [checkingFDMessage, setCheckingFDMessage] = useState('');
 
     const MAX_LOAN_AMOUNT = 500000; // Maximum loan amount
     const FD_VALUE = 1000000; // Example fixed deposit value
     const MAX_LOAN_LIMIT = FD_VALUE * 0.6; // 60% of FD value
-
-    // Check if customer has FD when account number changes
-    useEffect(() => {
-        const checkFD = async () => {
-            if (accountNo) {
-                setCheckingFDMessage('Checking for fixed deposit...'); // Optional: Inform the user
-                try {
-                    const response = await fetch(`/api/check-fd?accountNo=${accountNo}`);
-                    const data = await response.json();
-                    if (data.hasFD) {
-                        setHasFD(true);
-                        setCheckingFDMessage('');
-                    } else {
-                        setHasFD(false);
-                        setCheckingFDMessage('No fixed deposit account found for this customer.');
-                    }
-                } catch (error) {
-                    setHasFD(false);
-                    setCheckingFDMessage('Error checking fixed deposit status.');
-                }
-            } else {
-                setCheckingFDMessage('');
-            }
-        };
-
-        checkFD();
-    }, [accountNo]); // Trigger this effect when accountNo changes
 
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent the default form submission
@@ -51,14 +22,13 @@ export default function Loans() {
         setErrorMessage('');
         setSuccessMessage('');
 
-        // Example validation checks
-        if (!accountNo || !loanAmount || !password) {
+        // Validation checks
+        if (!accountNo || !loanAmount || !password || !duration) {
             setErrorMessage('Please fill in all required fields.');
             return;
         }
 
-        // Validate account number format
-        const accountNoRegex = /^[0-9]{1,10}$/; // Example regex for account number (1 to 10 digits)
+        const accountNoRegex = /^[0-9]{1,10}$/; // Validate account number format
         if (!accountNoRegex.test(accountNo)) {
             setErrorMessage('Please enter a valid account number (1-10 digits).');
             return;
@@ -79,28 +49,29 @@ export default function Loans() {
             return;
         }
 
-        // Prevent submission if the user does not have a fixed deposit
-        if (!hasFD) {
-            setErrorMessage('You must have a fixed deposit to apply for a loan.');
+        if (![6, 12, 24].includes(parseInt(duration))) {
+            setErrorMessage('Please enter a valid duration (6, 12, or 24 months).');
             return;
         }
 
-        // Call your backend API to validate and submit the loan application
-        const response = await fetch('/api/apply-loan', {
+        // Call backend API to submit the loan application
+        const response = await fetch('http://localhost:3002/apply-loan', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ accountNo, loanType, duration, loanAmount, password }), // Include password in the request
+            body: JSON.stringify({ 
+                accountNo, 
+                loanAmount, 
+                duration: parseInt(duration) // Use the integer value for duration
+            }), 
         });
 
         const data = await response.json();
 
         if (response.ok) {
-            // If successful
-            setSuccessMessage('Loan application submitted successfully!');
+            setSuccessMessage(data.message); // Set success message from the backend
         } else {
-            // If there's an error
             setErrorMessage(data.message || 'Something went wrong. Please try again.');
         }
     };
@@ -151,7 +122,6 @@ export default function Loans() {
                             value={accountNo} 
                             onChange={(e) => setAccountNo(e.target.value)} 
                         />
-                        {checkingFDMessage && <small className="text-danger">{checkingFDMessage}</small>}
                     </div>
 
                     <div className="form-group">
@@ -178,16 +148,14 @@ export default function Loans() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="duration">Select duration:</label>
-                        <select 
+                        <label htmlFor="duration">Enter duration (6, 12, or 24 months):</label>
+                        <input 
+                            type="text" 
                             className="form-control" 
                             id="duration" 
                             value={duration} 
-                            onChange={(e) => setDuration(e.target.value)}>
-                            <option>6 months</option>
-                            <option>12 months</option>
-                            <option>24 months</option>
-                        </select>
+                            onChange={(e) => setDuration(e.target.value)} 
+                        />
                     </div>
 
                     <div className="form-group">

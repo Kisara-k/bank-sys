@@ -1,53 +1,105 @@
-h2{
-    display: flex;
-    justify-content: center;
-    color: rgb(50, 50, 210);
-}
-#set{
-    margin-top: 4rem;
-    display: flex;
-    justify-content: center;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-#fname,#lname,#bd,#no,#address,#email{
-    width: 15rem;
-}
-#ac,#ac_type,#nic,#bid{
-    border: 1px solid grey;
-    height: 2rem;
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
-    padding-left: 0.2rem;
-    padding-right: 3rem;
-    width: 0rem;
-    background-color: white;
-    color: gray;
-}
-#btns{
-    margin-left: 14rem;
-    margin-top: 4rem;
-}
-#save{
-    background-color: rgb(50, 50, 210);
-    color: white;
-    width: 5rem;
-}
-#back{
-    background-color: black;
-    border: 1px solid black;
-    color: white;
-    width: 5rem;
+/* Profile.css */
+
+/* General styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
 }
 
-@media screen and (max-width:600px){
-    #Right{
-        margin-top: 3rem;
+h2 {
+    text-align: center;
+    margin-top: 30px;
+    color: #333;
+}
+
+/* Container for the profile details */
+#set {
+    display: flex;
+    justify-content: center;
+    margin: 50px auto;
+    max-width: 800px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#Left, #Right {
+    flex: 1;
+    margin: 0 20px;
+}
+
+#Left span, #Right span {
+    display: block;
+    margin-bottom: 5px; /* Further reduced margin */
+    color: #555;
+    font-size: 16px;
+}
+
+#Left input[type="text"], #Right span span {
+    width: 100%;
+    padding: 8px; /* Reduced padding */
+    margin-top: 1px; /* Further reduced spacing */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+}
+
+#Left input[type="text"]:focus {
+    border-color: #007bff;
+    background-color: white;
+}
+
+#Right span span {
+    display: block;
+    padding: 8px; /* Reduced padding */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Buttons */
+#btns {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+#btns input[type="submit"] {
+    padding: 10px 30px;
+    margin: 0 10px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#btns input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Specific styles for the 'Back' button */
+#back {
+    background-color: #6c757d;
+}
+
+#back:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    #set {
+        flex-direction: column;
+        align-items: center;
     }
-    #btns{
-        margin-left: 4rem;
-        margin-top: 2rem;
-    }
-    #set{
-        margin-left: 3rem;
+
+    #Left, #Right {
+        margin: 20px 0;
     }
 }

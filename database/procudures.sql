@@ -287,5 +287,80 @@ END //
 DELIMITER ;
 
 
+-------loan
+CREATE DEFINER=`root`@`localhost` PROCEDURE `apply_online_loan`(
+    IN accountNo INT,
+    IN loan_amount DECIMAL(15, 2),
+    IN duration INT,
+    OUT loan_status VARCHAR(255)
+)
+BEGIN
+    DECLARE fd_amount DECIMAL(15, 2);
+    DECLARE savings_account_id INT;
+    DECLARE max_loan_amount DECIMAL(15, 2);
+    DECLARE loan_rate DECIMAL(4, 2);
+    DECLARE monthly_installment_ INT;
+    DECLARE new_loan_id INT;
 
+    -- Exit handler for SQL exceptions
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SET loan_status = 'Error occurred, transaction failed.';
+    END;
 
+    -- Start the transaction
+    START TRANSACTION;
+
+    -- Retrieve FD details for the account
+    SELECT fd.amount, fd.saving_acc_id
+    INTO fd_amount, savings_account_id
+    FROM fixed_deposit fd
+    WHERE fd.fd_id = accountNo;
+
+    -- Check if the FD exists
+    IF fd_amount IS NULL THEN
+        SET loan_status = 'No Fixed Deposit account found for this customer.';
+        ROLLBACK;
+    ELSE
+        -- Calculate maximum loan the customer can apply for (60% of FD or max 500,000)
+        SET max_loan_amount = LEAST(fd_amount * 0.60, 500000.00);
+
+        -- Check if requested loan exceeds maximum allowed
+        IF loan_amount > max_loan_amount THEN
+            SET loan_status = CONCAT('Loan amount exceeds the limit. Maximum allowed: ', max_loan_amount);
+            ROLLBACK;
+        ELSE
+            -- Set loan interest rate (Example: 5%)
+            SET loan_rate = 5.00;
+
+            -- Calculate the monthly installment
+            SET monthly_installment_ = (loan_amount * (1 + (loan_rate / 100))) / duration;
+
+            -- Generate a new loan_id (assuming auto-increment is not used)
+            SELECT IFNULL(MAX(loan_id), 0) + 1 INTO new_loan_id FROM loans;
+
+            -- Insert the loan into the loans table
+            INSERT INTO loans (
+                loan_id, account_id, amount, rate, monthly_installment,
+                duration_months, start_date, type, status
+            )
+            VALUES (
+                new_loan_id, accountNo, loan_amount, loan_rate,
+                monthly_installment_, duration, CURDATE(), 'online', 'pending'
+            );
+
+            -- Update the balance of the linked savings account
+            UPDATE saving_account
+            SET balance = balance + loan_amount
+            WHERE account_id = savings_account_id;
+
+            -- Commit the transaction
+            COMMIT;
+
+            -- Set loan status to success
+            SET loan_status = 'Loan approved and deposited into the savings account.';
+        END IF;
+    END IF;
+
+END;

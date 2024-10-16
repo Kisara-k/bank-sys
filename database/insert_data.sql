@@ -53,12 +53,12 @@ INSERT INTO account (account_id, customer_id, branch_id, type, balance, start_da
 VALUES 
 (1, 1, 1, 'saving', 1000.00, '2023-01-01', 'active'),
 (2, 2, 2, 'checking', 5000.00, '2023-02-01', 'active'),
-(3, 3, 3, 'saving', 2000.00, '2023-03-01', 'block'),
-(4, 4, 4, 'checking', 8000.00, '2023-04-01', 'deactivate'),
+(3, 3, 3, 'saving', 2000.00, '2023-03-01', 'blocked'),
+(4, 4, 4, 'checking', 8000.00, '2023-04-01', 'deactivated'),
 (5, 5, 5, 'saving', 3000.00, '2023-05-01', 'expired'),
 (6, 6, 1, 'checking', 6000.00, '2023-06-01', 'active'),
 (7, 7, 2, 'saving', 4000.00, '2023-07-01', 'active'),
-(8, 8, 3, 'checking', 7000.00, '2023-08-01', 'block'),
+(8, 8, 3, 'checking', 7000.00, '2023-08-01', 'blocked'),
 (9, 9, 4, 'saving', 9000.00, '2023-09-01', 'active'),
 (10, 10, 5, 'checking', 10000.00, '2023-10-01', 'active');
 

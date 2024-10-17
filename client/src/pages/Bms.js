@@ -21,6 +21,8 @@ export default function Bms(){
     const [Date,setDate]=useState("");
     const [branch_id,setBranch]=useState("");
     const [customerType,setCustomerType]=useState("");
+    const [acc_no,setAccNo]=useState("");
+    const [duration,setDuration]=useState("");
 
     const [reg_no,setRegNumber]=useState("");
     const [contPerson,setContactPerson]=useState("");
@@ -28,6 +30,7 @@ export default function Bms(){
 
     const [em_id,setEmid]=useState("");
     const [branch,setbranch]=useState("");
+    const [report,setReport]=useState("");
 
     useEffect(()=>{
         const getData=localStorage.getItem("employeeDetail");
@@ -38,6 +41,7 @@ export default function Bms(){
             setEmployeeType(EmployeeData[0].role);
             if(employeeType==="manager"){
                 document.getElementById("employeeAdd").style.display="block";
+                document.getElementById("managerOP").style.display="block";
             }
         }
     });
@@ -127,15 +131,36 @@ export default function Bms(){
         }
         else{
             Axios.post("http://localhost:3002/transaction/trans_report",{
-                branch_id:branch
+                branch_id:branch,
+                report:report
             }).then((response)=>{
                 localStorage.setItem("branch_transaction",JSON.stringify(response.data[0]));
                 console.log(response.data);
-                window.location.href="/branch_transaction";
+                if(report==="1"){
+                    window.location.href="/branch_transaction";
+                }
+                else{
+                    window.location.href="/late_loan";
+                }
+                
             })
         }
         
     };
+
+    const physical_loan=()=>{
+        Axios.post("http://localhost:3002/phy_loan",{
+            acc_no:acc_no,
+            amount:Amount,
+            duration:duration,
+            date:Date
+        }).then((response)=>{
+            if(response.data.success===1){
+                document.getElementById("success_loan").style.display="block";
+            }
+        })
+
+    }
 
     const ok=()=>{
         document.getElementById("success_create").style.display="none";
@@ -143,6 +168,10 @@ export default function Bms(){
     }
     const ok2=()=>{
         document.getElementById("success_employee").style.display="none";
+        window.location.href="/BMS";
+    }
+    const ok3=()=>{
+        document.getElementById("success_loan").style.display="none";
         window.location.href="/BMS";
     }
     return(
@@ -190,6 +219,15 @@ export default function Bms(){
                                     <option value="5" >Hambanthota</option>
                                 </select>
                             </div>
+
+                            <div className="form-group" id="report">
+                                <select id="reportType" value={report} onChange={(event)=>{setReport(event.target.value);}} className="form-control">
+                                    <option value="" disabled>choose report type :</option>
+                                    <option value="1">Transaction report</option>
+                                    <option id="managerOP" value="2">late loan installments</option>
+                                </select>
+                            </div>
+                            
                             <input type="button" className="btn btn-info" value="find report" onClick={branch_transaction_report} id="findBtn"></input>
                         </div>
                     </div>
@@ -345,22 +383,22 @@ export default function Bms(){
                     <img src="close.png" id="closeimg" onClick={hideCreate}></img>
                     <div id="acc_no" className="form-group">
                         <label for="acc_no">Account no :</label>
-                        <input type="text" id="lAcc" className="form-control"></input>
+                        <input type="text" onChange={(event)=>{setAccNo(event.target.value)}} id="lAcc" className="form-control"></input>
                     </div>
                     <div id="loanamount" className="form-group">
                         <label for="loanamount">loan amount :</label>
-                        <input type="text" id="loanamount" className="form-control"></input>
+                        <input type="text" onChange={(event)=>{setAmount(event.target.value)}} id="loanamount" className="form-control"></input>
                     </div>
                     <div id="lduration" className="form-group">
                         <label for="lduration">duration months :</label>
-                        <input type="number" id="lduration" className="form-control"></input>
+                        <input type="number" onChange={(event)=>{setDuration(event.target.value)}} id="lduration" className="form-control"></input>
                     </div>
                     <div id="date" className="form-group">
                         <label for="date">Date :</label>
-                        <input type="date" id="lDate" className="form-control"></input>
+                        <input type="date" onChange={(event)=>{setDate(event.target.value)}} id="lDate" className="form-control"></input>
                     </div>
 
-                    <input type="button" id="loanBtn" value="Apply" className="form-control"></input>
+                    <input type="button" id="loanBtn" value="Apply" onClick={physical_loan} className="form-control"></input>
                 </div>
 
                 {/* success messages*/}
@@ -374,6 +412,12 @@ export default function Bms(){
                     <img src="check.png" id="em_success"></img>
                     <p>employee added successfully.</p>
                     <input id="addOk" className="btn btn-info" type="submit" value="ok" onClick={ok2}></input>
+                </div>
+
+                <div id="success_loan">
+                    <img src="check.png" id="em_success"></img>
+                    <p>loan apply successfully completed.</p>
+                    <input id="loanOk" className="btn btn-info" type="submit" value="ok" onClick={ok3}></input>
                 </div>
 
             </div>

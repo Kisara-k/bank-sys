@@ -286,6 +286,20 @@ BEGIN
 END //
 DELIMITER ;
 
+-----------------late loan installments report
+DELIMITER //
+CREATE PROCEDURE late_loan_installments(IN branch_id INT)
+BEGIN
+  SELECT loans.loan_id, loan_installment_log.installment_id, loan_installment_log.due_date, 
+       loan_installment_log.amount, loan_installment_log.payment_date, 
+       loan_installment_log.status, loans.account_id,account.branch_id
+  FROM loans
+  JOIN loan_installment_log ON loans.loan_id = loan_installment_log.loan_id
+  JOIN account ON account.account_id = loans.account_id
+  WHERE loan_installment_log.status = 'overdue';
+END //
+DELIMITER ;
+
 
 -------------------------online loan apply
 
@@ -381,6 +395,42 @@ BEGIN
 
 END//
 DELIMITER ;
+
+
+----------------------------physical loan apply
+DELIMITER //
+CREATE PROCEDURE physical_loan(IN amount DECIMAL(15,2),IN acc_id INT,IN duration INT,IN date DATE,OUT loan_state VARCHAR(50))
+BEGIN
+  DECLARE loan_rate DECIMAL(4, 2);
+  DECLARE monthly_installment DECIMAL(15, 2);
+  DECLARE new_loan_id INT;
+  DECLARE affected_rows INT;
+
+  SET loan_rate = 5.00;
+  SET monthly_installment= (amount * (1 + (loan_rate / 100))) / duration;
+  SELECT IFNULL(MAX(loan_id), 0) + 1 INTO new_loan_id FROM loans;
+
+  INSERT INTO loans(loan_id,amount,account_id,rate,monthly_installment,duration_months,start_date,type,status)
+  VALUES (new_loan_id,amount,acc_id,loan_rate,monthly_installment,duration,date,"physical","pending");
+  SELECT ROW_COUNT() INTO affected_rows;
+
+  IF affected_rows > 0 THEN
+    COMMIT;
+    SET loan_state='Physical loan apply success';
+    SELECT "Physical loan added to table";
+
+  ELSE 
+    ROLLBACK;
+    SET loan_state='Physical loan apply fail!';
+    SELECT "Rollback loan";
+  END IF;
+END //
+DELIMITER ;
+
+
+  
+
+
 
 
 

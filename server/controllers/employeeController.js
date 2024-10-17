@@ -17,7 +17,7 @@ export const insertEmployee = async (req, res) => {
                 return res.status(500).send({ success: 0, error: "Employee insertion failed." });
             }
             console.log('Procedure result:', result);
-            res.send({ success: 1 });
+            res.send({ success: 1 ,message:"employee added successfully"});
         });
     } catch (error) {
         console.error("Error inserting employee:", error);

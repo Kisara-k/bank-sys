@@ -129,6 +129,7 @@ select{
     padding-bottom: 1rem;
     position: relative;
     right: 8rem;
+    height: 25rem;
 }
 #T1{
     margin-left:3rem ;
@@ -188,40 +189,65 @@ select{
     position: relative;
     right: 3rem;
 }
-.Transaction_detail table{
-    border-collapse: separate;
-    border-spacing: 0 1rem;
+.Transaction_detail {
+    width: 100%; /* Full width for better responsiveness */
+    margin: 20px 0; /* Margin for spacing around the table */
+    border-radius: 10px; /* Rounded corners for the table */
+    overflow: hidden; /* Hide overflow for rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
 }
-.Transaction_detail thead{
-    color: white;
-    background-color:rgb(50, 50, 210) ;
-    padding: 0.6rem;
-    border-radius: 10px;
-    
+
+.Transaction_detail table {
+    width: 100%; /* Table takes full width of the parent */
+    border-collapse: separate; /* Keep separate borders */
+    border-spacing: 0 1rem; /* Space between rows */
 }
-.Transaction_detail th{
-    width: 4rem;
-    height: 3rem;
-    padding-left: 1rem;
+
+.Transaction_detail thead {
+    color: white; /* Text color for the header */
+    background-color: rgb(50, 50, 210); /* Header background color */
+    padding: 0.6rem; /* Padding for the header */
 }
-#history td{
-    margin-right: 5rem;
-    margin-left: 2rem;
+
+.Transaction_detail th {
+    height: 3rem; /* Fixed height for header cells */
+    padding-left: 1rem; /* Padding on left for header cells */
+    text-align: left; /* Align header text to the left */
 }
-.Transaction_detail th, .Transaction_detail td {
-    padding: 6px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+
+.Transaction_detail th, 
+.Transaction_detail td {
+    padding: 12px 15px; /* Increased padding for better spacing */
+    text-align: left; /* Align text to the left */
+    border-bottom: 1px solid #ddd; /* Bottom border for cells */
 }
-#history tr{
-    width: 9rem;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 0.8rem;
-    background-color: white;
-    margin-right: 1rem;
-    border-radius: 10px;
-    height: 3rem;
-} 
+
+.Transaction_detail td {
+    background-color: white; /* Cell background color */
+    font-family: 'Verdana', 'Geneva', 'Tahoma', sans-serif; /* Font family for table cells */
+    font-size: 0.9rem; /* Slightly larger font size */
+}
+
+.Transaction_detail tr {
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.Transaction_detail tr:hover {
+    background-color: #f0f8ff; /* Light blue hover effect */
+}
+
+.Transaction_detail tbody tr {
+    height: 2rem; /* Fixed height for body rows */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .Transaction_detail th, .Transaction_detail td {
+        padding: 10px; /* Adjust padding for smaller screens */
+        font-size: 0.8rem; /* Smaller font size for smaller screens */
+    }
+}
+
 
 #withSuccess,#depoSuccess,#transferSuccess{
     position: fixed;

@@ -31,10 +31,11 @@ export const getTransactionDetails = (req, res) => {
 };
 
 export const getTransactionReport = (req, res) => {
-    const { branch_id } = req.body;
+    const { branch_id ,report} = req.body;
 
-    const transReportProcedure = `CALL transaction_report(?)`;
-    db.execute(transReportProcedure, [branch_id], (err, result) => {
+    if(report==="1"){
+        const transReportProcedure = `CALL transaction_report(?)`;
+        db.execute(transReportProcedure, [branch_id], (err, result) => {
         if (err) {
             console.error("Procedure call error:", err);
             return res.status(500).send({ error: "Transaction report generation failed." });
@@ -42,6 +43,19 @@ export const getTransactionReport = (req, res) => {
         console.log(result);
         res.send(result);
     });
+    }else{
+        const transReportProcedure = `CALL late_loan_installments(?)`;
+        db.execute(transReportProcedure, [branch_id], (err, result) => {
+        if (err) {
+            console.error("Procedure call error:", err);
+            return res.status(500).send({ error: "Late loan report generation failed." });
+        }
+        console.log(result);
+        res.send(result);
+
+        });
+    }
+    
 };
 
 export const fixDeposit = (req, res) => {
@@ -49,7 +63,7 @@ export const fixDeposit = (req, res) => {
 
     console.log(acc_id, plan, date, amount, acc_type);
 
-    const startFDProcedure = `CALL insert_into_fixed_deposit(?, ?, ?, ?, @status_f)`;
+    const startFDProcedure = `CALL insert_into_fixed_deposit(?, ?, ?, ?,?, @status_f)`;
     db.query(startFDProcedure, [amount, acc_id, acc_type, plan, date], (err, result) => {
         if (err) {
             console.error("Fixed deposit creation error:", err);

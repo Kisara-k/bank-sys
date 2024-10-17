@@ -10,6 +10,7 @@ import Loans from './pages/Loans';
 import Bmslogin from './pages/Bmslogin';
 import Bms from './pages/Bms';
 import BranchReport from './pages/BranchReport';
+import Lateloan from './pages/Lateloan';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/BMS" element={<Bms/>}></Route>
           <Route path='/branch_transaction' element={<BranchReport/>}></Route>
           <Route path='/apply-loan' element={<Loans/>}></Route>
+          <Route path='/late_loan' element={<Lateloan/>}></Route>
         </Routes>
       </div>
     </Router>

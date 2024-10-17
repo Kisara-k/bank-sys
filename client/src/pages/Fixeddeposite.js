@@ -32,7 +32,7 @@ export default function Fixeddeposite(){
     const FixedDeposite=()=>{
         console.log(getID,acc_id);
         if(getID==acc_id){
-            Axios.post("http://localhost:3002/fixdepo",{
+            Axios.post("http://localhost:3002/transaction/fixdepo",{
                 acc_id:acc_id,
                 plan:plan,
                 date:date,

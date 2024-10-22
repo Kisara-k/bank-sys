@@ -42,7 +42,7 @@ export const createAccount = async (req, res) => {
                 return res.status(500).send({ success: 0, error: "Account creation failed." });
             }
             console.log('Procedure result:', result);
-            res.send({ success: 1 });
+            res.send({ success: 1 ,message:"account created successfull"});
         });
     } catch (error) {
         console.error("Error creating account:", error);

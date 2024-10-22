@@ -21,6 +21,8 @@ export default function Bms(){
     const [Date,setDate]=useState("");
     const [branch_id,setBranch]=useState("");
     const [customerType,setCustomerType]=useState("");
+    const [acc_no,setAccNo]=useState("");
+    const [duration,setDuration]=useState("");
 
     const [reg_no,setRegNumber]=useState("");
     const [contPerson,setContactPerson]=useState("");
@@ -28,6 +30,7 @@ export default function Bms(){
 
     const [em_id,setEmid]=useState("");
     const [branch,setbranch]=useState("");
+    const [report,setReport]=useState("");
 
     useEffect(()=>{
         const getData=localStorage.getItem("employeeDetail");
@@ -38,6 +41,7 @@ export default function Bms(){
             setEmployeeType(EmployeeData[0].role);
             if(employeeType==="manager"){
                 document.getElementById("employeeAdd").style.display="block";
+                document.getElementById("managerOP").style.display="block";
             }
         }
     });
@@ -127,15 +131,36 @@ export default function Bms(){
         }
         else{
             Axios.post("http://localhost:3002/transaction/trans_report",{
-                branch_id:branch
+                branch_id:branch,
+                report:report
             }).then((response)=>{
                 localStorage.setItem("branch_transaction",JSON.stringify(response.data[0]));
                 console.log(response.data);
-                window.location.href="/branch_transaction";
+                if(report==="1"){
+                    window.location.href="/branch_transaction";
+                }
+                else{
+                    window.location.href="/late_loan";
+                }
+                
             })
         }
         
     };
+
+    const physical_loan=()=>{
+        Axios.post("http://localhost:3002/phy_loan",{
+            acc_no:acc_no,
+            amount:Amount,
+            duration:duration,
+            date:Date
+        }).then((response)=>{
+            if(response.data.success===1){
+                document.getElementById("success_loan").style.display="block";
+            }
+        })
+
+    }
 
     const ok=()=>{
         document.getElementById("success_create").style.display="none";
@@ -145,17 +170,27 @@ export default function Bms(){
         document.getElementById("success_employee").style.display="none";
         window.location.href="/BMS";
     }
+    const ok3=()=>{
+        document.getElementById("success_loan").style.display="none";
+        window.location.href="/BMS";
+    }
     return(
         <>
         <div id="full">
                 <h1 id="BMSTopic">Bank Management System</h1>
                 {/* Show employee detail */}
-                <div id="employeeDetail">
+                <div id="employeeDetail" className="row">
                     {employeeDetail.map((val,key)=>(
-                        <><span id="employeeID">Employee ID : {val.employee_id}</span><br></br>
-                        <span id="emName">Employee Name : {val.name}</span><br></br>
-                        <span id="emRole">Role : {val.role}</span><br></br>
-                        <span id="emEmail">email : {val.email}</span>
+                        <>
+                        <div className="col-sm-4">
+                            <span id="employeeID">Employee ID : {val.employee_id}</span><br></br>
+                        </div>
+                        <div className="col-sm-4">
+                            <span id="emName">Name : {val.name}</span><br></br>
+                        </div>
+                        <div className="col-sm-4">
+                            <span id="emRole">Role : {val.role}</span><br></br>
+                        </div>
                         </>
                     ))}
                 </div>
@@ -190,6 +225,15 @@ export default function Bms(){
                                     <option value="5" >Hambanthota</option>
                                 </select>
                             </div>
+
+                            <div className="form-group" id="report">
+                                <select id="reportType" value={report} onChange={(event)=>{setReport(event.target.value);}} className="form-control">
+                                    <option value="" disabled>choose report type :</option>
+                                    <option value="1">Transaction report</option>
+                                    <option id="managerOP" value="2">late loan installments</option>
+                                </select>
+                            </div>
+                            
                             <input type="button" className="btn btn-info" value="find report" onClick={branch_transaction_report} id="findBtn"></input>
                         </div>
                     </div>
@@ -199,37 +243,65 @@ export default function Bms(){
                 <div id="createForm">
                     <form>
                         <img src="close.png" id="closeimg" onClick={hideCreate}></img>
-                        <div className="form-group">
-                            <label for="first_name">First name :</label>
-                            <input className="form-control" onChange={(event)=>{setFirstName(event.target.value)}} type="text" id="fname2"></input>
+                        <h1>Create individual Account</h1>
+                        <div className="row">
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="first_name">First name :</label>
+                                    <input className="form-control" onChange={(event)=>{setFirstName(event.target.value)}} type="text" id="fname2"></input>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="last_name">Last name :</label>
+                                    <input className="form-control" onChange={(event)=>{setLastName(event.target.value)}} type="text" id="lname2"></input>
+                                </div>
+                            </div>
                         </div>
-                        <div className="form-group">
-                            <label for="last_name">Last name :</label>
-                            <input className="form-control" onChange={(event)=>{setLastName(event.target.value)}} type="text" id="lname2"></input>
+
+                        <div className="row">
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="birthday">Date of birth :</label>
+                                    <input className="form-control" onChange={(event)=>{setBday(event.target.value)}} type="date" id="bday"></input>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="nic">NIC  no :</label>
+                                    <input className="form-control" onChange={(event)=>{setNic(event.target.value)}} type="text" id="nic2"></input>
+                                </div>
+                            </div>
                         </div>
-                        <div className="form-group">
-                            <label for="birthday">Date of birth :</label>
-                            <input className="form-control" onChange={(event)=>{setBday(event.target.value)}} type="date" id="bday"></input>
+
+                        <div className="row">
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="contactNo">Contact no :</label>
+                                    <input className="form-control" onChange={(event)=>{setcontactNo(event.target.value)}} type="tel" id="phone"></input>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="contactNo">email :</label>
+                                    <input className="form-control" onChange={(event)=>{setEmail(event.target.value)}} type="email" id="email2"></input>
+                                </div>
+                            </div>
                         </div>
-                        <div className="form-group">
-                            <label for="nic">NIC  no :</label>
-                            <input className="form-control" onChange={(event)=>{setNic(event.target.value)}} type="text" id="nic2"></input>
-                        </div>
-                        <div className="form-group">
-                            <label for="contactNo">Contact no :</label>
-                            <input className="form-control" onChange={(event)=>{setcontactNo(event.target.value)}} type="tel" id="phone"></input>
-                        </div>
-                        <div className="form-group">
-                            <label for="contactNo">email :</label>
-                            <input className="form-control" onChange={(event)=>{setEmail(event.target.value)}} type="email" id="email2"></input>
-                        </div>
-                        <div className="form-group">
-                            <label for="contactNo">Address :</label>
-                            <input className="form-control" onChange={(event)=>{setAddress(event.target.value)}} type="text" id="address2"></input>
-                        </div>
-                        <div className="form-group">
-                            <label for="contactNo">Password :</label>
-                            <input className="form-control" onChange={(event)=>{setPasswordI(event.target.value)}} type="password" id="address2"></input>
+
+                        <div className="row">
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="contactNo">Address :</label>
+                                    <input className="form-control" onChange={(event)=>{setAddress(event.target.value)}} type="text" id="address2"></input>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="contactNo">Password :</label>
+                                    <input className="form-control" onChange={(event)=>{setPasswordI(event.target.value)}} type="password" id="address2"></input>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="form-group">
@@ -243,37 +315,64 @@ export default function Bms(){
                 <div id="createorganizationForm">
                     <form>
                         <img src="close.png" id="closeimg" onClick={hideCreate}></img>
-                        <div className="form-group">
-                            <label for="organizationName">Organization name :</label>
-                            <input className="form-control" onChange={(event)=>{setFirstName(event.target.value)}} type="text" id="oname"></input>
+                        <h1>Create Organization Account</h1>
+                        <div className="row">
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="organizationName">Organization name :</label>
+                                    <input className="form-control" onChange={(event)=>{setFirstName(event.target.value)}} type="text" id="oname"></input>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="regNo">Registration no :</label>
+                                    <input className="form-control" onChange={(event)=>{setRegNumber(event.target.value)}}  type="text" id="regNo"></input>
+                                </div>
+                            </div>
                         </div>
-                        <div className="form-group">
-                            <label for="regNo">Registration no :</label>
-                            <input className="form-control" onChange={(event)=>{setRegNumber(event.target.value)}}  type="text" id="regNo"></input>
+
+                        <div className="row">
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="person">Contact person :</label>
+                                    <input className="form-control" onChange={(event)=>{setContactPerson(event.target.value)}}  type="text" id="person"></input>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="position">Contact person position :</label>
+                                    <input className="form-control" onChange={(event)=>{setPosition(event.target.value)}} type="text" id="position"></input>
+                                </div>
+                            </div>
                         </div>
-                        <div className="form-group">
-                            <label for="person">Contact person :</label>
-                            <input className="form-control" onChange={(event)=>{setContactPerson(event.target.value)}}  type="text" id="person"></input>
+                        <div className="row">
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="contactNo">Contact no :</label>
+                                    <input className="form-control" onChange={(event)=>{setcontactNo(event.target.value)}} type="tel" id="phoneO"></input>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="contactNo">email :</label>
+                                    <input className="form-control" onChange={(event)=>{setEmail(event.target.value)}} type="email" id="emailO"></input>
+                                </div>
+                            </div>
                         </div>
-                        <div className="form-group">
-                            <label for="position">Contact person position :</label>
-                            <input className="form-control" onChange={(event)=>{setPosition(event.target.value)}} type="text" id="position"></input>
-                        </div>
-                        <div className="form-group">
-                            <label for="contactNo">Contact no :</label>
-                            <input className="form-control" onChange={(event)=>{setcontactNo(event.target.value)}} type="tel" id="phoneO"></input>
-                        </div>
-                        <div className="form-group">
-                            <label for="contactNo">email :</label>
-                            <input className="form-control" onChange={(event)=>{setEmail(event.target.value)}} type="email" id="emailO"></input>
-                        </div>
-                        <div className="form-group">
-                            <label for="contactNo">Address :</label>
-                            <input className="form-control" onChange={(event)=>{setAddress(event.target.value)}} type="text" id="addressO"></input>
-                        </div>
-                        <div className="form-group">
-                            <label for="contactNo">Password :</label>
-                            <input className="form-control" onChange={(event)=>{setPasswordI(event.target.value)}} type="password" id="passwordO"></input>
+
+                        <div className="row">
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="contactNo">Address :</label>
+                                    <input className="form-control" onChange={(event)=>{setAddress(event.target.value)}} type="text" id="addressO"></input>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="form-group">
+                                    <label for="contactNo">Password :</label>
+                                    <input className="form-control" onChange={(event)=>{setPasswordI(event.target.value)}} type="password" id="passwordO"></input>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="form-group">
@@ -285,6 +384,7 @@ export default function Bms(){
 
                     {/* Form for Acc detail insert*/}
                 <div id="AccDetailEnter">
+                    <h1>Enter Account Details</h1>
                     <form>
                         <div className="form-group">
                             <label for="accountType">Account type</label>
@@ -310,30 +410,49 @@ export default function Bms(){
 
                     {/* form for add new employee only visible to manager*/}
                 <div id="addEmployee">
+                    <h1>Add an employee to system</h1>
                     <img src="close.png" id="closeimg" onClick={hideCreate}></img>
-                    <div className="form-group">
-                        <label for="Em_id">Employee ID :</label>
-                        <input type="text" onChange={(event)=>{setEmid(event.target.value);}} className="form-control" id="em_id"></input>
+                    <div className="row">
+                        <div className="col">
+                            <div className="form-group">
+                                <label for="Em_id">Employee ID :</label>
+                                <input type="text" onChange={(event)=>{setEmid(event.target.value);}} className="form-control" id="em_id"></input>
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div className="form-group">
+                                <label for="Em_name">Employee name :</label>
+                                <input type="text" onChange={(event)=>{setFirstName(event.target.value);}} className="form-control" id="em_name"></input>
+                            </div>
+                        </div>
                     </div>
-                    <div className="form-group">
-                        <label for="Em_name">Employee name :</label>
-                        <input type="text" onChange={(event)=>{setFirstName(event.target.value);}} className="form-control" id="em_name"></input>
+                    <div className="row">
+                        <div className="col">
+                            <div className="form-group">
+                                <label for="Em_email">email :</label>
+                                <input type="email" onChange={(event)=>{setEmail(event.target.value);}} className="form-control" id="em_email"></input>
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div className="form-group">
+                                <label for="Em_address">Address :</label>
+                                <input type="text" onChange={(event)=>{setAddress(event.target.value);}} className="form-control" id="em_address"></input>
+                            </div>
+                        </div>
                     </div>
-                    <div className="form-group">
-                        <label for="Em_email">email :</label>
-                        <input type="email" onChange={(event)=>{setEmail(event.target.value);}} className="form-control" id="em_email"></input>
-                    </div>
-                    <div className="form-group">
-                        <label for="Em_address">Address :</label>
-                        <input type="text" onChange={(event)=>{setAddress(event.target.value);}} className="form-control" id="em_address"></input>
-                    </div>
-                    <div className="form-group">
-                        <label for="Em_phone">contact No :</label>
-                        <input type="text" onChange={(event)=>{setcontactNo(event.target.value);}} className="form-control" id="em_phone"></input>
-                    </div>
-                    <div className="form-group">
-                        <label for="Em_password">Employee password :</label>
-                        <input type="password" onChange={(event)=>{setPasswordI(event.target.value);}} className="form-control" id="em_password"></input>
+                    <div className="row">
+                        <div className="col">
+                            <div className="form-group">
+                                <label for="Em_phone">contact No :</label>
+                                <input type="text" onChange={(event)=>{setcontactNo(event.target.value);}} className="form-control" id="em_phone"></input>
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div className="form-group">
+                                <label for="Em_password">Employee password :</label>
+                                <input type="password" onChange={(event)=>{setPasswordI(event.target.value);}} className="form-control" id="em_password"></input>
+                            </div>
+                        </div>
                     </div>
                     <div className="form-group">
                         <input type="button" onClick={insertEmployee} className="form-control" id="employee_Add" value="add employee"></input>
@@ -343,24 +462,25 @@ export default function Bms(){
                 {/* form for apply loan */}
                 <div id="physical_loan">
                     <img src="close.png" id="closeimg" onClick={hideCreate}></img>
+                    <h1>Apply a loan</h1>
                     <div id="acc_no" className="form-group">
                         <label for="acc_no">Account no :</label>
-                        <input type="text" id="lAcc" className="form-control"></input>
+                        <input type="text" onChange={(event)=>{setAccNo(event.target.value)}} id="lAcc" className="form-control"></input>
                     </div>
                     <div id="loanamount" className="form-group">
                         <label for="loanamount">loan amount :</label>
-                        <input type="text" id="loanamount" className="form-control"></input>
+                        <input type="text" onChange={(event)=>{setAmount(event.target.value)}} id="loanamount" className="form-control"></input>
                     </div>
                     <div id="lduration" className="form-group">
                         <label for="lduration">duration months :</label>
-                        <input type="number" id="lduration" className="form-control"></input>
+                        <input type="number" onChange={(event)=>{setDuration(event.target.value)}} id="lduration" className="form-control"></input>
                     </div>
                     <div id="date" className="form-group">
                         <label for="date">Date :</label>
-                        <input type="date" id="lDate" className="form-control"></input>
+                        <input type="date" onChange={(event)=>{setDate(event.target.value)}} id="lDate" className="form-control"></input>
                     </div>
 
-                    <input type="button" id="loanBtn" value="Apply" className="form-control"></input>
+                    <input type="button" id="loanBtn" value="Apply" onClick={physical_loan} className="form-control"></input>
                 </div>
 
                 {/* success messages*/}
@@ -374,6 +494,12 @@ export default function Bms(){
                     <img src="check.png" id="em_success"></img>
                     <p>employee added successfully.</p>
                     <input id="addOk" className="btn btn-info" type="submit" value="ok" onClick={ok2}></input>
+                </div>
+
+                <div id="success_loan">
+                    <img src="check.png" id="em_success"></img>
+                    <p>loan apply successfully completed.</p>
+                    <input id="loanOk" className="btn btn-info" type="submit" value="ok" onClick={ok3}></input>
                 </div>
 
             </div>

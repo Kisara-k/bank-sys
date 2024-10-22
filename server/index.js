@@ -74,3 +74,32 @@ app.post('/apply-loan', (req, res) => {
     );
 });
 
+
+app.post("/phy_loan",(req,res)=>{
+    const acc_no=req.body.acc_no;
+    const amount=req.body.amount;
+    const duration=req.body.duration;
+    const date=req.body.date;
+
+    const physical_loan=`CALL physical_loan(?,?,?,?,@loan_state)`;
+
+    db.execute(physical_loan,[
+        amount,acc_no,duration,date
+    ],(err,result)=>{
+        if(err){
+            console.log("procedure error.",err);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+        console.log(result);
+        db.query("SELECT @loan_state AS state",(err,result)=>{
+            if(err){
+                console.log("error of fetching status",err);
+                return res.status(500).json({ message: 'Internal server error' });
+            }
+            const status=result[0].status;
+            res.send({success:1});
+            console.log("success");
+        })
+    })
+})
+

@@ -1,225 +1,299 @@
-/* General styles */
-body { 
+body{
     background-color: rgb(238, 246, 249);
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
 }
-
-/* Navigation bar */
-#nav2 {
-    background: linear-gradient(90deg, rgb(8, 149, 214), rgb(20, 170, 230));
+#nav2{
+    background: white;
     width: 100%;
-    height: 4rem;
-    display: flex;
-    align-items: center;
-    padding: 0 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    border-bottom: 3px solid rgba(8, 149, 214, 0.8);
-}
+    height: 2.8rem;
+    padding-top: 0.5rem;
 
-#nav2 .link2 {
-    text-decoration: none;
+}
+#fdBtn{
+    float: right;
+    margin-right: 2rem;
+    height: 2rem;
+    background-color: black;
     color: white;
     font-weight: 600;
-    margin-left: 2rem;
-    font-size: 1.1rem;
-    transition: color 0.3s;
+    border: 1px solid black;
 }
-
-#nav2 .link2:hover {
-    color: rgb(255, 255, 255, 0.85);
+#userImg{
+    width: 2rem;
+    float: right;
+    margin-right: 2rem;
 }
-
-/* User and logout icons */
-#userImg,
-#logoutImg {
-    width: 2.5rem;
-    margin-left: auto;
-}
-
-#logoutImg {
+#logoutImg{
+    width: 2rem;
+    float: right;
+    margin-right: 2rem;
     cursor: pointer;
 }
-
-.logout {
-    color: white;
-    margin-left: 1rem;
+.logout{
+    color: gray;
+    float: right;
+    margin-right: 3rem;
     text-decoration: none;
     font-weight: 600;
-    transition: color 0.3s;
 }
-
-.logout:hover {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-/* Dropdown styles */
-select {
+#nav2 .link2{
+    text-decoration: none;
     color: gray;
     font-weight: 600;
     margin-left: 2rem;
-    border: 1px solid rgb(200, 200, 200);
-    border-radius: 5px;
-    padding: 0.5rem;
+}
+#nav2 .link2:hover{
+    color:rgb(50, 50, 210) ;
+}
+select{
+    color: grey;
+    font-weight: 600;
+    margin-left: 2rem;
+    border: 1px solid white;
 }
 
-/* Detail panels */
-#detail,
-#AccDetail {
+#detail{
+    border-left: 6px solid rgb(50, 50, 210);
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    width: 15rem;
+    margin-left: 2rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    align-items: center;
     background-color: white;
-    border-left: 6px solid rgb(8, 149, 214);
-    width: 22rem;
-    margin: 1.5rem 2rem;
-    padding: 1.5rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+}
+#AccDetail{
+    border-left: 6px solid rgb(50, 50, 210);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    width: 15rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    align-items: center;
+    background-color: white;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
 }
 
-#detail:hover,
-#AccDetail:hover {
-    transform: translateY(-5px);
+#name{
+    font-weight: 600;
+    font-size: 1.5rem;
+    
 }
-
-/* Account details styles */
-#name {
-    font-weight: 700;
-    font-size: 1.8rem;
-    color: rgb(8, 149, 214);
-}
-
-#accNo {
+#accNo{
     font-weight: 400;
-    font-size: 1rem;
-    color: gray;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
 }
-
-#acc,
-#balance {
-    font-size: 1rem;
+#acc{
+    font-size: 0.6rem;
+    color: gray;
+    padding-left: 1rem;
+    font-weight: 600;
+    
+}
+#balance{
+    font-size: 0.9rem;
     color: gray;
     font-weight: 600;
 }
-
-/* Currency styles */
-#Rs {
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: rgb(8, 149, 214);
+#Rs{
+    font-weight: 600;
+    font-size: 1.2rem;
 }
 
-/* Button styles */
-#withdraw,
-#Deposite,
-#transfer {
-    padding: 1.2rem;
-    margin: 1.5rem 2rem;
-    width: 22rem;
-    background-color: rgb(8, 149, 214);
-    color: white;
+#withdraw,#Deposite{
+    padding-left: 2rem;
+    padding-top: 1rem;
+    margin-top: 3rem;
+    padding-bottom: 1rem;
+    width: 20rem;
+    background-color: white;
     border-radius: 10px;
-    font-family: Verdana, sans-serif;
-    transition: background-color 0.3s, box-shadow 0.2s;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-left: 2rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: gray;
 }
-
-#withdraw:hover,
-#Deposite:hover,
-#transfer:hover {
-    background-color: black;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+#transfer{
+    background-color: white;
+    border-radius: 10px;
+    margin-top: 3rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: gray;
+    width: 20rem;
+    padding-left: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    position: relative;
+    right: 8rem;
+    height: 25rem;
 }
-
-/* Button styles for withdrawal and transfer */
-#withBtn,
-#transferBtn {
-    background-color: rgb(8, 149, 214);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 0.9rem;
-    padding: 0.6rem 1rem;
+#T1{
+    margin-left:3rem ;
+    font-weight: 600;
+}
+#withBtn{
     margin-left: 9rem;
-    transition: background-color 0.3s, transform 0.2s;
+    background-color: rgb(50, 50, 210);
+    color: white;
+    border: 1px solid rgb(50, 50, 210);
+    border-radius: 5px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 0.7rem;
+    padding: 0.3rem;
+    font-weight: 600;
 }
-
-#withBtn:hover,
-#transferBtn:hover {
+#withBtn:hover{
     background-color: black;
-    transform: scale(1.05);
+    transform: scale(1.1,1.1);
+    transition: transform 0.2s ease;
+}
+#fdBtn:hover{
+    background-color: rgb(50, 50, 210);
+}
+#msgW,#msgD,#msgT,#msgt{
+    color: red;
+    border: 1px solid rgb(254, 224, 224);
+    background-color: rgb(254, 224, 224);
+    margin-bottom: 0.5rem;
+    width: 15rem;
+    padding: 0.2rem;
+    font-size: 0.8rem;
+    display: none;
+}
+#msgT,#msgt{
+    margin-top: 0.5rem;
+}
+#transferBtn{
+    background-color: rgb(50, 50, 210);
+    border: 1px solid rgb(50, 50, 210);
+    color: white;
+    border-radius: 5px;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 0.7rem;
+    padding: 0.3rem;
+    font-weight: 600;
+    margin-left: 9rem;
+}
+#transferBtn:hover{
+    background-color: black;
+    transform: scale(1.1,1.1);
+    transition: transform 0.2s ease;
 }
 
-/* Transaction history styles */
+#history{
+    margin-top: 2rem;
+    position: relative;
+    right: 3rem;
+}
 .Transaction_detail {
-    margin: 0 2rem;
+    width: 100%; /* Full width for better responsiveness */
+    margin: 20px 0; /* Margin for spacing around the table */
+    border-radius: 10px; /* Rounded corners for the table */
+    overflow: hidden; /* Hide overflow for rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
 }
 
 .Transaction_detail table {
-    border-collapse: separate;
-    border-spacing: 0 1rem;
-    width: 100%;
+    width: 100%; /* Table takes full width of the parent */
+    border-collapse: separate; /* Keep separate borders */
+    border-spacing: 0 1rem; /* Space between rows */
 }
 
 .Transaction_detail thead {
-    color: white;
-    background: linear-gradient(90deg, rgb(8, 149, 214), rgb(26, 208, 232));
-    padding: 0.8rem;
-    border-radius: 10px;
+    color: white; /* Text color for the header */
+    background-color: rgb(50, 50, 210); /* Header background color */
+    padding: 0.6rem; /* Padding for the header */
 }
 
 .Transaction_detail th {
-    padding-left: 1rem;
+    height: 3rem; /* Fixed height for header cells */
+    padding-left: 1rem; /* Padding on left for header cells */
+    text-align: left; /* Align header text to the left */
 }
 
 .Transaction_detail th, 
 .Transaction_detail td {
-    padding: 0.8rem 1rem;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+    padding: 12px 15px; /* Increased padding for better spacing */
+    text-align: left; /* Align text to the left */
+    border-bottom: 1px solid #ddd; /* Bottom border for cells */
 }
 
-#history tr {
-    font-size: 1rem;
-    background-color: white;
-    border-radius: 10px;
+.Transaction_detail td {
+    background-color: white; /* Cell background color */
+    font-family: 'Verdana', 'Geneva', 'Tahoma', sans-serif; /* Font family for table cells */
+    font-size: 0.9rem; /* Slightly larger font size */
 }
 
-/* Success message styles */
-#withSuccess, #depoSuccess, #transferSuccess {
+.Transaction_detail tr {
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.Transaction_detail tr:hover {
+    background-color: #f0f8ff; /* Light blue hover effect */
+}
+
+.Transaction_detail tbody tr {
+    height: 2rem; /* Fixed height for body rows */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .Transaction_detail th, .Transaction_detail td {
+        padding: 10px; /* Adjust padding for smaller screens */
+        font-size: 0.8rem; /* Smaller font size for smaller screens */
+    }
+}
+
+
+#withSuccess,#depoSuccess,#transferSuccess{
     position: fixed;
     left: 35vw;
-    top: 1vh;
+    top:1vh;
     z-index: 2;
-    padding: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
     background-color: black;
     color: white;
     font-weight: 600;
-    font-size: small;
     display: none;
+    font-size: small;
 }
-
-#ok {
+#sucImg{
+    width: 3rem;
+    margin-left: 8rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+#ok{
     margin-left: 7.5rem;
     width: 4rem;
-    background-color: aqua;
+    background-color:aqua;
     color: black;
     margin-bottom: 2rem;
     font-weight: 600;
-    border-radius: 5px;
 }
 
-/* Media queries for responsiveness */
-@media screen and (max-width: 600px) {
-    #userImg, #logoutImg {
+@media screen and (max-width:600px){
+    #userImg,#logoutImg{
         width: 1.5rem;
     }
-
-    #transfer {
+    #logoutImg{
+        margin-top: 0.2rem;
+    }
+    .logout{
+        margin-right: 2rem;
+    }
+    #transfer{
         left: 3rem;
     }
-
-    #history {
+    #history{
         left: 2rem;
+    }
+    #withSuccess,#depoSuccess,#transferSuccess{
+        left: 12vw;
     }
 }

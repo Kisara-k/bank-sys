@@ -1,37 +1,60 @@
-#report_topic{
-    border-top:4px solid black ;
-    border-bottom:4px solid black ;
-    width: 45rem;
-    padding-left: 1rem;
-    margin-top: 1rem;
+#report_topic {
+  border-top: 4px solid black;
+  border-bottom: 4px solid black;
+  width: 45rem;
+  padding-left: 1rem;
+  margin-top: 1rem;
+  font-family: 'Arial', sans-serif; /* Changed font for better readability */
+  text-align: center; /* Center the title */
 }
 
 #trans_table {
-    margin-top: 20px;
-    border-collapse: collapse;
-    margin-left: 10rem;
+  margin-top: 20px;
+  border-collapse: collapse;
+  margin-left: auto; /* Center the table */
+  margin-right: auto; /* Center the table */
+  width: 90%; /* Set a width for better alignment */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
+  border-radius: 8px; /* Round the corners */
+  overflow: hidden; /* Hide overflow to maintain rounded corners */
+}
+
+#trans_table th, 
+#trans_table td {
+  border: 1px solid #dee2e6;
+  text-align: center;
+  vertical-align: middle;
+  padding: 15px; /* Increased padding for better spacing */
+}
+
+#trans_table thead th {
+  background-color: #343a40;
+  color: white;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif; /* Changed font for better readability */
+}
+
+#trans_table tr:nth-child(even) {
+  background-color: #e8e9e9; /* Light grey for even rows */
+}
+
+#trans_table tr:hover {
+  background-color: #aeeeee; /* Lighter color for hover effect */
+  transition: background-color 0.3s; /* Smooth transition effect */
+}
+
+#trans_table td {
+  font-size: 16px;
+  font-family: 'Arial', sans-serif; /* Changed font for better readability */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  #trans_table {
+      width: 100%; /* Full width on smaller screens */
   }
   
-  #trans_table th, #trans_table td {
-    border: 1px solid #dee2e6;
-    text-align: center;
-    vertical-align: middle;
-    padding: 10px;
+  #report_topic {
+      width: auto; /* Allow title to adjust based on content */
   }
-  
-  #trans_table thead th {
-    background-color: #343a40;
-    color: white;
-    font-weight: bold;
-    font-family: monospace;
-  }
-  
-  #trans_table tr:hover {
-    background-color: aqua;
-  }
-  
-  #trans_table td {
-    font-size: 16px;
-    font-family: monospace;
-  }
-  
+}

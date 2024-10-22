@@ -6,6 +6,7 @@
 }
 
 #x1,#x2{
+    margin-left: 3rem;
     color: white;
     font-weight: 600;
     font-size: 5.5rem;
@@ -14,10 +15,13 @@
     top:4rem;
 }
 #icons{
+    display: flex;
+    justify-content: space-around; /* Evenly spaces icons */
     margin-top: 3rem;
     margin-left: 1rem;
 }
 #personal,#deposite,#loan{
+    text-align: center;
     margin-left: 1rem;
     width: 25rem;
 }
@@ -55,7 +59,7 @@
 } 
 #loanform {
     width: 50rem;
-    margin: 6rem auto; /* Center horizontally */
+    margin: 2rem auto; /* Center horizontally */
     border: 1px solid black;
     padding: 3rem;
     color: rgb(2, 2, 2);
@@ -139,19 +143,68 @@
     box-shadow: 0 4px 12px rgba(0, 95, 158, 0.3);
 }
 
-#oprionBtns{
-    margin-left: 25rem;
+#oprionBtns {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center; /* Vertically align the buttons */
     margin-top: 2rem;
+    margin-left: 5%;
+    margin-right: 5%;
+    gap: 1px; /* Add space between the buttons */
+    width: 100%; /* Ensure the buttons span across the available width */
+}
 
+.btn-btn-primary {
+    width: 14rem; /* Button width */
+    background-color: #0077b6; /* Button color */
+    border: none;
+    font-weight: 800; /* Bold text */
+    margin-right: 10px;
+    padding: 0.9rem 0.9rem; /* Padding for better spacing */
+    text-align: center;
+    border-radius: 8px; /* Round corners */
+    color: white; /* Text color */
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover */
+    margin: 0 auto; /* Center the buttons horizontally */
+    display: block; /* Ensure it's a block element for proper alignment */
 }
-#statustBtn,#installmentBtn{
-    width: 10rem;
-    background-color: #0077b6;
-    font-weight: 500;
+
+#statustBtn {
+    background-color: #0077b6; /* Button color */
+    border: none;
+    font-weight: 800; /* Bold text */
+    padding: 0.9rem 0.9rem; /* Padding for better spacing */
+    text-align: center;
+    border-radius: 8px; /* Round corners */
+    color: white; /* Text color */
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover */
+    margin: 0; /* Remove auto margin to align left */
+    display: block; /* Ensure it's a block element for proper alignment */
 }
-#statustBtn:hover,#installmentBtn:hover{
-    background-color: #005f9e;
+
+
+
+#statustBtn:hover, #installmentBtn:hover {
+    background-color: #005f9e; /* Darken the background color on hover */
+    box-shadow: 0 4px 8px rgba(0, 95, 158, 0.3); /* Add a shadow on hover */
 }
+
+/* Responsive: Stack buttons vertically for smaller screens */
+@media screen and (max-width: 600px) {
+    #oprionBtns {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 1rem; /* Space between buttons when stacked */
+    }
+
+    #statustBtn, #installmentBtn {
+        width: 100%; /* Full width buttons on mobile */
+    }
+}
+
+
+
 
 /* Responsive */
 @media screen and (max-width: 600px) {
@@ -164,6 +217,10 @@
     #accNo, #lamount, #ltype, #duration, #password {
         width: 90%;
         font-size: 0.9rem;
+    }
+    #oprionBtns {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 1rem;
     }
 
     #reqBtn {

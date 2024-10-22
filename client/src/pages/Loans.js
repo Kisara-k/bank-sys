@@ -112,10 +112,10 @@ export default function Loans() {
 
             <div className="row" id="oprionBtns">
                 <div className="col-sm-4" id="installments1">
-                    <input type="button" id="installmentBtn" className="btn btn-primary" value="loan installments" />
+                    <input type="button" id="installmentBtn" className="btn-btn-primary" value="loan installments" />
                 </div>
                 <div className="col-sm-4" id="installments2">
-                    <input type="button" id="statustBtn" className="btn btn-primary" value="loan status" />
+                    <input type="button" id="statustBtn" className="btn-btn-primary" value="loan status" />
                 </div>
             </div>
 

@@ -313,7 +313,7 @@ BEGIN
     START TRANSACTION;
 
     -- Retrieve FD details for the account
-    SELECT fd.amount, fd.saving_acc_id
+    SELECT fd.amount, fd.account_id
     INTO fd_amount, savings_account_id
     FROM fixed_deposit fd
     WHERE fd.fd_id = accountNo;

@@ -42,56 +42,100 @@
     border-left: 6px solid rgb(50, 50, 210);
 }
 #password {
-    margin-left: 2.3rem; /* Same as #accNo and #lamount */
-    width: 35rem; /* Same width as other input fields */
+    margin-left: 0; /* Align with other input fields */
+    width: 90%; /* Consistent width */
 }
-#loanform{
-    width: 50rem;
-    margin-left: 18vw;
-    margin-top: 6rem;
-    border: 1px solid black;
-    padding: 3rem;
-    color: white;
-    background-color: black;
-}
+
+
+
 #loanhead{
     margin-bottom: 2rem;
     position: relative;
     right: 8rem;
+} 
+#loanform {
+    width: 50rem;
+    margin: 6rem auto; /* Center horizontally */
+    border: 1px solid black;
+    padding: 3rem;
+    color: rgb(2, 2, 2);
+    background-color: #f0f0f0;
 }
-#loanform label{
-    color: gray;
-    font-weight: 600;
+
+#loanform label {
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+    font-size: 1.1rem;
 }
-#accNo,#lamount{
-    margin-left: 2.3rem;
+
+/* Form input fields alignment */
+#accNo, #lamount, #ltype, #duration, #password {
+    width: 90%;
+    padding: 0.8rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-#accNo,#lamount,#ltype,#duration{
-    width: 35rem;
+
+#accNo:focus, #lamount:focus, #ltype:focus, #duration:focus, #password:focus {
+    border-color: #0077b6;
+    box-shadow: 0 0 8px rgba(0, 119, 182, 0.4);
+    outline: none;
 }
-#reqBtn{
-    width: 10rem;
-    margin-top: 3rem;
-    background-color: rgb(50, 50, 210);
+
+#reqBtn {
+    width: 90%;
+    padding: 0.9rem;
+    background-color: #0077b6;
+    border: none;
+    border-radius: 5px;
     color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
     font-weight: 600;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
-@media screen and (max-width:600px){
-    #personal,#deposite,#loan{
-        margin-top: 2.5rem;
-        margin-left: 4rem;
+
+#reqBtn:hover {
+    background-color: #005f9e;
+    box-shadow: 0 4px 12px rgba(0, 95, 158, 0.3);
+}
+#oprionBtns{
+    margin-left: 25rem;
+    margin-top: 2rem;
+
+}
+#statustBtn,#installmentBtn{
+    width: 10rem;
+    background-color: #0077b6;
+    font-weight: 500;
+}
+#statustBtn:hover,#installmentBtn:hover{
+    background-color: #005f9e;
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+    #loanform {
+        width: 90%;
+        margin: 2rem auto;
+        padding: 1.5rem;
     }
-    #loanform{
-        width: 100vw;
-        margin-left: 0rem;
+
+    #accNo, #lamount, #ltype, #duration, #password {
+        width: 90%;
+        font-size: 0.9rem;
     }
-    #accNo,#lamount,#ltype,#duration{
-        width: 70vw;
-    }
-    #reqBtn{
-        width: 7rem;
-    }
-    #icons{
-        display: flex;
+
+    #reqBtn {
+        font-size: 1rem;
     }
 }
+
+
+    

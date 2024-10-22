@@ -23,7 +23,7 @@ export default function Profile(){
 
     return(
         <>
-            <h2>Bank Account Details</h2>
+            <h2 style={{ fontFamily: "'Times New Roman', Times, serif", textAlign: "center" }}>Bank Account Details</h2>
 
             <div class="row" id="set">
                 <div id="Left" class="col-sm-4">
@@ -48,7 +48,7 @@ export default function Profile(){
                 </div>
             </div>
 
-            <div id="btns">
+            <div id="btns" style={{ textAlign: "center" }}>
                 <span><input id="save" type="submit" className="btn btn-info" value="Save"></input>    <input id="back" type="submit" onClick={back} className="btn btn-info" value="Back"></input>  </span>
             </div>
             

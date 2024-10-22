@@ -9,9 +9,12 @@ body {
 }
 
 h2 {
+   
     text-align: center;
-    margin-top: 30px;
-    color: #333;
+    margin-top: 60px;
+    color: #2b1a87;
+    font-weight: 800;
+    font-size: 2.5rem;
 }
 
 /* Container for the profile details */
@@ -45,12 +48,14 @@ h2 {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    
     background-color: #f9f9f9;
 }
 
 #Left input[type="text"]:focus {
     border-color: #007bff;
     background-color: white;
+    
 }
 
 #Right span span {
@@ -65,18 +70,23 @@ h2 {
 #btns {
     display: flex;
     justify-content: center;
-    margin-bottom: 50px;
+    gap: 20px; /* Added gap between buttons */
+    margin-top: 0px;
+    margin-bottom: 100px;
 }
 
 #btns input[type="submit"] {
-    padding: 10px 30px;
-    margin: 0 10px;
-    font-size: 16px;
+    padding: 10px 10px;
+    margin: 0 250px;
+    font-weight: 800; /* Bold text */
     color: white;
     background-color: #007bff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    text-align: center;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #btns input[type="submit"]:hover {

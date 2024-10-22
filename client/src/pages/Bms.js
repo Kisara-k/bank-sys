@@ -160,6 +160,10 @@ export default function Bms(){
             }
         })
 
+    };
+
+    const loanManage=()=>{
+        window.location.href="/loanManage";
     }
 
     const ok=()=>{
@@ -209,6 +213,9 @@ export default function Bms(){
                         </div>
                         <div className="row">
                             <input type="button" id="employeeAdd" onClick={addEmployee} value="Add new employee"></input>
+                        </div>
+                        <div className="row">
+                            <input type="button" id="loanManage" onClick={loanManage} value="Manage loan system "></input>
                         </div>
                     </div>
 

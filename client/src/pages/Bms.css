@@ -81,7 +81,7 @@
     display: none;
 }
 
-#createBtn,#loan2,#createOrganizeBtn,#employeeAdd{
+#createBtn,#loan2,#createOrganizeBtn,#employeeAdd,#loanManage{
     height: 4rem;
     margin-top: 0.5rem;
     width: 30rem;
@@ -93,7 +93,7 @@
     border-radius: 20px;
 
 }
-#createBtn:hover,#loan2:hover,#createOrganizeBtn:hover,#employeeAdd:hover{
+#createBtn:hover,#loan2:hover,#createOrganizeBtn:hover,#employeeAdd:hover,#loanManage:hover{
     background-color: aqua;
     color: black;
 }

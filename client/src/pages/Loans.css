@@ -81,6 +81,10 @@
     font-size: 1rem;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+#ltype{
+    position: relative;
+    right: 2rem;
+}
 
 #accNo:focus, #lamount:focus, #ltype:focus, #duration:focus, #password:focus {
     border-color: #0077b6;
@@ -88,8 +92,11 @@
     outline: none;
 }
 
+/* Center the button */
 #reqBtn {
-    width: 90%;
+    width: 50%; /* Set a consistent width */
+    margin: 0 auto; /* Center horizontally */
+    display: block; /* Ensure it's a block element for proper alignment */
     padding: 0.9rem;
     background-color: #0077b6;
     border: none;
@@ -101,10 +108,37 @@
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Error message styling */
+.alert-danger, .alert-success {
+    width: 50%; /* Match the width of the submit button */
+    margin: 1rem auto; /* Center the alert message */
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1rem;
+}
+#loanhead {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+/* Hover effect for the submit button */
 #reqBtn:hover {
     background-color: #005f9e;
     box-shadow: 0 4px 12px rgba(0, 95, 158, 0.3);
 }
+
 #oprionBtns{
     margin-left: 25rem;
     margin-top: 2rem;

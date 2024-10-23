@@ -357,7 +357,7 @@ BEGIN
             );
 
             -- Update the balance of the linked savings account
-            UPDATE saving_account
+            UPDATE account
             SET balance = balance + loan_amount
             WHERE account_id = savings_account_id;
 
@@ -406,6 +406,59 @@ BEGIN
 END //
 DELIMITER ;
 
+
+DELIMITER //
+
+CREATE PROCEDURE approve_loan(IN acc_id INT, IN p_loan_id INT, IN manager_id INT,OUT status INT)
+BEGIN
+  DECLARE affected_rows INT DEFAULT 0;
+  DECLARE l_amount DECIMAL(15,2);
+  DECLARE out_state INT DEFAULT 0;
+
+  -- Start transaction
+  START TRANSACTION;
+
+  -- Retrieve loan amount
+  SELECT amount INTO l_amount FROM loans WHERE loan_id = p_loan_id;
+
+  -- Approve the loan by updating its status
+  UPDATE loans SET status = 'approved' WHERE loan_id = p_loan_id;
+  SELECT ROW_COUNT() INTO affected_rows;
+
+  IF affected_rows > 0 THEN
+    -- Insert into physical_loan table
+    INSERT INTO physical_loan (loan_id, account_id, approved_by)
+    VALUES (p_loan_id, acc_id, manager_id);
+    
+    SELECT ROW_COUNT() INTO affected_rows;
+
+    IF affected_rows > 0 THEN
+      -- Call deposit procedure to deposit the loan amount into the account
+      CALL deposit(l_amount, acc_id, out_state);
+      
+      IF out_state > 0 THEN
+        -- Check if deposit was successful
+        COMMIT;
+        SET status=1;
+        SELECT 'Loan approved successfully' AS status_message;
+      ELSE
+        -- Rollback if deposit fails
+        ROLLBACK;
+        SELECT 'Loan approval failed during deposit' AS status_message;
+      END IF;
+    ELSE
+      -- Rollback if insertion into physical_loan fails
+      ROLLBACK;
+      SELECT 'Loan approval failed during physical_loan insert' AS status_message;
+    END IF;
+  ELSE
+    -- Rollback if loan approval update fails
+    ROLLBACK;
+    SELECT 'Loan approval failed during status update' AS status_message;
+  END IF;
+END //
+
+DELIMITER ;
 
   
 

@@ -101,5 +101,94 @@ app.post("/phy_loan",(req,res)=>{
             console.log("success");
         })
     })
+});
+
+app.post("/loan_list",(req,res)=>{
+    const type=req.body.type;
+    console.log(type);
+    if(type==="1"){
+        db.execute(`SELECT * FROM loans WHERE type="online"`,
+            (err,result)=>{
+                if(err){
+                    console.log("error getting loan details");
+                    return;
+                }
+                console.log(result);
+                res.send(result);
+                
+            }
+        );
+    }
+    else if(type==="2"){
+        db.execute("SELECT * FROM loans WHERE type='physical'",
+            (err,result)=>{
+                if(err){
+                    console.log("error getting loan details");
+                    return;
+                }
+                res.send(result);
+                
+            }
+        );
+    }
+    else if(type==="3"){
+        db.execute("SELECT * FROM loans WHERE type='physical' AND status='pending'",
+            (err,result)=>{
+                if(err){
+                    console.log("error getting loan details");
+                    return;
+                }
+                res.send(result);
+                
+            }
+        );
+    }
+    
+});
+
+app.post("/approve",(req,res)=>{
+    const loan_id=req.body.loan_id;
+    console.log(loan_id);
+    db.execute(`SELECT * FROM loans  WHERE loan_id=? AND loans.type="physical" AND loans.status="pending"`,
+        [loan_id],
+        (err,result)=>{
+            if(err){
+                console.log("error executing ",err);
+                return;
+            }
+            res.send(result);
+            console.log(result);
+        }
+    )
+});
+
+app.post("/manager_approve",(req,res)=>{
+    const loan_id=req.body.loan_id;
+    const acc_id=req.body.acc_id;
+    const manager_id=req.body.manager_id;
+    console.log(loan_id,acc_id,manager_id);
+    const manager_apply=`CALL approve_loan(?,?,?,@status)`
+    db.execute(manager_apply,
+        [acc_id,loan_id,manager_id],
+        (err,result)=>{
+            if(err){
+                console.log("error procedure call",err);
+                return;
+            }
+            console.log(result);
+            db.query("SELECT @status AS status",(err,result)=>{
+                if(err){
+                    console.log("error of fetching status",err);
+                    return;
+                }
+                const status=result[0].status;
+
+                if(status===1){
+                    res.send({success:1});
+                }
+
+            })
+        }
+    )
 })
 

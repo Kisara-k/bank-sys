@@ -22,8 +22,8 @@ export default function Profile(){
     }
 
     return(
-        <>
-            <h2 style={{ fontFamily: "'Times New Roman', Times, serif", textAlign: "center" }}>Bank Account Details</h2>
+        <div id="profile-page">
+            <h2 style={{ fontFamily: "'Times New Roman', Times, serif", textAlign: "center",color: "white" }}>Bank Account Details</h2>
 
             <div class="row" id="set">
                 <div id="Left" class="col-sm-4">
@@ -53,6 +53,6 @@ export default function Profile(){
             </div>
             
         
-        </>
+            </div>
     )
 }

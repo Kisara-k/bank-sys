@@ -4,8 +4,12 @@
     background-size: cover;
     overflow-y: hidden;
 }
+h1{
+    font-family: 'Arial', sans-serif;
+    font-weight: 600;
+}
 #BMSTopic{
-    font-family: monospace;
+    font-family: 'Arial', sans-serif;
     font-weight: 600;
     border-top: 4px solid white;
     border-bottom: 4px solid white;
@@ -37,7 +41,7 @@
     padding-top: 2rem;
     position: fixed;
     top: 0rem;
-    font-family: monospace;
+    font-family: 'Arial', sans-serif;
     background-color: rgb(203, 221, 239);
     background-size: cover;
     color: black;
@@ -47,6 +51,7 @@
 }
 #AccDetailEnter input,#AccDetailEnter select{
     width: 40rem;
+    height: 3rem;
 }
 #AccDetailEnter form{
     margin-left: 15rem;
@@ -65,6 +70,8 @@
 }
 #createAccount:hover{
     background-color: rgb(20, 20, 109);
+    transform: scale(1.1,1.1);
+    transition: transform 0.2s ease;;
 }
 #closeimg{
     width: 2rem;
@@ -86,12 +93,15 @@
     margin-top: 0.5rem;
     width: 30rem;
     margin-left: 3rem;
-    font-family: monospace;
+    font-family: 'Arial', sans-serif;
     font-weight: 600;
     color: white;
     background-color: rgb(18, 10, 129);
     border-radius: 20px;
 
+}
+#loanManage{
+    display: none;
 }
 #createBtn:hover,#loan2:hover,#createOrganizeBtn:hover,#employeeAdd:hover,#loanManage:hover{
     background-color: aqua;
@@ -112,7 +122,7 @@
     padding-top: 2rem;
     position: fixed;
     top: 0rem;
-    font-family: monospace;
+    font-family: 'Arial', sans-serif;
     display: none;
     background-color: rgb(203, 221, 239);
     background-size: cover;
@@ -121,6 +131,11 @@
     /* background-color: rgb(164, 190, 215); */
 
 }
+#createForm input,#createorganizationForm input,#addEmployee input,#physical_loan input{
+    height: 3rem;
+    border: 1.5px solid gray;
+}
+
 #addEmployee h1{
     margin-left: 20rem;
     margin-bottom: 2rem;
@@ -157,13 +172,15 @@
 }
 #next1:hover,#createOrganizationacc:hover,#employee_Add:hover,#loanBtn:hover,#next2:hover{
     background-color: rgb(0, 191, 191);
+    transform: scale(1.1,1.1);
+    transition: transform 0.2s ease;
 }
 #success_create,#success_employee,#success_loan{
     width: 20rem;
     position: fixed;
     left: 35%;
     top: 0%;
-    font-family: monospace;
+    font-family: 'Arial', sans-serif;
     font-weight: 600;
     border: 1px solid black;
     padding: 1rem;
@@ -186,7 +203,7 @@
 #branch_trans{
     width: 30rem;
     color: white;
-    font-family: monospace;
+    font-family: 'Arial', sans-serif;
     font-weight: 600;
     background: transparent;
     backdrop-filter: blur(20px);
@@ -204,6 +221,10 @@
     margin-top: 1rem;
     color: white;
     font-weight: 600;
+}
+#findBtn:hover{
+    transform: scale(1.1,1.1);
+    transition: transform 0.2 ease;
 }
 #report{
     position: relative;

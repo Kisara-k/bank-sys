@@ -42,6 +42,7 @@ export default function Bms(){
             if(employeeType==="manager"){
                 document.getElementById("employeeAdd").style.display="block";
                 document.getElementById("managerOP").style.display="block";
+                document.getElementById("loanManage").style.display="block";
             }
         }
     });
@@ -250,7 +251,7 @@ export default function Bms(){
                 <div id="createForm">
                     <form>
                         <img src="close.png" id="closeimg" onClick={hideCreate}></img>
-                        <h1>Create individual Account</h1>
+                        <h1>Create Individual Account</h1>
                         <div className="row">
                             <div className="col">
                                 <div className="form-group">

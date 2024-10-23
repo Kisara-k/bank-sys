@@ -50,7 +50,6 @@ FOR EACH ROW
 BEGIN
     IF EXISTS (SELECT 1 FROM saving_account WHERE saving_account.account_id = NEW.account_id) THEN
         UPDATE saving_account SET balance = NEW.balance WHERE account_id = NEW.account_id;
-        --(make change in DB)UPDATE saving_account SET monthly_withdrawals = monthly_withdrawals-1 WHERE account_id = NEW.account_id;
     ELSEIF EXISTS (SELECT 1 FROM checking_account WHERE checking_account.account_id = NEW.account_id) THEN
         UPDATE checking_account SET balance = NEW.balance WHERE account_id = NEW.account_id;
     END IF;

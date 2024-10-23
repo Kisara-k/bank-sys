@@ -1,33 +1,63 @@
 import React, { useState, useEffect } from 'react';
-import './loanstatus.css'; // Your styling file for the layout
+import axios from 'axios';
+import './loanstatus.css'; // Import the CSS file
 
-const LoanStatus = () => {
-  const [loans, setLoans] = useState([]);
+const LoanTable = () => {
+    const [loans, setLoans] = useState([]);
 
-  // Fetch loan details from an API (mocked here)
-  useEffect(() => {
-    // Replace this with your actual API call
-    fetch('/api/loans') 
-      .then(response => response.json())
-      .then(data => setLoans(data))
-      .catch(error => console.error('Error fetching loan data:', error));
-  }, []);
+    // Fetch loan data from the backend
+    useEffect(() => {
+        const fetchLoans = async () => {
+            try {
+                const response = await axios.get('/api/loans'); // Assuming backend API is running locally
+                setLoans(response.data);
+            } catch (error) {
+                console.error('Error fetching loan data', error);
+            }
+        };
 
-  return (
-    <div className="loan-status-container">
-      <h1>Loan Status</h1>
-      {loans.map(loan => (
-        <div key={loan.loan_id} className="loan-status-card">
-          <h3>Loan Number: {loan.loan_id}</h3>
-          <p><strong>Account Number:</strong> {loan.account_id}</p>
-          <p><strong>Amount:</strong> {loan.amount}</p>
-          <p><strong>Branch:</strong> {loan.branch_id}</p>
-          <p><strong>Apply Date:</strong> {loan.start_date}</p>
-          <p><strong>Status:</strong> {loan.status}</p>
+        fetchLoans();
+    }, []);
+
+    return (
+        <div className="table-container">
+            <h2>Loan Details</h2>
+            {loans.length === 0 ? (
+                <p>You haven't any loan.</p>
+            ) : (
+                <table border="1" cellPadding="10">
+                    <thead>
+                        <tr>
+                            <th>Loan ID</th>
+                            <th>Amount</th>
+                            <th>Account ID</th>
+                            <th>Rate</th>
+                            <th>Monthly Installment</th>
+                            <th>Duration (Months)</th>
+                            <th>Start Date</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {loans.map((loan) => (
+                            <tr key={loan.id}>
+                                <td>{loan.id}</td>
+                                <td>{loan.amount}</td>
+                                <td>{loan.accountId}</td>
+                                <td>{loan.rate}</td>
+                                <td>{loan.monthlyInstallment}</td>
+                                <td>{loan.duration}</td>
+                                <td>{loan.startDate}</td>
+                                <td>{loan.type}</td>
+                                <td>{loan.status}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
         </div>
-      ))}
-    </div>
-  );
+    );
 };
 
-export default LoanStatus;
+export default LoanTable;

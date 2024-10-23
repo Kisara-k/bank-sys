@@ -115,7 +115,9 @@ export default function Loans() {
                     <input type="button" id="installmentBtn" className="btn-btn-primary" value="loan installments" />
                 </div>
                 <div className="col-sm-4" id="installments2">
-                    <input type="button" id="statustBtn" className="btn-btn-primary" value="loan status" />
+                    <Link to="/loan-status">
+                        <input type="button" id="statustBtn" className="btn-btn-primary" value="loan status" />
+                    </Link>
                 </div>
             </div>
 

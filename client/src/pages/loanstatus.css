@@ -1,0 +1,27 @@
+.loan-status-container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .loan-status-card {
+    background-color: white;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .loan-status-card h3 {
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .loan-status-card p {
+    margin: 5px 0;
+    color: #666;
+  }
+  

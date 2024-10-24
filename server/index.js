@@ -173,6 +173,7 @@ app.post("/manager_approve",(req,res)=>{
         (err,result)=>{
             if(err){
                 console.log("error procedure call",err);
+                res.send({success:0,message:"loan approve error!"});
                 return;
             }
             console.log(result);
@@ -184,11 +185,88 @@ app.post("/manager_approve",(req,res)=>{
                 const status=result[0].status;
 
                 if(status===1){
-                    res.send({success:1});
+                    res.send({success:1,message:"loan approve completed"});
                 }
 
             })
         }
     )
+});
+
+app.post("/manager_reject",(req,res)=>{
+    const loan_id=req.body.loan_id;
+    const manager_id=req.body.manager_id;
+    const acc_id=req.body.acc_id;
+    console.log(acc_id,loan_id,manager_id);
+    const reject_loan=`CALL reject_loan(?,?,?,@status)`;
+    db.execute(reject_loan,
+        [loan_id,manager_id,acc_id],
+        (err,result)=>{
+            if(err){
+                console.log("error executing procedure",err);
+                res.send({success:0,message:"loan reject error!"});
+                return;
+            }
+            console.log(result);
+            db.query("SELECT @status AS status",(err,result)=>{
+                if(err){
+                    console.log("error fetching status",err);
+                    return;
+                }
+                const status=result[0].status;
+                if(status===1){
+                    res.send({success:1,message:"loan reject completed"});
+                }
+            })
+        }
+    )
+});
+
+app.post("/viewinfo",(req,res)=>{
+    const number=req.body.no;
+    const viewOption=req.body.viewOption;
+    console.log(number,viewOption);
+    if(viewOption==="2"){
+        const nic=`CALL detail_nic(?)`;
+        db.execute(nic,
+            [number],
+            (err,result)=>{
+                if(err){
+                    console.log("error getting data ",err);
+                    return;
+                }
+                console.log(result);
+                res.send({success:2,outcome:result});
+            }
+        )
+    }
+    else if(viewOption==="3"){
+        const nic=`CALL detail_reg_no(?)`;
+        db.execute(nic,
+            [number],
+            (err,result)=>{
+                if(err){
+                    console.log("error getting data ",err);
+                    return;
+                }
+                console.log(result);
+                res.send({success:3,outcome:result});
+            }
+        )
+    }else if(viewOption==="1"){
+        const nic=`CALL detail_acc_no(?)`;
+        db.execute(nic,
+            [number],
+            (err,result)=>{
+                if(err){
+                    console.log("error getting data ",err);
+                    return;
+                }
+                console.log(result);
+                res.send({success:1,outcome:result});
+            }
+        )
+    }
+
 })
 

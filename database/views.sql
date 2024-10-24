@@ -8,3 +8,6 @@ FROM loans
 JOIN loan_installment_log ON loans.loan_id = loan_installment_log.loan_id
 JOIN account ON account.account_id = loans.account_id
 WHERE loan_installment_log.status = 'overdue';
+
+
+

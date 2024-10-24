@@ -12,6 +12,8 @@ import Bms from './pages/Bms';
 import BranchReport from './pages/BranchReport';
 import Lateloan from './pages/Lateloan';
 import LoanApprove from './pages/LoanApprove';
+import NicDetail from './pages/NicDetail';
+import RegDetail from './pages/RegDetail';
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
           <Route path='/apply-loan' element={<Loans/>}></Route>
           <Route path='/late_loan' element={<Lateloan/>}></Route>
           <Route path='/loanManage' element={<LoanApprove/>}></Route>
+          <Route path='/NicDetail' element={<NicDetail/>}></Route>
+          <Route path='/RegDetail' element={<RegDetail/>}></Route>
         </Routes>
       </div>
     </Router>

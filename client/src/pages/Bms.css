@@ -104,8 +104,10 @@ h1{
     display: none;
 }
 #createBtn:hover,#loan2:hover,#createOrganizeBtn:hover,#employeeAdd:hover,#loanManage:hover{
-    background-color: aqua;
+    background-color: rgba(34, 204, 247, 0.852);
     color: black;
+    transform: scale(1.1,1.1);
+    transition: tranform ease-in-out 0.2s;
 }
 
 #fname2,#lname2,#bday,#nic2,#phone,#email2,#address2,#passwordO{
@@ -200,7 +202,7 @@ h1{
     margin-left: 4rem;
     width: 4rem;
 }
-#branch_trans{
+#branch_trans,#view_detail{
     width: 30rem;
     color: white;
     font-family: 'Arial', sans-serif;
@@ -211,18 +213,21 @@ h1{
     padding: 1rem;
     border: 1px solid white;
 }
-#branches{
+#view_detail{
+    margin-top: 1rem;
+}
+#branches,#view_option{
     position: relative;
     right: 2rem;
 }
-#findBtn{
+#findBtn,#viewBtn{
     width: 10rem;
     margin-left: 8rem;
     margin-top: 1rem;
     color: white;
     font-weight: 600;
 }
-#findBtn:hover{
+#findBtn:hover,#viewBtn:hover{
     transform: scale(1.1,1.1);
     transition: transform 0.2 ease;
 }
@@ -233,4 +238,7 @@ h1{
 }
 #managerOP{
     display: none;
+}
+#Noenter{
+    margin-left: 2rem;
 }

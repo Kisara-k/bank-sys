@@ -3,7 +3,7 @@
 /* General styles */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f6f9;
+    background-color: #eef4ff;
     margin: 0;
     padding: 0;
 }
@@ -37,6 +37,7 @@ h2 {
     margin-bottom: 5px; /* Further reduced margin */
     color: #555;
     font-size: 16px;
+    font-weight: 600;
 }
 
 #Left2 input[type="text"], #Right2 input[type="text"] {

@@ -4,9 +4,8 @@ ON SCHEDULE EVERY 30 DAY
 STARTS '2024-10-13 00:00:00' ON COMPLETION PRESERVE
 ENABLE
 DO 
-    UPDATE saving_account s
-    JOIN saving_account_plans p ON s.plan_id = p.plan_id
-    SET s.monthly_withdrawals = p.max_monthly_withdraw;
+    UPDATE saving_account 
+    SET monthly_withdrawals=5
 
 ----------------update monthly rates
 CREATE EVENT update_monthly_rates 

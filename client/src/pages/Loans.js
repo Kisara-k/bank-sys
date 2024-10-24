@@ -114,7 +114,7 @@ export default function Loans() {
                 <h1 id="loanhead"> Loan Application___</h1>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="acc">Enter account no:</label>
+                        <label htmlFor="acc">Enter fixed deposit account no:</label>
                         <input 
                             type="text" 
                             className="form-control" 

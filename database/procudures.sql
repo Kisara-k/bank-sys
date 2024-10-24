@@ -353,7 +353,7 @@ BEGIN
             )
             VALUES (
                 new_loan_id, accountNo, loan_amount, loan_rate,
-                monthly_installment_, duration, CURDATE(), 'online', 'pending'
+                monthly_installment_, duration, CURDATE(), 'online', 'approved'
             );
 
             -- Update the balance of the linked savings account
@@ -407,6 +407,7 @@ END //
 DELIMITER ;
 
 
+---------------------------manager loan approve
 DELIMITER //
 
 CREATE PROCEDURE approve_loan(IN acc_id INT, IN p_loan_id INT, IN manager_id INT,OUT status INT)
@@ -460,6 +461,86 @@ END //
 
 DELIMITER ;
 
+
+-------------------------manager loan reject
+DELIMITER //
+CREATE PROCEDURE reject_loan(IN p_loan_id INT,IN manager_id INT,IN acc_id INT,OUT status INT)
+BEGIN
+    DECLARE affected_rows INT;
+
+    START TRANSACTION;
+
+    UPDATE loans SET status="rejected" WHERE loan_id=p_loan_id;
+    SELECT ROW_COUNT() INTO affected_rows;
+
+    IF affected_rows > 0 THEN 
+      INSERT INTO physical_loan (loan_id, account_id, approved_by)
+      VALUES (p_loan_id, acc_id, manager_id);
+      SELECT ROW_COUNT() INTO affected_rows;
+	END IF;
+  
+  IF affected_rows > 0 THEN
+    COMMIT;
+    SET status=1;
+  ELSE
+    ROLLBACK;
+    SET status=0;
+  END IF;
+END //
+DELIMITER ;
+
+-------------------detail in nic
+DELIMITER //
+CREATE PROCEDURE detail_nic(IN nic VARCHAR(12))
+BEGIN
+    SELECT first_name,last_name,date_of_birth,nic,customer.type,customer.contact_number,address
+    account_id,account.type,balance,start_date,status,city FROM individual_customer
+    JOIN customer ON individual_customer.customer_id=customer.customer_id
+    JOIN account ON  account.customer_id=customer.customer_id
+    JOIN branches ON branches.branch_id=account.branch_id
+    WHERE individual_customer.nic=nic;
+END//
+DELIMITER ;
+
+---------------------detail with reg no
+DELIMITER //
+CREATE PROCEDURE detail_reg_no(IN reg_no VARCHAR(12))
+BEGIN
+    SELECT name,registration_no,contact_person,contact_person_position,customer.customer_type,customer.contact_number,customer.address,
+    account_id,account.type,balance,start_date,status,city FROM organization_customer
+    JOIN customer ON organization_customer.customer_id=customer.customer_id
+    JOIN account ON  account.customer_id=customer.customer_id
+    JOIN branches ON branches.branch_id=account.branch_id
+    WHERE organization_customer.registration_no=reg_no;
+END//
+DELIMITER ;
+
+
+------------------detail with acc no
+DELIMITER //
+CREATE PROCEDURE detail_acc_no(IN acc_id INT)
+BEGIN
+    DECLARE cus_type ENUM('individual','organization');
+    SELECT customer_type INTO cus_type FROM account 
+    JOIN customer ON account.customer_id=customer.customer_id WHERE account.account_id=acc_id;
+
+    IF cus_type="individual" THEN
+      SELECT first_name,last_name,date_of_birth,nic,customer.customer_type,customer.contact_number,customer.address,
+      account_id,account.type,balance,start_date,status,city FROM individual_customer
+      JOIN customer ON individual_customer.customer_id=customer.customer_id
+      JOIN account ON  account.customer_id=customer.customer_id
+      JOIN branches ON branches.branch_id=account.branch_id
+      WHERE account.account_id=acc_id;
+    ELSE
+      SELECT name,registration_no,contact_person,contact_person_position,customer.customer_type,customer.contact_number,customer.address,
+      account_id,account.type,balance,start_date,status,city FROM organization_customer
+      JOIN customer ON organization_customer.customer_id=customer.customer_id
+      JOIN account ON  account.customer_id=customer.customer_id
+      JOIN branches ON branches.branch_id=account.branch_id
+      WHERE account.account_id=acc_id;
+    END IF;
+END//
+DELIMITER ;
   
 
 

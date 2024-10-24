@@ -9,6 +9,7 @@ export default function LoanApprove() {
     const [customerLoanDetail,setDetail]=useState([]);
     const [manager_id,setManagerID]=useState("");
     const [acc_id,setID]=useState("");
+    const [message,setMessage]=useState("");
 
     useEffect(()=>{
         const getData=localStorage.getItem("employeeDetail");
@@ -29,15 +30,19 @@ export default function LoanApprove() {
     };
 
     const approve = () => {
+        document.getElementById("loanmsg").style.display="none";
         Axios.post("http://localhost:3002/approve", {
             loan_id: loanID
         }).then((response) => {
             setDetail(response.data);
-            console.log(response.data)
+            
     
             if (response.data && response.data.length > 0) {
+                setID(response.data[0].account_id);
                 document.getElementById("approveBtn").style.display = "block";
+                document.getElementById("rejectBtn").style.display = "block";
             } else {
+                document.getElementById("rejectBtn").style.display = "none";
                 document.getElementById("approveBtn").style.display = "none";
             }
         }).catch((error) => {
@@ -56,8 +61,35 @@ export default function LoanApprove() {
             manager_id:manager_id
         }).then((response)=>{
             if(response.data.success===1){
-                document.getElementById("approveBtn").innerHTML = "Loan Approved";
+                setMessage(response.data.message);
+                document.getElementById("loanmsg").style.backgroundColor="rgb(144, 238, 144)";
+                document.getElementById("loanmsg").style.display="block";
             }
+            else{
+                setMessage(response.data.message);
+                document.getElementById("loanmsg").style.backgroundColor="rgb(255, 204, 204))";
+                document.getElementById("loanmsg").style.display="block";
+            }
+        })
+    };
+
+    const rejectByManger=()=>{
+        Axios.post("http://localhost:3002/manager_reject",{
+            loan_id:loanID,
+            acc_id:acc_id,
+            manager_id:manager_id
+        }).then((response)=>{
+            if(response.data.success===1){
+                setMessage(response.data.message);
+                document.getElementById("loanmsg").style.backgroundColor="rgb(144, 238, 144)";
+                document.getElementById("loanmsg").style.display="block";
+            }
+            else{
+                setMessage(response.data.message);
+                document.getElementById("loanmsg").style.backgroundColor="rgb(255, 204, 204)";
+                document.getElementById("loanmsg").style.display="block";
+            }
+
         })
     }
 
@@ -93,6 +125,16 @@ export default function LoanApprove() {
                     </thead>
                     <tbody>
                         {loanList.map((val, key) => {
+                            let textColor;
+                            if (val.status === 'overdue') {
+                                textColor = 'red';
+                            } else if (val.status === 'pending') {
+                                textColor = 'rgba(233, 161, 17, 0.765)';
+                            } else if (val.status === 'approved') {
+                                textColor = 'rgb(29, 200, 29)';
+                            }else if (val.status === 'paid') {
+                                textColor = 'blue';
+                            }
                             return (
                                 <tr key={key}>
                                     <td>{val.loan_id}</td>
@@ -102,7 +144,7 @@ export default function LoanApprove() {
                                     <td>{val.duration_months}</td>
                                     <td>{val.start_date}</td>
                                     <td>{val.type}</td>
-                                    <td>{val.status}</td>
+                                    <td style={{color:textColor,fontWeight:"600"}}>{val.status}</td>
                                 </tr>
                             );
                         })}
@@ -141,7 +183,11 @@ export default function LoanApprove() {
                         })}
                     </tbody>
                 </table>
-                <input type="button" className="btn btn-primary" onClick={approveByManger} id="approveBtn" value="approve"></input>
+                <input type="button" className="btn btn-success" onClick={approveByManger} id="approveBtn" value="approve"></input>
+                <input type="button" className="btn btn-danger" onClick={rejectByManger} id="rejectBtn" value="reject"></input>
+                <div id="loanmsg">
+                    <span>{message}</span>
+                </div>
             </div>
            
         </>

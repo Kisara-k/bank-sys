@@ -32,6 +32,9 @@ export default function Bms(){
     const [branch,setbranch]=useState("");
     const [report,setReport]=useState("");
 
+    const [viewOption,setoption]=useState("");
+    const [number,setNumber]=useState("");
+
     useEffect(()=>{
         const getData=localStorage.getItem("employeeDetail");
         if(getData){
@@ -163,6 +166,44 @@ export default function Bms(){
 
     };
 
+    const viewData=()=>{
+        if(number==="" || viewOption===""){
+            alert("Enter input data to process");
+        }
+        else{
+            Axios.post("http://localhost:3002/viewinfo",{
+                no:number,
+                viewOption:viewOption
+            }).then((response)=>{
+                console.log(response.data.outcome[0][0].customer_type);
+                if(response.data==="undefined"){
+                    alert("Invalid input entered!!!!");
+                }
+                if(response.data.success===2){
+                    localStorage.setItem("nicDetail",JSON.stringify(response.data.outcome));
+                    window.location.href="NicDetail";
+                }
+                else if(response.data.success===3){
+                    localStorage.setItem("regDetail",JSON.stringify(response.data.outcome));
+                    window.location.href="RegDetail";
+                }
+                else if(response.data.success===1 && response.data.outcome[0][0].customer_type==="organization"){
+                    localStorage.setItem("regDetail",JSON.stringify(response.data.outcome));
+                    window.location.href="RegDetail";
+                }
+                else if(response.data.success===1 && response.data.outcome[0][0].customer_type==="individual"){
+                    console.log("done");
+                    localStorage.setItem("nicDetail",JSON.stringify(response.data.outcome));
+                    window.location.href="NicDetail";
+                }
+                else{
+                    alert("Invalid input entered!");
+                }
+                
+            })
+        }
+    }
+
     const loanManage=()=>{
         window.location.href="/loanManage";
     }
@@ -244,7 +285,27 @@ export default function Bms(){
                             
                             <input type="button" className="btn btn-info" value="find report" onClick={branch_transaction_report} id="findBtn"></input>
                         </div>
+
+                        <div id="view_detail" className="row">
+                            <label for="select option">Customer detail view :</label>
+                            <div className="form-group">
+                                <select id="view_option" value={viewOption} onChange={(event)=>{setoption(event.target.value);}} className="form-control">
+                                    <option value="" disabled>choose method :</option>
+                                    <option value="1">Account no</option>
+                                    <option value="2" >NIC no</option>
+                                    <option value="3" >Registration no</option>
+                                </select>
+                            </div>
+
+                            <div className="form-group" id="report">
+                                <input className="form-control" type="text" id="Noenter" onChange={(event)=>{setNumber(event.target.value)}} placeholder="Enter number"></input>
+                            </div>
+                            
+                            <input type="button" className="btn btn-info" value="view" onClick={viewData} id="viewBtn"></input>
+                        </div>
                     </div>
+
+                    
                 </div>
 
                     {/* form for individual customer add*/}

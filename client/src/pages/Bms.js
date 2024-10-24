@@ -175,9 +175,9 @@ export default function Bms(){
                 no:number,
                 viewOption:viewOption
             }).then((response)=>{
-                console.log(response.data.outcome[0][0].customer_type);
-                if(response.data==="undefined"){
+                if(response.data.outcome==="undefined" || response.data.outcome[0][0]===null){
                     alert("Invalid input entered!!!!");
+                    return;
                 }
                 if(response.data.success===2){
                     localStorage.setItem("nicDetail",JSON.stringify(response.data.outcome));
@@ -200,7 +200,7 @@ export default function Bms(){
                     alert("Invalid input entered!");
                 }
                 
-            })
+            });
         }
     }
 

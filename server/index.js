@@ -265,7 +265,7 @@ app.post("/viewinfo",(req,res)=>{
                     res.send({success:0});
                     return;
                 }
-                console.log(result);
+                console.log(result[0]);
                 res.send({success:1,outcome:result});
             }
         )

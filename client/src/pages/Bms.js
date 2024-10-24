@@ -167,31 +167,41 @@ export default function Bms(){
     };
 
     const viewData=()=>{
-        console.log(number,viewOption);
-        Axios.post("http://localhost:3002/viewinfo",{
-            no:number,
-            viewOption:viewOption
-        }).then((response)=>{
-            console.log(response.data.outcome[0][0].customer_type);
-            if(response.data.success===2){
-                localStorage.setItem("nicDetail",JSON.stringify(response.data.outcome));
-                window.location.href="NicDetail";
-            }
-            else if(response.data.success===3){
-                localStorage.setItem("regDetail",JSON.stringify(response.data.outcome));
-                window.location.href="RegDetail";
-            }
-            else if(response.data.success===1 && response.data.outcome[0][0].customer_type==="organization"){
-                localStorage.setItem("regDetail",JSON.stringify(response.data.outcome));
-                window.location.href="RegDetail";
-            }
-            else if(response.data.success===1 && response.data.outcome[0][0].customer_type==="individual"){
-                console.log("done");
-                localStorage.setItem("nicDetail",JSON.stringify(response.data.outcome));
-                window.location.href="NicDetail";
-            }
-            
-        })
+        if(number==="" || viewOption===""){
+            alert("Enter input data to process");
+        }
+        else{
+            Axios.post("http://localhost:3002/viewinfo",{
+                no:number,
+                viewOption:viewOption
+            }).then((response)=>{
+                console.log(response.data.outcome[0][0].customer_type);
+                if(response.data==="undefined"){
+                    alert("Invalid input entered!!!!");
+                }
+                if(response.data.success===2){
+                    localStorage.setItem("nicDetail",JSON.stringify(response.data.outcome));
+                    window.location.href="NicDetail";
+                }
+                else if(response.data.success===3){
+                    localStorage.setItem("regDetail",JSON.stringify(response.data.outcome));
+                    window.location.href="RegDetail";
+                }
+                else if(response.data.success===1 && response.data.outcome[0][0].customer_type==="organization"){
+                    localStorage.setItem("regDetail",JSON.stringify(response.data.outcome));
+                    window.location.href="RegDetail";
+                }
+                else if(response.data.success===1 && response.data.outcome[0][0].customer_type==="individual"){
+                    console.log("done");
+                    localStorage.setItem("nicDetail",JSON.stringify(response.data.outcome));
+                    window.location.href="NicDetail";
+                }
+                else{
+                    alert("Invalid input entered!");
+                }
+                
+            })
+        }
     }
 
     const loanManage=()=>{

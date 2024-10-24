@@ -233,6 +233,7 @@ app.post("/viewinfo",(req,res)=>{
             (err,result)=>{
                 if(err){
                     console.log("error getting data ",err);
+                    res.send({success:0});
                     return;
                 }
                 console.log(result);
@@ -247,6 +248,7 @@ app.post("/viewinfo",(req,res)=>{
             (err,result)=>{
                 if(err){
                     console.log("error getting data ",err);
+                    res.send({success:0});
                     return;
                 }
                 console.log(result);
@@ -260,6 +262,7 @@ app.post("/viewinfo",(req,res)=>{
             (err,result)=>{
                 if(err){
                     console.log("error getting data ",err);
+                    res.send({success:0});
                     return;
                 }
                 console.log(result);

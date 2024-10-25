@@ -1,9 +1,8 @@
-// index.js
 import dotenv from 'dotenv'; // Load environment variables
 dotenv.config();
 import express, { json } from 'express';
 import cors from 'cors';
-import db from './config/database.js';
+import db from './config/database.js'; // Ensure this file exports a configured database connection
 
 const app = express();
 
@@ -25,34 +24,51 @@ app.use('/customer', customerRoutes);
 app.use('/employee', employeeRoutes);
 app.use('/transaction', transactionRoutes);
 
-// Root Endpoint
-app.get('/', (req, res) => {
-    res.send('Welcome to the Banking API');
+// Endpoint to get account by customerId
+app.get('/api/accounts', (req, res) => {
+    const { customerId } = req.query;
+    
+    db.query('SELECT accountId FROM accounts WHERE customerId = ?', [customerId], (error, results) => {
+        if (error) {
+            console.error('Error fetching account data:', error);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'No accounts found for this customer' });
+        }
+
+        res.json(results); // Return all accounts related to the customerId
+    });
 });
 
-// Start Server
-const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}.`);
+
+// Endpoint to get loans by accountId
+app.get('/api/loans', (req, res) => {
+    const { accountId } = req.query;
+    db.query('SELECT * FROM loans WHERE accountId = ?', [accountId], (error, results) => {
+        if (error) {
+            console.error('Error fetching loan data:', error);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+        res.json(results);
+    });
 });
 
-
-// Endpoint to apply for an online loan
-app.post('/apply-loan', (req, res) => {
+// Endpoint to apply for a loan
+app.post('/api/apply-loan', (req, res) => {
     const { accountNo, loanAmount, duration } = req.body;
 
     // Validate input
-    // if (!accountNo || !requested_loan_amount || !duration) {
-    //     return res.status(400).json({ message: 'Missing required fields' });
-    // }
-
-    const loanStatus = {};
+    if (!accountNo || !loanAmount || !duration) {
+        return res.status(400).json({ message: 'Missing required fields' });
+    }
 
     // Call the stored procedure
     db.query(
         'CALL apply_online_loan(?, ?, ?, @loan_status);',
         [accountNo, loanAmount, duration],
-        (error,result) => {
+        (error, result) => {
             if (error) {
                 console.log('Error executing stored procedure:', error);
                 return res.status(500).json({ message: 'Internal server error' });
@@ -74,6 +90,16 @@ app.post('/apply-loan', (req, res) => {
     );
 });
 
+// Root Endpoint
+app.get('/', (req, res) => {
+    res.send('Welcome to the Banking API');
+});
+
+// Start Server
+const PORT = process.env.PORT || 3002;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}.`);
+});
 
 app.post("/phy_loan",(req,res)=>{
     const acc_no=req.body.acc_no;
@@ -272,4 +298,5 @@ app.post("/viewinfo",(req,res)=>{
     }
 
 })
+
 

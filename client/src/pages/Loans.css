@@ -6,6 +6,7 @@
 }
 
 #x1,#x2{
+    margin-left: 3rem;
     color: white;
     font-weight: 600;
     font-size: 5.5rem;
@@ -14,10 +15,13 @@
     top:4rem;
 }
 #icons{
+    display: flex;
+    justify-content: space-around; /* Evenly spaces icons */
     margin-top: 3rem;
     margin-left: 1rem;
 }
 #personal,#deposite,#loan{
+    text-align: center;
     margin-left: 1rem;
     width: 25rem;
 }
@@ -42,56 +46,187 @@
     border-left: 6px solid rgb(50, 50, 210);
 }
 #password {
-    margin-left: 2.3rem; /* Same as #accNo and #lamount */
-    width: 35rem; /* Same width as other input fields */
+    margin-left: 0; /* Align with other input fields */
+    width: 90%; /* Consistent width */
 }
-#loanform{
-    width: 50rem;
-    margin-left: 18vw;
-    margin-top: 6rem;
-    border: 1px solid black;
-    padding: 3rem;
-    color: white;
-    background-color: black;
-}
+
+
+
 #loanhead{
     margin-bottom: 2rem;
     position: relative;
     right: 8rem;
+} 
+#loanform {
+    width: 50rem;
+    margin: 2rem auto; /* Center horizontally */
+    border: 1px solid black;
+    padding: 3rem;
+    color: rgb(2, 2, 2);
+    background-color: rgba(230, 241, 245, 0.8); /* Light blue with 80% opacity */
 }
-#loanform label{
-    color: gray;
-    font-weight: 600;
+
+#loanform label {
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+    font-size: 1.1rem;
 }
-#accNo,#lamount{
-    margin-left: 2.3rem;
+
+/* Form input fields alignment */
+#accNo, #lamount, #ltype, #duration, #password {
+    width: 90%;
+    padding: 0.8rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-#accNo,#lamount,#ltype,#duration{
-    width: 35rem;
+#ltype{
+    position: relative;
+    right: 2rem;
 }
-#reqBtn{
-    width: 10rem;
-    margin-top: 3rem;
-    background-color: rgb(50, 50, 210);
+
+#accNo:focus, #lamount:focus, #ltype:focus, #duration:focus, #password:focus {
+    border-color: #0077b6;
+    box-shadow: 0 0 8px rgba(0, 119, 182, 0.4);
+    outline: none;
+}
+
+/* Center the button */
+#reqBtn {
+    width: 50%; /* Set a consistent width */
+    margin: 0 auto; /* Center horizontally */
+    display: block; /* Ensure it's a block element for proper alignment */
+    padding: 0.9rem;
+    background-color: #0077b6;
+    border: none;
+    border-radius: 5px;
     color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
     font-weight: 600;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
-@media screen and (max-width:600px){
-    #personal,#deposite,#loan{
-        margin-top: 2.5rem;
-        margin-left: 4rem;
+
+/* Error message styling */
+.alert-danger, .alert-success {
+    width: 50%; /* Match the width of the submit button */
+    margin: 1rem auto; /* Center the alert message */
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1rem;
+}
+#loanhead {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+/* Hover effect for the submit button */
+#reqBtn:hover {
+    background-color: #005f9e;
+    box-shadow: 0 4px 12px rgba(0, 95, 158, 0.3);
+}
+
+#oprionBtns {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center; /* Vertically align the buttons */
+    margin-top: 2rem;
+    margin-left: 5%;
+    margin-right: 5%;
+    gap: 1px; /* Add space between the buttons */
+    width: 100%; /* Ensure the buttons span across the available width */
+}
+
+.btn-btn-primary {
+    width: 14rem; /* Button width */
+    background-color: #0077b6; /* Button color */
+    border: none;
+    font-weight: 800; /* Bold text */
+    margin-right: 10px;
+    padding: 0.9rem 0.9rem; /* Padding for better spacing */
+    text-align: center;
+    border-radius: 8px; /* Round corners */
+    color: white; /* Text color */
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover */
+    margin: 0 auto; /* Center the buttons horizontally */
+    display: block; /* Ensure it's a block element for proper alignment */
+}
+
+#statustBtn {
+    background-color: #0077b6; /* Button color */
+    border: none;
+    font-weight: 800; /* Bold text */
+    padding: 0.9rem 0.9rem; /* Padding for better spacing */
+    text-align: center;
+    border-radius: 8px; /* Round corners */
+    color: white; /* Text color */
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover */
+    margin: 0; /* Remove auto margin to align left */
+    display: block; /* Ensure it's a block element for proper alignment */
+}
+
+
+
+#statustBtn:hover, #installmentBtn:hover {
+    background-color: #005f9e; /* Darken the background color on hover */
+    box-shadow: 0 4px 8px rgba(0, 95, 158, 0.3); /* Add a shadow on hover */
+}
+
+/* Responsive: Stack buttons vertically for smaller screens */
+@media screen and (max-width: 600px) {
+    #oprionBtns {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 1rem; /* Space between buttons when stacked */
     }
-    #loanform{
-        width: 100vw;
-        margin-left: 0rem;
-    }
-    #accNo,#lamount,#ltype,#duration{
-        width: 70vw;
-    }
-    #reqBtn{
-        width: 7rem;
-    }
-    #icons{
-        display: flex;
+
+    #statustBtn, #installmentBtn {
+        width: 100%; /* Full width buttons on mobile */
     }
 }
+
+
+
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+    #loanform {
+        width: 90%;
+        margin: 2rem auto;
+        padding: 1.5rem;
+    }
+
+    #accNo, #lamount, #ltype, #duration, #password {
+        width: 90%;
+        font-size: 0.9rem;
+    }
+    #oprionBtns {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 1rem;
+    }
+
+    #reqBtn {
+        font-size: 1rem;
+    }
+}
+
+
+    

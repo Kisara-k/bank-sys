@@ -18,6 +18,33 @@ export default function Account(){
     const [tranfer_amount,setTransAmount]=useState(0);
     const [tranferAcc,setTransAcc]=useState("");
     const [trans_detail,setTransDetail]=useState([]);
+    const [loanDetails, setLoanDetails] = useState([]);
+
+useEffect(() => {
+    if (Acc_ID) {
+        // Fetch transaction details as before
+        Axios.get("http://localhost:3002/transaction/trans_detail", {
+            params: { Id: Acc_ID }
+        }).then((response) => {
+            console.log(response.data);
+            setTransDetail(response.data.transactions);
+            setBalance(response.data.balance);
+        }).catch((error) => {
+            console.error("Error fetching transaction details:", error);
+        });
+
+        // Fetch loan details based on Acc_ID
+        Axios.get("http://localhost:3002/loans", {
+            params: { accountId: Acc_ID }
+        }).then((response) => {
+            console.log("Loan details:", response.data);
+            setLoanDetails(response.data);  // Assuming the response contains loan details
+        }).catch((error) => {
+            console.error("Error fetching loan details:", error);
+        });
+    }
+}, [Acc_ID]);
+
     
 
     useEffect(()=>{

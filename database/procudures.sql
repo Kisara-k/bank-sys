@@ -353,11 +353,11 @@ BEGIN
             )
             VALUES (
                 new_loan_id, accountNo, loan_amount, loan_rate,
-                monthly_installment_, duration, CURDATE(), 'online', 'pending'
+                monthly_installment_, duration, CURDATE(), 'online', 'approved'
             );
 
             -- Update the balance of the linked savings account
-            UPDATE saving_account
+            UPDATE account
             SET balance = balance + loan_amount
             WHERE account_id = savings_account_id;
 
@@ -407,10 +407,219 @@ END //
 DELIMITER ;
 
 
+---------------------------manager loan approve
+DELIMITER //
+
+CREATE PROCEDURE approve_loan(IN acc_id INT, IN p_loan_id INT, IN manager_id INT,OUT status INT)
+BEGIN
+  DECLARE affected_rows INT DEFAULT 0;
+  DECLARE l_amount DECIMAL(15,2);
+  DECLARE out_state INT DEFAULT 0;
+
+  -- Start transaction
+  START TRANSACTION;
+
+  -- Retrieve loan amount
+  SELECT amount INTO l_amount FROM loans WHERE loan_id = p_loan_id;
+
+  -- Approve the loan by updating its status
+  UPDATE loans SET status = 'approved' WHERE loan_id = p_loan_id;
+  SELECT ROW_COUNT() INTO affected_rows;
+
+  IF affected_rows > 0 THEN
+    -- Insert into physical_loan table
+    INSERT INTO physical_loan (loan_id, account_id, approved_by)
+    VALUES (p_loan_id, acc_id, manager_id);
+    
+    SELECT ROW_COUNT() INTO affected_rows;
+
+    IF affected_rows > 0 THEN
+      -- Call deposit procedure to deposit the loan amount into the account
+      CALL deposit(l_amount, acc_id, out_state);
+      
+      IF out_state > 0 THEN
+        -- Check if deposit was successful
+        COMMIT;
+        SET status=1;
+        SELECT 'Loan approved successfully' AS status_message;
+      ELSE
+        -- Rollback if deposit fails
+        ROLLBACK;
+        SELECT 'Loan approval failed during deposit' AS status_message;
+      END IF;
+    ELSE
+      -- Rollback if insertion into physical_loan fails
+      ROLLBACK;
+      SELECT 'Loan approval failed during physical_loan insert' AS status_message;
+    END IF;
+  ELSE
+    -- Rollback if loan approval update fails
+    ROLLBACK;
+    SELECT 'Loan approval failed during status update' AS status_message;
+  END IF;
+END //
+
+DELIMITER ;
+
+
+-------------------------manager loan reject
+DELIMITER //
+CREATE PROCEDURE reject_loan(IN p_loan_id INT,IN manager_id INT,IN acc_id INT,OUT status INT)
+BEGIN
+    DECLARE affected_rows INT;
+
+    START TRANSACTION;
+
+    UPDATE loans SET status="rejected" WHERE loan_id=p_loan_id;
+    SELECT ROW_COUNT() INTO affected_rows;
+
+    IF affected_rows > 0 THEN 
+      INSERT INTO physical_loan (loan_id, account_id, approved_by)
+      VALUES (p_loan_id, acc_id, manager_id);
+      SELECT ROW_COUNT() INTO affected_rows;
+	END IF;
+  
+  IF affected_rows > 0 THEN
+    COMMIT;
+    SET status=1;
+  ELSE
+    ROLLBACK;
+    SET status=0;
+  END IF;
+END //
+DELIMITER ;
+
+-------------------detail in nic
+DELIMITER //
+CREATE PROCEDURE detail_nic(IN nic VARCHAR(12))
+BEGIN
+    SELECT first_name,last_name,date_of_birth,nic,customer.type,customer.contact_number,address
+    account_id,account.type,balance,start_date,status,city FROM individual_customer
+    JOIN customer ON individual_customer.customer_id=customer.customer_id
+    JOIN account ON  account.customer_id=customer.customer_id
+    JOIN branches ON branches.branch_id=account.branch_id
+    WHERE individual_customer.nic=nic;
+END//
+DELIMITER ;
+
+---------------------detail with reg no
+DELIMITER //
+CREATE PROCEDURE detail_reg_no(IN reg_no VARCHAR(12))
+BEGIN
+    SELECT name,registration_no,contact_person,contact_person_position,customer.customer_type,customer.contact_number,customer.address,
+    account_id,account.type,balance,start_date,status,city FROM organization_customer
+    JOIN customer ON organization_customer.customer_id=customer.customer_id
+    JOIN account ON  account.customer_id=customer.customer_id
+    JOIN branches ON branches.branch_id=account.branch_id
+    WHERE organization_customer.registration_no=reg_no;
+END//
+DELIMITER ;
+
+
+------------------detail with acc no
+DELIMITER //
+CREATE PROCEDURE detail_acc_no(IN acc_id INT)
+BEGIN
+    DECLARE cus_type ENUM('individual','organization');
+    SELECT customer_type INTO cus_type FROM account 
+    JOIN customer ON account.customer_id=customer.customer_id WHERE account.account_id=acc_id;
+
+    IF cus_type="individual" THEN
+      SELECT first_name,last_name,date_of_birth,nic,customer.customer_type,customer.contact_number,customer.address,
+      account_id,account.type,balance,start_date,status,city FROM individual_customer
+      JOIN customer ON individual_customer.customer_id=customer.customer_id
+      JOIN account ON  account.customer_id=customer.customer_id
+      JOIN branches ON branches.branch_id=account.branch_id
+      WHERE account.account_id=acc_id;
+    ELSE
+      SELECT name,registration_no,contact_person,contact_person_position,customer.customer_type,customer.contact_number,customer.address,
+      account_id,account.type,balance,start_date,status,city FROM organization_customer
+      JOIN customer ON organization_customer.customer_id=customer.customer_id
+      JOIN account ON  account.customer_id=customer.customer_id
+      JOIN branches ON branches.branch_id=account.branch_id
+      WHERE account.account_id=acc_id;
+    END IF;
+END//
+DELIMITER ;
   
 
 
 
 
+-------loan
+CREATE DEFINER=`root`@`localhost` PROCEDURE `apply_online_loan`(
+    IN accountNo INT,
+    IN loan_amount DECIMAL(15, 2),
+    IN duration INT,
+    OUT loan_status VARCHAR(255)
+)
+BEGIN
+    DECLARE fd_amount DECIMAL(15, 2);
+    DECLARE savings_account_id INT;
+    DECLARE max_loan_amount DECIMAL(15, 2);
+    DECLARE loan_rate DECIMAL(4, 2);
+    DECLARE monthly_installment_ INT;
+    DECLARE new_loan_id INT;
 
+    -- Exit handler for SQL exceptions
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SET loan_status = 'Error occurred, transaction failed.';
+    END;
 
+    -- Start the transaction
+    START TRANSACTION;
+
+    -- Retrieve FD details for the account
+    SELECT fd.amount, fd.account_id
+    INTO fd_amount, savings_account_id
+    FROM fixed_deposit fd
+    WHERE fd.fd_id = accountNo;
+
+    -- Check if the FD exists
+    IF fd_amount IS NULL THEN
+        SET loan_status = 'No Fixed Deposit account found for this customer.';
+        ROLLBACK;
+    ELSE
+        -- Calculate maximum loan the customer can apply for (60% of FD or max 500,000)
+        SET max_loan_amount = LEAST(fd_amount * 0.60, 500000.00);
+
+        -- Check if requested loan exceeds maximum allowed
+        IF loan_amount > max_loan_amount THEN
+            SET loan_status = CONCAT('Loan amount exceeds the limit. Maximum allowed: ', max_loan_amount);
+            ROLLBACK;
+        ELSE
+            -- Set loan interest rate (Example: 5%)
+            SET loan_rate = 5.00;
+
+            -- Calculate the monthly installment
+            SET monthly_installment_ = (loan_amount * (1 + (loan_rate / 100))) / duration;
+
+            -- Generate a new loan_id (assuming auto-increment is not used)
+            SELECT IFNULL(MAX(loan_id), 0) + 1 INTO new_loan_id FROM loans;
+
+            -- Insert the loan into the loans table
+            INSERT INTO loans (
+                loan_id, account_id, amount, rate, monthly_installment,
+                duration_months, start_date, type, status
+            )
+            VALUES (
+                new_loan_id, accountNo, loan_amount, loan_rate,
+                monthly_installment_, duration, CURDATE(), 'online', 'pending'
+            );
+
+            -- Update the balance of the linked savings account
+            UPDATE saving_account
+            SET balance = balance + loan_amount
+            WHERE account_id = savings_account_id;
+
+            -- Commit the transaction
+            COMMIT;
+
+            -- Set loan status to success
+            SET loan_status = 'Loan approved and deposited into the savings account.';
+        END IF;
+    END IF;
+
+END;

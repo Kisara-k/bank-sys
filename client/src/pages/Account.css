@@ -185,60 +185,85 @@ select{
 }
 
 #history{
-    margin-top: 2rem;
+    margin-top: 3rem;
     position: relative;
     right: 3rem;
 }
 .Transaction_detail {
-    width: 100%; /* Full width for better responsiveness */
-    margin: 20px 0; /* Margin for spacing around the table */
-    border-radius: 10px; /* Rounded corners for the table */
-    overflow: hidden; /* Hide overflow for rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
-}
-
-.Transaction_detail table {
     width: 100%; /* Table takes full width of the parent */
     border-collapse: separate; /* Keep separate borders */
     border-spacing: 0 1rem; /* Space between rows */
+    font-family: 'Verdana', 'Geneva', 'Tahoma', sans-serif; /* Consistent font */
 }
 
 .Transaction_detail thead {
     color: white; /* Text color for the header */
-    background-color: rgb(50, 50, 210); /* Header background color */
+    background-color: #324ab2; /* A more modern blue shade */
     padding: 0.6rem; /* Padding for the header */
+    text-transform: uppercase; /* Make header text uppercase for style */
+    letter-spacing: 0.05em; /* Slightly increase letter spacing */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .Transaction_detail th {
     height: 3rem; /* Fixed height for header cells */
     padding-left: 1rem; /* Padding on left for header cells */
     text-align: left; /* Align header text to the left */
+    border-bottom: 2px solid #ddd; /* Add border at the bottom */
+    font-size: 0.8rem; /* Slightly larger font for headers */
 }
 
 .Transaction_detail th, 
 .Transaction_detail td {
-    padding: 12px 15px; /* Increased padding for better spacing */
+    padding: 15px 20px; /* Increased padding for better spacing */
     text-align: left; /* Align text to the left */
-    border-bottom: 1px solid #ddd; /* Bottom border for cells */
 }
 
 .Transaction_detail td {
     background-color: white; /* Cell background color */
-    font-family: 'Verdana', 'Geneva', 'Tahoma', sans-serif; /* Font family for table cells */
-    font-size: 0.9rem; /* Slightly larger font size */
+    font-size: 0.7rem; /* Adjusted font size */
+    border-bottom: 1px solid #ddd; /* Bottom border for cells */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
-.Transaction_detail tr {
-    transition: background-color 0.3s; /* Smooth transition for hover effect */
+/* Alternating row colors for better readability */
+.Transaction_detail tbody tr:nth-child(odd) {
+    background-color: #f7f9fc; /* Light background for odd rows */
+}
+
+.Transaction_detail tbody tr:nth-child(even) {
+    background-color: #ffffff; /* White background for even rows */
 }
 
 .Transaction_detail tr:hover {
-    background-color: #f0f8ff; /* Light blue hover effect */
+    background-color: #dbe9ff; /* Light blue hover effect */
 }
 
 .Transaction_detail tbody tr {
-    height: 2rem; /* Fixed height for body rows */
+    height: 2.5rem; /* Adjusted height for body rows */
 }
+
+/* Add subtle shadows to table for a card-like look */
+.Transaction_detail {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Subtle outer shadow */
+    border-radius: 8px; /* Rounded corners for the table */
+    overflow: hidden; /* Ensures contents stay within rounded edges */
+    background-color: #fff; /* Clean white background */
+}
+
+/* Add a smooth scroll bar for tables with lots of data */
+.Transaction_detail {
+    overflow-y: auto; /* Enable vertical scroll if content overflows */
+    max-height: 400px; /* Max height to limit table's size */
+}
+
+/* Footer style if needed for totals or extra rows */
+.Transaction_detail tfoot {
+    background-color: #e3eafc; /* Slightly tinted background for footer */
+    font-weight: bold; /* Make footer text bold */
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

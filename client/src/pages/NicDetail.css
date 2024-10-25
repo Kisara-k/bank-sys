@@ -3,80 +3,59 @@
 /* General styles */
 body {
     font-family: 'Arial', sans-serif;
-    
+    background-color: #eef4ff;
     margin: 0;
     padding: 0;
-    
-   
-}
-#profile-page {
-    background-image: url('./img/b1.jpg');
-    background-size: cover; /* Ensure the image covers the entire background */
-    background-position: center; /* Center the background image */
-    background-repeat: no-repeat; /* Prevent the image from repeating */
-    min-height: 100vh; /* Ensure the container covers the full viewport height */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    
 }
 
 h2 {
     text-align: center;
-
-    margin-top: 60px;
-    color: white;
-    font-weight: 800;
-    font-size: 2.5rem;
-
     margin-top: 30px;
     color: #333;
     font-weight: 600;
-
 }
 
 /* Container for the profile details */
-#set {
+#set2 {
     display: flex;
     justify-content: center;
     margin: 50px auto;
-    min-width: 900px; /* Increased max-width to make the box larger */
-    padding: 30px; /* Increased padding for more space inside the box */
-    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+    max-width: 800px;
+    padding: 20px;
+    background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-#Left, #Right {
+#Left2, #Right2 {
     flex: 1;
     margin: 0 20px;
 }
 
-#Left span, #Right span {
+#Left2 span, #Right2 span {
     display: block;
     margin-bottom: 5px; /* Further reduced margin */
-    color: black;
-    font-size: 18px;
+    color: #555;
+    font-size: 16px;
+    font-weight: 600;
 }
 
-#Left input[type="text"], #Right span span {
+#Left2 input[type="text"], #Right2 input[type="text"] {
     width: 100%;
     padding: 8px; /* Reduced padding */
     margin-top: 1px; /* Further reduced spacing */
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
-    /*background-color: rgba(255, 255, 255, 0.2);*/
     background-color: #f9f9f9;
 }
 
-#Left input[type="text"]:focus {
+#Left2 input[type="text"]:focus {
     border-color: #007bff;
     background-color: white;
-    
 }
 
-#Right span span {
+#Right2 span span {
     display: block;
     padding: 8px; /* Reduced padding */
     background-color: #f9f9f9;
@@ -88,27 +67,17 @@ h2 {
 #btns {
     display: flex;
     justify-content: center;
-    gap: 20px; /* Added gap between buttons */
-    margin-top: 0px;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
 }
 
 #btns input[type="submit"] {
-
-    padding: 10px 10px;
-    margin: 0 250px;
-    font-weight: 800; /* Bold text */
     margin: 0 10px;
     font-size: 16px;
-
     color: white;
     background-color: #007bff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    text-align: center;
-    font-size: 0.9rem;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #btns input[type="submit"]:hover {
@@ -123,6 +92,7 @@ h2 {
 #back:hover {
     background-color: #5a6268;
 }
+
 
 /* Responsive design */
 @media (max-width: 768px) {

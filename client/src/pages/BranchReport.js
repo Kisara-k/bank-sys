@@ -27,12 +27,20 @@ export default function BranchReport(){
                     <th>Transaction date</th>
                 </thead>
                 {transaction_report.map((val,key)=>{
+                    let textColor;
+                    if (val.type === 'withdrawal') {
+                        textColor = 'red';
+                    } else if (val.type === 'transfer') {
+                        textColor = 'rgba(233, 161, 17, 0.765)';
+                    } else if (val.type === 'deposit') {
+                        textColor = 'rgb(29, 200, 29)';
+                    }
                     return(
                         <tr key={key}>
                             <td>{val.transaction_id}</td>
                             <td>{val.account_id}</td>
                             <td>{val.amount}</td>
-                            <td>{val.type}</td>
+                            <td style={{color:textColor,fontWeight:"600"}}>{val.type}</td>
                             <td>{val.receive_transaction_id}</td>
                             <td>{val.date}</td>
                         </tr>

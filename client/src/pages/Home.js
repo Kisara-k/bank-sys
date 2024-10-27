@@ -22,7 +22,7 @@ export default function Home() {
             const token = response.data.token; 
             const result = response.data.result;
             console.log("token is ",token)
-            console.log("result is ",result);// Extract the token from the response
+            console.log("result is ",result.length);// Extract the token from the response
             
             // Check if the result array is empty, indicating an invalid login
             if (result.length === 0) {
@@ -40,6 +40,7 @@ export default function Home() {
             }
         }).catch((error) => {
             console.log(error); // Log any errors during the request
+            document.getElementById("err").style.display = "block";
         });
     };
 
@@ -89,7 +90,7 @@ export default function Home() {
                         </div>
 
                         <div id="err" style={{ display: 'none' }}>
-                            <span id="errMsg">*Enter correct username and password. Try again.</span>
+                            <span id="errMsg">Enter correct username and password. Try again.</span>
                         </div>
 
                         <button type="submit" onClick={log} className="btn btn-primary" id="btn">Login</button>

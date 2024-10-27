@@ -59,6 +59,7 @@ export const getTransactionReport = (req, res) => {
 };
 
 export const fixDeposit = (req, res) => {
+    console.log("sari");
     const { acc_id, plan, date, amount, acc_type } = req.body;
 
     console.log(acc_id, plan, date, amount, acc_type);

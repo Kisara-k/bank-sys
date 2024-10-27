@@ -117,7 +117,6 @@ select{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: gray;
 }
-
 #amountC{
     width: 15rem;
     border: 1px solid grey;
@@ -139,22 +138,6 @@ select{
     right: 8rem;
     height: 25rem;
 }
-
-#transfer{
-    background-color: white;
-    border-radius: 10px;
-    margin-top: 3rem;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    color: gray;
-    width: 20rem;
-    padding-left: 2rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    position: relative;
-    right: 8rem;
-    height: 25rem;
-}
-
 #T1{
     margin-left:3rem ;
     font-weight: 600;
@@ -196,19 +179,11 @@ select{
     border: 1px solid rgb(50, 50, 210);
     color: white;
     border-radius: 5px;
-
     font-family:Verdana, Geneva, Tahoma, sans-serif;
     font-size: 0.7rem;
     padding: 0.3rem;
     font-weight: 600;
     margin-left: 11rem;
-
-    font-family:Arial, Helvetica, sans-serif;
-    font-size: 0.7rem;
-    padding: 0.3rem;
-    font-weight: 600;
-    margin-left: 9rem;
-
 }
 #transferBtn:hover{
     background-color: black;
@@ -320,7 +295,6 @@ select{
     font-size: small;
     font-family: monospace;
 }
-
 
 #sucImg{
     width: 3rem;

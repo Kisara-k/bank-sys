@@ -14,11 +14,6 @@ import Lateloan from './pages/Lateloan';
 
 
 import LoanStatus from './pages/loanstatus';
-
-import LoanApprove from './pages/LoanApprove';
-import NicDetail from './pages/NicDetail';
-import RegDetail from './pages/RegDetail';
-
 import LoanApprove from './pages/LoanApprove';
 import NicDetail from './pages/NicDetail';
 import RegDetail from './pages/RegDetail';

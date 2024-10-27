@@ -86,9 +86,21 @@
     margin-left: 16.3rem;
 }
 #errMsg{
-    color: red;
+    color: rgb(34, 34, 34);
 }
 #err{
+    padding: 0.8rem 1.5rem;
+    background-color: rgb(255, 204, 204);
+    width: 22rem;
+    font-weight: 600;
+    color: rgb(34, 34, 34); 
+    border-radius: 8px;
+    margin-top: 2.5rem;
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     display: none;
 }
 

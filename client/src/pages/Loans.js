@@ -112,21 +112,17 @@ export default function Loans() {
             </div>
 
             <div className="row" id="oprionBtns">
-                <div className="col-sm-4" id="installments1">
-
-                    <input type="button" id="installmentBtn" className="btn-btn-primary" value="loan installments" />
+                <div className="row" id="installments2">
+                    <div className="col-sm-4">
+                        <Link to="/loan-status">
+                            <input type="button" id="statustBtn" className="btn-btn-primary" value="loan status" />
+                        </Link>
+                    </div>
+                    <div className="col-sm-4">
+                        <input type="button" id="installmentBtn" className="btn-btn-primary" value="Pay Loan Installments" onClick={handleInstallmentClick} />
+                    </div>
                 </div>
-                <div className="col-sm-4" id="installments2">
-                    <Link to="/loan-status">
-                        <input type="button" id="statustBtn" className="btn-btn-primary" value="loan status" />
-                    </Link>
-
-                    <input type="button" id="installmentBtn" className="btn-btn-primary" value="Pay Loan Installments" onClick={handleInstallmentClick} />
-                </div>
-                <div className="col-sm-4" id="installments2">
-                    <input type="button" id="statustBtn" className="btn-btn-primary" value="loan status" />
-
-                </div>
+                
             </div>
 
             <div id="loanform">

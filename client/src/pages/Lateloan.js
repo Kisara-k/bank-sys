@@ -23,7 +23,7 @@ export default function BranchReport() {
             // Fetch branch transaction report from the server with authorization
             Axios.get("http://localhost:3002/branch_report", {
                 headers: {
-                    Authorization: Bearer ${token}
+                    Authorization: `Bearer ${token}`
                 }
             }).then((response) => {
                 setReport(response.data);

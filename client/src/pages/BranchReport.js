@@ -15,14 +15,11 @@ export default function BranchReport() {
                 return;
             }
             try {
-                const response = await Axios.get("http://localhost:3002/report/branch", {
-                    headers: {
-                        Authorization: `Bearer ${token}` // Add token to headers
-                    }
-                });
-                
-                if (response.data) {
-                    setReport(response.data); // Assuming your API returns the report in the response data
+                const report=localStorage.getItem("branch_transaction");
+                if(report){
+                    const branch_report=JSON.parse(report);
+                    setReport(branch_report);
+                    console.log(transaction_report);
                 }
             } catch (error) {
                 console.error("Error fetching branch report:", error);

@@ -5,8 +5,6 @@ import cors from 'cors';
 
 import db from './config/database.js'; // Ensure this file exports a configured database connection
 
-
-import db from './config/database.js';
 import jwt from 'jsonwebtoken';
 
 const app = express();
@@ -396,6 +394,7 @@ app.get('/loans/due-installments/:customer_id', (req, res) => {
 
         // The first result set from the procedure contains the installments
         const installments = results[0]; // Extract the first element
+        console.log(installments);
 
         // Check if installments is an array and send response
         if (Array.isArray(installments)) {
@@ -422,6 +421,7 @@ app.get('/pay-installment/:loan_id/:installmentId', (req, res) => {
         if (err) {
             console.error('Error executing payment procedure:', err);
             return res.status(500).json({ error:'Insufficient funds for installment payment' });
+
         }
 
         // Then, retrieve the output parameter

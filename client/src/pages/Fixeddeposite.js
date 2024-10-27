@@ -30,7 +30,7 @@ export default function Fixeddeposite() {
 
     const FixedDeposite = () => {
         console.log(getID, acc_id);
-        if (getID === acc_id) {
+        if (getID == acc_id) {
             const token = localStorage.getItem("token"); // Retrieve token from localStorage
             if (isTokenExpired(token)) {
                 alert("Session expired. Please log in again.");

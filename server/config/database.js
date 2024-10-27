@@ -8,8 +8,6 @@ const db = createConnection({
     password: process.env.DB_PASSWORD || "20020927",
     database: process.env.DB_NAME || "project",
 
-    password: process.env.DB_PASSWORD || "2001",
-    database: process.env.DB_NAME || "boc",
 });
 
 db.connect((err) => {

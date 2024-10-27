@@ -39,7 +39,7 @@ export default function Profile(){
 
                 <div id="Right" class="col-sm-4">
                     {userDetail.map((val,key)=>(
-                        <><span >Account no : <span id="ac" >{val.account_id}</span></span><br></br><br></br>
+                        <><span >Account no : <span  id="ac">{val.account_id}</span></span><br></br><br></br>
                         <span >Account type : <span id="ac_type" >{val.type}</span></span><br></br><br></br>
                         <span >NIC no : <span id="nic"> {val.nic}</span></span><br></br><br></br>
                         <span >Branch ID : <span id="bid" >{val.branch_id}</span></span><br></br>

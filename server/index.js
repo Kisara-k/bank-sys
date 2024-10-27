@@ -44,21 +44,23 @@ app.get('/api/accounts', (req, res) => {
 
 
 // Endpoint to get loans by accountId
-app.get('/api/loans', (req, res) => {
-    const { accountId } = req.query;
-    db.query('SELECT * FROM loans WHERE accountId = ?', [accountId], (error, results) => {
+app.post('/loans', (req, res) => {
+    const accountId=req.body.accountId;
+
+    db.query('SELECT * FROM loans WHERE account_id = ?', [accountId], (error, results) => {
         if (error) {
             console.error('Error fetching loan data:', error);
             return res.status(500).json({ message: 'Internal server error' });
         }
-        res.json(results);
+        res.send(results);
+        
     });
 });
 
 // Endpoint to apply for a loan
-app.post('/api/apply-loan', (req, res) => {
+app.post('/apply-loan', (req, res) => {
     const { accountNo, loanAmount, duration } = req.body;
-
+    console.log(accountNo,loanAmount,duration);
     // Validate input
     if (!accountNo || !loanAmount || !duration) {
         return res.status(400).json({ message: 'Missing required fields' });

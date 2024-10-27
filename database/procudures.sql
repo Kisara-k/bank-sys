@@ -546,7 +546,7 @@ DELIMITER ;
 
 
 
--------loan
+--------------------loan
 CREATE DEFINER=`root`@`localhost` PROCEDURE `apply_online_loan`(
     IN accountNo INT,
     IN loan_amount DECIMAL(15, 2),

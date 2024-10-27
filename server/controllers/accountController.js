@@ -30,7 +30,7 @@ export const withdraw = (req, res) => {
 export const deposit = (req, res) => {
     const { deposite_amount, Acc_ID, Acc_type } = req.body;
 
-    const depositProcedure = `CALL deposit(?, ?, @status_d)`;
+    const depositProcedure = `CALL deposite(?, ?, @status_d)`;
     db.execute(depositProcedure, [deposite_amount, Acc_ID], (err, result) => {
         if (err) {
             console.error("Error in deposit:", err);

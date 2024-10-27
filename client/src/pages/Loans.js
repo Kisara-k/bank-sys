@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import './Loans.css';
 
 export default function Loans() {
+    const email = "user@example.com"; // Assume this is set when the user logs in
     const [accountNo, setAccountNo] = useState('');
     const [loanType, setLoanType] = useState('Personal loan');
     const [duration, setDuration] = useState('');
     const [loanAmount, setLoanAmount] = useState('');
-    const [password, setPassword] = useState('');
+    const [loanReason, setLoanReason] = useState(''); // New state for loan reason
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
     const MAX_LOAN_AMOUNT = 500000; // Maximum loan amount
-    const FD_VALUE = 1000000; // Example fixed deposit value
-    const MAX_LOAN_LIMIT = FD_VALUE * 0.6; // 60% of FD value
+    const navigate = useNavigate(); // Initialize useNavigate hook
 
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent the default form submission
@@ -23,7 +23,7 @@ export default function Loans() {
         setSuccessMessage('');
 
         // Validation checks
-        if (!accountNo || !loanAmount || !password || !duration) {
+        if (!accountNo || !loanAmount || !duration || !loanReason) {
             setErrorMessage('Please fill in all required fields.');
             return;
         }
@@ -39,13 +39,8 @@ export default function Loans() {
             return;
         }
 
-        if (loanAmount > MAX_LOAN_LIMIT) {
-            setErrorMessage(`Loan amount cannot exceed ${MAX_LOAN_LIMIT}.`);
-            return;
-        }
-
         if (loanAmount > MAX_LOAN_AMOUNT) {
-            setErrorMessage(`Loan amount cannot exceed ${MAX_LOAN_AMOUNT}.`);
+            setErrorMessage('Loan amount cannot exceed ' + MAX_LOAN_AMOUNT + '.');
             return;
         }
 
@@ -58,15 +53,17 @@ export default function Loans() {
         const response = await fetch('http://localhost:3002/apply-loan', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("token")}` // Add token to Authorization header
             },
-            body: JSON.stringify({ 
+            body: JSON.stringify({  
                 accountNo, 
                 loanAmount, 
-                duration: parseInt(duration) // Use the integer value for duration
+                duration: parseInt(duration), // Use the integer value for duration
+                loanReason // Include loan reason in the request body
             }), 
         });
-
+        
         const data = await response.json();
 
         if (response.ok) {
@@ -74,6 +71,10 @@ export default function Loans() {
         } else {
             setErrorMessage(data.message || 'Something went wrong. Please try again.');
         }
+    };
+
+    const handleInstallmentClick = () => {
+        navigate('/loan-installments'); // Navigate to the loan installments page
     };
 
     return (
@@ -112,12 +113,19 @@ export default function Loans() {
 
             <div className="row" id="oprionBtns">
                 <div className="col-sm-4" id="installments1">
+
                     <input type="button" id="installmentBtn" className="btn-btn-primary" value="loan installments" />
                 </div>
                 <div className="col-sm-4" id="installments2">
                     <Link to="/loan-status">
                         <input type="button" id="statustBtn" className="btn-btn-primary" value="loan status" />
                     </Link>
+
+                    <input type="button" id="installmentBtn" className="btn-btn-primary" value="Pay Loan Installments" onClick={handleInstallmentClick} />
+                </div>
+                <div className="col-sm-4" id="installments2">
+                    <input type="button" id="statustBtn" className="btn-btn-primary" value="loan status" />
+
                 </div>
             </div>
 
@@ -132,17 +140,6 @@ export default function Loans() {
                             id="accNo" 
                             value={accountNo} 
                             onChange={(e) => setAccountNo(e.target.value)} 
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="password">Enter Password:</label>
-                        <input 
-                            type="password" 
-                            className="form-control" 
-                            id="password" 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
                         />
                     </div>
 
@@ -178,6 +175,17 @@ export default function Loans() {
                             id="lamount" 
                             value={loanAmount} 
                             onChange={(e) => setLoanAmount(e.target.value)} 
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="reason">Reason for loan:</label>
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            id="reason" 
+                            value={loanReason} 
+                            onChange={(e) => setLoanReason(e.target.value)} 
                         />
                     </div>
 

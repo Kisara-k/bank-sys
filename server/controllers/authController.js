@@ -1,6 +1,8 @@
 // controllers/authController.js
 import db from '../config/database.js';
+import jwt from 'jsonwebtoken';
 
+const secretKey = 'yourSecretKey';
 export const login = (req, res) => {
     const { username, passkey } = req.body;
 
@@ -18,7 +20,13 @@ export const login = (req, res) => {
         }
 
         if (result.length !== 0) {
-            return res.send(result);
+            const user = result[0];
+            const token = jwt.sign(
+                { userId: user.customer_id, role: 'customer' },
+                secretKey,
+                { expiresIn: '20m' }
+            );
+            return res.send({ token, result });
         } else {
             const organizationQuery = `
                 SELECT * FROM customer 
@@ -33,8 +41,14 @@ export const login = (req, res) => {
                 }
 
                 if (result.length !== 0) {
+                    const user = result[0];
+                    const token = jwt.sign(
+                        { userId: user.customer_id, role: 'organization' },
+                        secretKey,
+                        { expiresIn: '20m' }
+                    );
                     console.log(result[0].balance);
-                    return res.send(result);
+                    return res.send({ token, result });
                 } else {
                     return res.status(401).send({ error: "Invalid credentials." });
                 }
@@ -58,8 +72,14 @@ export const employeeLogin = (req, res) => {
         }
 
         if (result.length !== 0) {
+            const user = result[0];
+                    const token = jwt.sign(
+                        { userId: user.customer_id, role: 'organization' },
+                        secretKey,
+                        { expiresIn: '20000m' }
+                    );
             console.log("Success");
-            return res.send(result);
+            return res.send({ token, result });
         } else {
             return res.status(401).send({ error: "Invalid credentials." });
         }

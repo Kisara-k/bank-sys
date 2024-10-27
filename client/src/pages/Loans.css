@@ -63,7 +63,7 @@
     border: 1px solid black;
     padding: 3rem;
     color: rgb(2, 2, 2);
-    background-color: rgba(230, 241, 245, 0.8); /* Light blue with 80% opacity */
+    background-color: #f0f0f0;
 }
 
 #loanform label {
@@ -221,6 +221,11 @@
     #oprionBtns {
         flex-direction: column; /* Stack buttons vertically */
         gap: 1rem;
+    }
+
+    #reqBtn {
+        font-size: 1rem;
+
     }
 
     #reqBtn {

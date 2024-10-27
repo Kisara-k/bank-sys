@@ -1,11 +1,17 @@
 import React from "react";
 import { useState,useEffect } from "react";
 import "./Profile.css";
-
+import isTokenExpired from "./token_expire";
 export default function Profile(){
     const [userDetail,setDetail]=useState([]);
 
     useEffect(()=>{
+        const token = localStorage.getItem("token"); // Retrieve token from localStorage
+            if (isTokenExpired(token)) {
+                alert("Session expired. Please log in again.");
+                window.location.href = "/";
+                return;
+            }
         const getData=localStorage.getItem("logdetails");
         if(getData){
             const DataArray=JSON.parse(getData);

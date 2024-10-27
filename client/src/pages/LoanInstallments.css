@@ -1,0 +1,70 @@
+/* LoanInstallment.css */
+
+.loan-installment-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+  
+  .loan-installment-container h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .loan-installment-container .loan-details {
+    margin-bottom: 20px;
+  }
+  
+  .loan-installment-container .loan-details input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .loan-installment-container .installment-list {
+    margin-top: 20px;
+  }
+  
+  .loan-installment-container .installment-item {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .loan-installment-container .installment-item.pending {
+    background-color: #fff3cd;
+  }
+  
+  .loan-installment-container .installment-item.paid {
+    background-color: #d4edda;
+  }
+  
+  .loan-installment-container .installment-item button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .loan-installment-container .installment-item button:hover {
+    background-color: #0056b3;
+  }
+  
+  .error-message {
+    color: red;
+    margin-top: 10px;
+  }
+  
+  .success-message {
+    color: green;
+    margin-top: 10px;
+  }

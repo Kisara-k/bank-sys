@@ -1,0 +1,107 @@
+/* Profile.css */
+
+/* General styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #eef4ff;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 30px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Container for the profile details */
+#set2 {
+    display: flex;
+    justify-content: center;
+    margin: 50px auto;
+    max-width: 800px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#Left2, #Right2 {
+    flex: 1;
+    margin: 0 20px;
+}
+
+#Left2 span, #Right2 span {
+    display: block;
+    margin-bottom: 5px; /* Further reduced margin */
+    color: #555;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+#Left2 input[type="text"], #Right2 input[type="text"] {
+    width: 100%;
+    padding: 8px; /* Reduced padding */
+    margin-top: 1px; /* Further reduced spacing */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+}
+
+#Left2 input[type="text"]:focus {
+    border-color: #007bff;
+    background-color: white;
+}
+
+#Right2 span span {
+    display: block;
+    padding: 8px; /* Reduced padding */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Buttons */
+#btns {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+#btns input[type="submit"] {
+    margin: 0 10px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#btns input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Specific styles for the 'Back' button */
+#back {
+    background-color: #6c757d;
+}
+
+#back:hover {
+    background-color: #5a6268;
+}
+
+
+/* Responsive design */
+@media (max-width: 768px) {
+    #set {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #Left, #Right {
+        margin: 20px 0;
+    }
+}

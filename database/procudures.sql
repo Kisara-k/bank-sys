@@ -364,3 +364,67 @@ BEGIN
     END IF;
 
 END;
+
+-- loan installment
+DELIMITER //
+CREATE PROCEDURE calculate_loan_installment(IN loanID INT)
+BEGIN
+    DECLARE loan_amount DECIMAL(15, 2);
+    DECLARE rate DECIMAL(4, 2);
+    DECLARE duration INT;
+    DECLARE total_interest DECIMAL(15, 2);
+    DECLARE monthly_installment DECIMAL(15, 2);
+    DECLARE i INT DEFAULT 1;
+
+    -- Get loan details
+    SELECT amount, rate, duration_months INTO loan_amount, rate, duration
+    FROM loans WHERE loan_id = loanID;
+
+    -- Prevent division by zero
+    IF duration > 0 THEN
+        -- Calculate monthly installment
+        SET total_interest = (loan_amount * (rate / 100) * (duration / 12));
+        SET monthly_installment = (loan_amount + total_interest) / duration;
+
+        -- Insert the calculated installments into loan_installment_log table
+        WHILE i <= duration DO
+            INSERT INTO loan_installment_log (loan_id, installment_id, due_date, amount, status)
+            VALUES (loanID, i, DATE_ADD(CURDATE(), INTERVAL i MONTH), monthly_installment, 'pending');
+            SET i = i + 1;
+        END WHILE;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Duration cannot be zero.';
+    END IF;
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE TRIGGER create_loan_installments AFTER INSERT ON loans
+FOR EACH ROW
+BEGIN
+    CALL calculate_loan_installment(NEW.loan_id);
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE pay_installment(IN installmentID INT, IN loanID INT)
+BEGIN
+    DECLARE total_paid INT;
+    UPDATE loan_installment_log
+    SET payment_date = NOW(), status = 'paid'
+    WHERE installment_id = installmentID AND loan_id = loanID;
+
+    -- Check if all installments are paid
+
+    SELECT COUNT(*) INTO total_paid
+    FROM loan_installment_log
+    WHERE loan_id = loanID AND status = 'pending';
+
+    IF total_paid = 0 THEN
+        UPDATE loans
+        SET status = 'paid'
+        WHERE loan_id = loanID;
+    END IF;
+END //
+DELIMITER ;

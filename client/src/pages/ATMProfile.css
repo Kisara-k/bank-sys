@@ -1,43 +1,39 @@
 body {
     background-image: url('./img/ATM 1.webp'); /* Add your image path here */
     background-size: cover; /* Make the image cover the container */
-    background-position: right; /* Center the background image */
+    background-position: center right; /* Position image to the right */
     background-repeat: no-repeat; /* Prevent the background image from repeating */
     color: white; /* Set text color to contrast with the background */
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    justify-content: flex-end; /* Align content to the right */
     height: 100vh;
     margin: 0;
+    padding: 20px; /* Add padding for spacing */
 }
 
 .atm-profile-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start; /* Align items to the left within the container */
     padding: 20px;
     max-width: 500px;
-    margin: 0 auto;
-    background-size: cover; /* Make the image cover the container */
-    background-position: center; /* Center the background image */
-    background-repeat: no-repeat; /* Prevent the background image from repeating */
-    color: white; /* Set text color to contrast with the background */
+    background: rgba(255, 255, 255, 0.8); /* Add a semi-transparent background for readability */
+    border-radius: 10px;
+    color: #333; /* Text color to contrast against the background */
 }
 
 .atm-profile-title {
     font-size: 4.5rem; /* Increased font size */
     color: #333;
-    margin: 40px 0 20px; /* Added margin above the title */
-    text-align: center; /* Centered the text */
+    margin: 0 0 20px; /* Margin below the title */
+    text-align: left; /* Align title text to the left */
 }
 
 .atm-buttons {
     display: flex;
     flex-direction: column; /* Stack buttons vertically */
-    align-items: flex-end; /* Align buttons to the right */
+    align-items: flex-start; /* Align buttons to the left */
     gap: 20px; /* Space between buttons */
-    margin-top: 20px;
 }
 
 .atm-button-link {

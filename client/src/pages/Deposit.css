@@ -53,17 +53,20 @@ h2 {
     font-size: 1rem;
 }
 
+
 .otp-button,
 .deposit-button {
-    width: 100%;
+    width: 80%;
     padding: 0.75rem;
     background-color: #4CAF50;
     color: white;
     border: none;
+    align-self: center;
     border-radius: 4px;
     font-size: 1rem;
     cursor: pointer;
     margin-top: 1rem;
+    margin-left: 2rem;
 }
 
 .otp-button:hover,

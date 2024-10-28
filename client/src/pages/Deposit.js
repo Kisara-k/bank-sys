@@ -55,7 +55,7 @@ const Deposit = () => {
             return;
         }
 
-        Axios.post("http://localhost:3002/account/deposit", { amount: depositAmount }, {
+        Axios.post("http://localhost:3002/account/deposit", { amount: depositAmount, otp }, {
             headers: { Authorization: `Bearer ${token}` }
         })
         .then(() => {
@@ -80,7 +80,7 @@ const Deposit = () => {
                     placeholder="Account Number"
                     className="input-field"
                 />
-               <div style={{ marginBottom: '1rem' }}></div> {/* Added gap */}
+                <div style={{ marginBottom: '1rem' }}></div> {/* Added gap */}
                 <label className="input-label">Password</label>
                 <input
                     type="password"
@@ -92,11 +92,23 @@ const Deposit = () => {
 
                 <label className="input-label">Deposit Amount</label>
                 <input
-                    type="Deposit Amount"
+                    type="text"
                     value={depositAmount}
                     onChange={(e) => setDepositAmount(e.target.value)}
                     placeholder="Amount"
                     className="input-field"
+                />
+                
+                <button onClick={handleSendOtp} className="otp-button">Get OTP Code</button>
+                
+               
+                <input
+                    type="text"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    placeholder="Enter OTP"
+                    className="input-field"
+                    disabled={!otpSent}
                 />
                 
                 <button onClick={handleDeposit} className="deposit-button">Submit</button>

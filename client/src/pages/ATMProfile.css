@@ -1,7 +1,7 @@
 body {
     background-image: url('./img/ATM 1.webp'); /* Add your image path here */
     background-size: cover; /* Make the image cover the container */
-    background-position: center; /* Center the background image */
+    background-position: right; /* Center the background image */
     background-repeat: no-repeat; /* Prevent the background image from repeating */
     color: white; /* Set text color to contrast with the background */
     display: flex;
@@ -26,7 +26,7 @@ body {
 }
 
 .atm-profile-title {
-    font-size: 2.5rem; /* Increased font size */
+    font-size: 4.5rem; /* Increased font size */
     color: #333;
     margin: 40px 0 20px; /* Added margin above the title */
     text-align: center; /* Centered the text */
@@ -34,8 +34,9 @@ body {
 
 .atm-buttons {
     display: flex;
-    gap: 15px;
-    justify-content: center;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: flex-end; /* Align buttons to the right */
+    gap: 20px; /* Space between buttons */
     margin-top: 20px;
 }
 

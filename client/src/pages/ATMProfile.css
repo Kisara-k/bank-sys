@@ -1,43 +1,42 @@
-.atm-profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.atm-profile-title {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.atm-buttons {
-    display: flex;
-    gap: 15px;
-}
-
-.atm-profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    max-width: 500px;
-    margin: 0 auto;
-     /* Add your image path here */
-    background-size: cover; /* Make the image cover the container */
-    background-position: center; /* Center the background image */
-    background-repeat: no-repeat; /* Prevent the background image from repeating */
-    color: white; /* Set text color to contrast with the background */
-}
-
 body {
     background-image: url('./img/ATM 1.webp'); /* Add your image path here */
     background-size: cover; /* Make the image cover the container */
     background-position: center; /* Center the background image */
     background-repeat: no-repeat; /* Prevent the background image from repeating */
     color: white; /* Set text color to contrast with the background */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    margin: 0;
+}
+
+.atm-profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    background-size: cover; /* Make the image cover the container */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
+    color: white; /* Set text color to contrast with the background */
+}
+
+.atm-profile-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.atm-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 .atm-button-link {

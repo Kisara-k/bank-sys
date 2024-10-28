@@ -13,13 +13,14 @@ const ATMButton = ({ to, label }) => (
 
 const ATMProfile = () => {
     return (
-        <div className="atm-profile-container">
+        <div id="atm-page" className="atm-profile-container profile-page">
             <header>
                 <h1 className="atm-profile-title">ATM</h1>
             </header>
             <section className="atm-buttons">
                 <ATMButton to="/deposit" label="Deposit" />
                 <ATMButton to="/withdraw" label="Withdraw" />
+                <ATMButton to="/account" label="Back to Account" /> {/* Added Back Button */}
             </section>
         </div>
     );

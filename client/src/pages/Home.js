@@ -53,10 +53,7 @@ export default function Home() {
             <div className="row">
                 <div className="col-sm-4" id="left">
                     <nav id="nav">
-                        <Link className="link" to="/">Home</Link>
-                        <Link className="link" to="/branches">Branches</Link>
-                        <Link className="link" to="/loan">Loans</Link>
-                        <Link className="link" to="/contact">Contact Us</Link>
+                        
                         <input type="button" value="BMS" onClick={gotoBMS} id="BMS"></input>
                     </nav>
                 </div>

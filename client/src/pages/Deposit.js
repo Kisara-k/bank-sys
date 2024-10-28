@@ -80,7 +80,7 @@ const Deposit = () => {
                     placeholder="Account Number"
                     className="input-field"
                 />
-
+               <div style={{ marginBottom: '1rem' }}></div> {/* Added gap */}
                 <label className="input-label">Password</label>
                 <input
                     type="password"
@@ -88,25 +88,17 @@ const Deposit = () => {
                     className="input-field"
                 />
                 
+                <div style={{ marginBottom: '1rem' }}></div> {/* Added gap */}
+
+                <label className="input-label">Deposit Amount</label>
                 <input
-                    type="text"
+                    type="Deposit Amount"
                     value={depositAmount}
                     onChange={(e) => setDepositAmount(e.target.value)}
-                    placeholder="Enter deposit amount"
+                    placeholder="Amount"
                     className="input-field"
                 />
-                <button onClick={handleSendOtp} className="otp-button" disabled={otpSent}>
-                    {otpSent ? "OTP Sent" : "Send OTP"}
-                </button>
-                {otpSent && (
-                    <input
-                        type="text"
-                        value={otp}
-                        onChange={(e) => setOtp(e.target.value)}
-                        placeholder="Enter OTP"
-                        className="input-field"
-                    />
-                )}
+                
                 <button onClick={handleDeposit} className="deposit-button">Submit</button>
                 {message.text && (
                     <p className={message.type === "success" ? "success-message" : "error-message"}>

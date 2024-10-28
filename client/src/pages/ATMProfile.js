@@ -15,7 +15,7 @@ const ATMProfile = () => {
     return (
         <div className="atm-profile-container">
             <header>
-                <h1 className="atm-profile-title">ATM Profile</h1>
+                <h1 className="atm-profile-title">ATM</h1>
             </header>
             <section className="atm-buttons">
                 <ATMButton to="/deposit" label="Deposit" />

@@ -9,7 +9,7 @@ DO
 
 ----------------update monthly rates
 CREATE EVENT update_monthly_rates 
-ON SCHEDULE EVERY 1 MINUTE
+ON SCHEDULE EVERY 30 DAY 
 STARTS '2024-10-13 00:00:00' ON COMPLETION PRESERVE 
 ENABLE 
 DO UPDATE account 

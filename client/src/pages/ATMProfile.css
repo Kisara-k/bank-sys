@@ -18,6 +18,28 @@
     gap: 15px;
 }
 
+.atm-profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+     /* Add your image path here */
+    background-size: cover; /* Make the image cover the container */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
+    color: white; /* Set text color to contrast with the background */
+}
+
+body {
+    background-image: url('./img/ATM 1.webp'); /* Add your image path here */
+    background-size: cover; /* Make the image cover the container */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
+    color: white; /* Set text color to contrast with the background */
+}
+
 .atm-button-link {
     text-decoration: none;
 }

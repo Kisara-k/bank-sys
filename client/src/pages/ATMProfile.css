@@ -1,25 +1,34 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
 #atm-page {
     background-image: url('./img/ATM 1.webp'); /* Ensure the image path is correct */
     background-size: cover; /* Make the image cover the container */
-    background-position: center right; /* Position image to the right */
+    background-position: center; /* Center the background image */
     background-repeat: no-repeat; /* Prevent the background image from repeating */
-    color: white; /* Set text color to contrast with the background */
+   
     display: flex;
-    justify-content: flex-end; /* Align content to the right */
-    height: 100vh;
-    margin: 0;
-    padding: 20px; /* Add padding for spacing */
+    flex-direction: column; /* Stack children vertically */
+    align-items: flex-end; /* Align content to the right */
+    justify-content: flex-start; /* Align content to the top */
+    height: 100vh; /* Ensure the container covers the full viewport height */
+    min-width: 100vw; /* Ensure the container covers the full viewport width */
+    min-height: 100vh; /* Fallback to ensure it covers the full viewport */
+    padding: 20px; /* Add padding to the container */
 }
-
 
 .atm-profile-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Align items to the left within the container */
-    padding: 20px;
+    align-items: flex-end; /* Align items to the right within the container */
+    padding: 2px;
     max-width: 500px;
     background: rgba(255, 255, 255, 0.8); /* Add a semi-transparent background for readability */
-    border-radius: 10px;
+    border-radius: 0px;
     color: #333; /* Text color to contrast against the background */
 }
 
@@ -27,13 +36,13 @@
     font-size: 4.5rem; /* Increased font size */
     color: #333;
     margin: 0 0 20px; /* Margin below the title */
-    text-align: left; /* Align title text to the left */
+    text-align: right; /* Align title text to the right */
 }
 
 .atm-buttons {
     display: flex;
     flex-direction: column; /* Stack buttons vertically */
-    align-items: flex-start; /* Align buttons to the left */
+    align-items: flex-end; /* Align buttons to the right */
     gap: 20px; /* Space between buttons */
 }
 
@@ -42,7 +51,7 @@
 }
 
 .atm-button {
-    padding: 10px 20px;
+    padding: 10px 30px;
     font-size: 1.2rem;
     border: none;
     border-radius: 5px;

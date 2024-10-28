@@ -34,6 +34,7 @@ export default function Bms(){
 
     const [viewOption,setoption]=useState("");
     const [number,setNumber]=useState("");
+    const [reason,setReason]=useState("");
 
     useEffect(()=>{
         const getData=localStorage.getItem("employeeDetail");
@@ -157,7 +158,8 @@ export default function Bms(){
             acc_no:acc_no,
             amount:Amount,
             duration:duration,
-            date:Date
+            date:Date,
+            reason:reason
         }).then((response)=>{
             if(response.data.success===1){
                 document.getElementById("success_loan").style.display="block";
@@ -543,6 +545,10 @@ export default function Bms(){
                     <div id="lduration" className="form-group">
                         <label for="lduration">duration months :</label>
                         <input type="number" onChange={(event)=>{setDuration(event.target.value)}} id="lduration" className="form-control"></input>
+                    </div>
+                    <div className="form group">
+                            <label for="">Reason for loan</label>
+                            <input type="text" id="loanreason" onChange={(event)=>{setReason(event.target.value)}} className="form-control"></input>
                     </div>
                     <div id="date" className="form-group">
                         <label for="date">Date :</label>

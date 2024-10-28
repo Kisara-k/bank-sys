@@ -281,14 +281,10 @@ DELIMITER ;
 
 
 -------------------------online loan apply
-
 DELIMITER //
-CREATE PROCEDURE apply_online_loan(
-    IN accountNo INT,
-    IN loan_amount DECIMAL(15, 2),
-    IN duration INT,
-    OUT loan_status VARCHAR(255)
-)
+create procedure apply_online_loan(IN accountNo int, IN loan_amount decimal(15, 2),
+                                                         IN duration int, IN loanReason varchar(255),
+                                                         OUT loan_status varchar(255))
 BEGIN
     DECLARE fd_amount DECIMAL(15, 2);
     DECLARE savings_account_id INT;
@@ -296,9 +292,9 @@ BEGIN
     DECLARE loan_rate DECIMAL(4, 2);
     DECLARE monthly_installment_ DECIMAL(15, 2);
     DECLARE new_loan_id INT;
-    
+
     -- Exit handler for SQL exceptions
-    
+
 
     -- Start the transaction
     START TRANSACTION;
@@ -349,15 +345,15 @@ BEGIN
             -- Insert the loan into the loans table
             INSERT INTO loans (
                 loan_id, account_id, amount, rate, monthly_installment,
-                duration_months, start_date, type, status
+                duration_months, start_date, type, status,description,months_left
             )
             VALUES (
                 new_loan_id, accountNo, loan_amount, loan_rate,
-                monthly_installment_, duration, CURDATE(), 'online', 'approved'
-            );
+                monthly_installment_, duration, CURDATE(), 'online', 'pending'
+            ,loanReason,duration);
 
             -- Update the balance of the linked savings account
-            UPDATE account
+            UPDATE saving_account
             SET balance = balance + loan_amount
             WHERE account_id = savings_account_id;
 
@@ -372,13 +368,13 @@ BEGIN
         END IF;
     END IF;
 
-END//
-DELIMITER ;
+END //
+DELIMITER;
 
 
 ----------------------------physical loan apply
 DELIMITER //
-CREATE PROCEDURE physical_loan(IN amount DECIMAL(15,2),IN acc_id INT,IN duration INT,IN date DATE,OUT loan_state VARCHAR(50))
+CREATE PROCEDURE physical_loan(IN amount DECIMAL(15,2),IN acc_id INT,IN duration INT,IN date DATE,IN l_description VARCHAR(255),OUT loan_state VARCHAR(50))
 BEGIN
   DECLARE loan_rate DECIMAL(4, 2);
   DECLARE monthly_installment DECIMAL(15, 2);
@@ -389,8 +385,8 @@ BEGIN
   SET monthly_installment= (amount * (1 + (loan_rate / 100))) / duration;
   SELECT IFNULL(MAX(loan_id), 0) + 1 INTO new_loan_id FROM loans;
 
-  INSERT INTO loans(loan_id,amount,account_id,rate,monthly_installment,duration_months,start_date,type,status)
-  VALUES (new_loan_id,amount,acc_id,loan_rate,monthly_installment,duration,date,"physical","pending");
+  INSERT INTO loans(loan_id,amount,account_id,rate,monthly_installment,duration_months,start_date,type,status,description,months_left)
+  VALUES (new_loan_id,amount,acc_id,loan_rate,monthly_installment,duration,date,"physical","pending",l_description,duration);
   SELECT ROW_COUNT() INTO affected_rows;
 
   IF affected_rows > 0 THEN
@@ -546,27 +542,21 @@ DELIMITER ;
 
 
 
--------loan
-CREATE DEFINER=`root`@`localhost` PROCEDURE `apply_online_loan`(
-    IN accountNo INT,
-    IN loan_amount DECIMAL(15, 2),
-    IN duration INT,
-    OUT loan_status VARCHAR(255)
-)
+--------------------online  loan
+DELIMITER //
+create procedure apply_online_loan(IN accountNo int, IN loan_amount decimal(15, 2),
+                                                         IN duration int, IN loanReason varchar(255),
+                                                         OUT loan_status varchar(255))
 BEGIN
     DECLARE fd_amount DECIMAL(15, 2);
     DECLARE savings_account_id INT;
     DECLARE max_loan_amount DECIMAL(15, 2);
     DECLARE loan_rate DECIMAL(4, 2);
-    DECLARE monthly_installment_ INT;
+    DECLARE monthly_installment_ DECIMAL(15, 2);
     DECLARE new_loan_id INT;
 
     -- Exit handler for SQL exceptions
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-        ROLLBACK;
-        SET loan_status = 'Error occurred, transaction failed.';
-    END;
+
 
     -- Start the transaction
     START TRANSACTION;
@@ -577,6 +567,9 @@ BEGIN
     FROM fixed_deposit fd
     WHERE fd.fd_id = accountNo;
 
+    -- Debug output: FD amount and savings account ID
+    SELECT CONCAT('FD amount: ', fd_amount, ', Savings Account ID: ', savings_account_id);
+
     -- Check if the FD exists
     IF fd_amount IS NULL THEN
         SET loan_status = 'No Fixed Deposit account found for this customer.';
@@ -584,6 +577,9 @@ BEGIN
     ELSE
         -- Calculate maximum loan the customer can apply for (60% of FD or max 500,000)
         SET max_loan_amount = LEAST(fd_amount * 0.60, 500000.00);
+
+        -- Debug output: Maximum loan amount
+        SELECT CONCAT('Maximum Loan Amount: ', max_loan_amount);
 
         -- Check if requested loan exceeds maximum allowed
         IF loan_amount > max_loan_amount THEN
@@ -593,26 +589,38 @@ BEGIN
             -- Set loan interest rate (Example: 5%)
             SET loan_rate = 5.00;
 
+            -- Debug output: Loan rate
+            SELECT CONCAT('Loan Rate: ', loan_rate);
+
             -- Calculate the monthly installment
             SET monthly_installment_ = (loan_amount * (1 + (loan_rate / 100))) / duration;
+
+            -- Debug output: Monthly installment
+            SELECT CONCAT('Monthly Installment: ', monthly_installment_);
 
             -- Generate a new loan_id (assuming auto-increment is not used)
             SELECT IFNULL(MAX(loan_id), 0) + 1 INTO new_loan_id FROM loans;
 
+            -- Debug output: New loan ID
+            SELECT CONCAT('New Loan ID: ', new_loan_id);
+
             -- Insert the loan into the loans table
             INSERT INTO loans (
                 loan_id, account_id, amount, rate, monthly_installment,
-                duration_months, start_date, type, status
+                duration_months, start_date, type, status,description,months_left
             )
             VALUES (
                 new_loan_id, accountNo, loan_amount, loan_rate,
                 monthly_installment_, duration, CURDATE(), 'online', 'pending'
-            );
+            ,loanReason,duration);
 
             -- Update the balance of the linked savings account
             UPDATE saving_account
             SET balance = balance + loan_amount
             WHERE account_id = savings_account_id;
+
+            -- Debug output: Loan approved and balance updated
+            SELECT 'Loan approved and savings account balance updated';
 
             -- Commit the transaction
             COMMIT;
@@ -622,4 +630,91 @@ BEGIN
         END IF;
     END IF;
 
-END;
+END//
+DELIMITER ;
+
+
+
+-- loan installment
+DELIMITER //
+CREATE PROCEDURE calculate_loan_installment(IN loanID INT)
+BEGIN
+    DECLARE loan_amount DECIMAL(15, 2);
+    DECLARE rate DECIMAL(4, 2);
+    DECLARE duration INT;
+    DECLARE total_interest DECIMAL(15, 2);
+    DECLARE monthly_installment DECIMAL(15, 2);
+    DECLARE i INT DEFAULT 1;
+
+    -- Get loan details
+    SELECT amount, rate, duration_months INTO loan_amount, rate, duration
+    FROM loans WHERE loan_id = loanID;
+
+    -- Prevent division by zero
+    IF duration > 0 THEN
+        -- Calculate monthly installment
+        SET total_interest = (loan_amount * (rate / 100) * (duration / 12));
+        SET monthly_installment = (loan_amount + total_interest) / duration;
+
+        -- Insert the calculated installments into loan_installment_log table
+        WHILE i <= duration DO
+            INSERT INTO loan_installment_log (loan_id, installment_id, due_date, amount, status)
+            VALUES (loanID, i, DATE_ADD(CURDATE(), INTERVAL i MONTH), monthly_installment, 'pending');
+            SET i = i + 1;
+        END WHILE;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Duration cannot be zero.';
+    END IF;
+END //
+DELIMITER ;
+
+
+------------------------------   get loan installments
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_due_installments`(IN p_customer_id int)
+BEGIN
+    -- Select installments that are pending and due up to the current month
+    SELECT
+    l.description,
+    loan_installment_log.loan_id,
+    loan_installment_log.installment_id,
+    loan_installment_log.due_date,
+    loan_installment_log.amount,
+    loan_installment_log.status
+FROM
+    loan_installment_log
+JOIN
+    loans l ON loan_installment_log.loan_id = l.loan_id
+JOIN
+    fixed_deposit f ON l.account_id = f.account_id
+JOIN
+    account a ON f.account_id = a.customer_id
+WHERE
+    a.customer_id = p_customer_id AND loan_installment_log.status = 'pending' AND loan_installment_log.due_date <= LAST_DAY(CURRENT_DATE);
+END
+
+
+
+
+-------------------------pay loan installments
+DELIMITER //
+CREATE PROCEDURE pay_installment(IN installmentID INT, IN loanID INT)
+BEGIN
+    DECLARE total_paid INT;
+    UPDATE loan_installment_log
+    SET payment_date = NOW(), status = 'paid'
+    WHERE installment_id = installmentID AND loan_id = loanID;
+
+    -- Check if all installments are paid
+
+    SELECT COUNT(*) INTO total_paid
+    FROM loan_installment_log
+    WHERE loan_id = loanID AND status = 'pending';
+
+    IF total_paid = 0 THEN
+        UPDATE loans
+        SET status = 'paid'
+        WHERE loan_id = loanID;
+    END IF;
+END //
+DELIMITER ;
+

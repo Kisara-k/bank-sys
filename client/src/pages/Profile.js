@@ -1,11 +1,17 @@
 import React from "react";
 import { useState,useEffect } from "react";
 import "./Profile.css";
-
+import isTokenExpired from "./token_expire";
 export default function Profile(){
     const [userDetail,setDetail]=useState([]);
 
     useEffect(()=>{
+        const token = localStorage.getItem("token"); // Retrieve token from localStorage
+            if (isTokenExpired(token)) {
+                alert("Session expired. Please log in again.");
+                window.location.href = "/";
+                return;
+            }
         const getData=localStorage.getItem("logdetails");
         if(getData){
             const DataArray=JSON.parse(getData);
@@ -39,7 +45,7 @@ export default function Profile(){
 
                 <div id="Right" class="col-sm-4">
                     {userDetail.map((val,key)=>(
-                        <><span >Account no : <span id="ac" >{val.account_id}</span></span><br></br><br></br>
+                        <><span >Account no : <span  id="ac">{val.account_id}</span></span><br></br><br></br>
                         <span >Account type : <span id="ac_type" >{val.type}</span></span><br></br><br></br>
                         <span >NIC no : <span id="nic"> {val.nic}</span></span><br></br><br></br>
                         <span >Branch ID : <span id="bid" >{val.branch_id}</span></span><br></br>

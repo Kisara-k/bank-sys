@@ -52,15 +52,17 @@ table {
 
 th, td {
     padding: 12px; /* Slightly increased padding for larger touch targets */
-    text-align: left;
+    text-align: center; /* Center-align column content */
     border: 1px solid #ddd;
     color: #333; /* Ensure text color contrasts well */
+    white-space: nowrap; /* Prevent column names from breaking into two lines */
 }
 
 /* Style table headers */
 th {
     background-color: #f1f1f1; /* Subtle background for headers */
     font-weight: bold;
+    text-align: center; /* Center-align column names */
 }
 
 /* Add zebra striping to rows */

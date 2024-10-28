@@ -1,4 +1,3 @@
-/* Target only the ATM page */
 #atm-page {
     background-image: url('./img/ATM 1.webp'); /* Ensure the image path is correct */
     background-size: cover; /* Make the image cover the container */
@@ -12,7 +11,8 @@
     padding: 20px; /* Add padding for spacing */
 }
 
-#atm-page .atm-profile-container {
+
+.atm-profile-container {
     display: flex;
     flex-direction: column;
     align-items: flex-start; /* Align items to the left within the container */
@@ -23,25 +23,25 @@
     color: #333; /* Text color to contrast against the background */
 }
 
-#atm-page .atm-profile-title {
+.atm-profile-title {
     font-size: 4.5rem; /* Increased font size */
     color: #333;
     margin: 0 0 20px; /* Margin below the title */
     text-align: left; /* Align title text to the left */
 }
 
-#atm-page .atm-buttons {
+.atm-buttons {
     display: flex;
     flex-direction: column; /* Stack buttons vertically */
     align-items: flex-start; /* Align buttons to the left */
     gap: 20px; /* Space between buttons */
 }
 
-#atm-page .atm-button-link {
+.atm-button-link {
     text-decoration: none;
 }
 
-#atm-page .atm-button {
+.atm-button {
     padding: 10px 20px;
     font-size: 1.2rem;
     border: none;
@@ -52,16 +52,16 @@
     transition: background-color 0.3s ease;
 }
 
-#atm-page .atm-button:hover {
+.atm-button:hover {
     background-color: #0056b3;
 }
 
 @media (max-width: 600px) {
-    #atm-page .atm-profile-container {
+    .atm-profile-container {
         padding: 10px;
     }
 
-    #atm-page .atm-button {
+    .atm-button {
         font-size: 1rem;
         padding: 8px 16px;
     }

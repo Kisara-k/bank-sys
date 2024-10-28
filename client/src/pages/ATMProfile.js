@@ -20,7 +20,7 @@ const ATMProfile = () => {
             <section className="atm-buttons">
                 <ATMButton to="/deposit" label="Deposit" />
                 <ATMButton to="/withdraw" label="Withdraw" />
-                <ATMButton to="/account" label="Back to Account" /> {/* Added Back Button */}
+                <ATMButton to="/account" label="Back" /> {/* Added Back Button */}
             </section>
         </div>
     );

@@ -2,16 +2,26 @@ import dotenv from 'dotenv'; // Load environment variables
 dotenv.config();
 import express, { json } from 'express';
 import cors from 'cors';
-
-import db from './config/database.js'; // Ensure this file exports a configured database connection
-
 import jwt from 'jsonwebtoken';
+import db from './config/database.js'; // Ensure this file exports a configured database connection
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(json());
+
+// Middleware to verify JWT and extract customer_id
+const verifyToken = (req, res, next) => {
+    const token = req.headers['authorization'];
+    if (!token) return res.sendStatus(403);
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) return res.sendStatus(403);
+        req.customer_id = decoded.customer_id; // Assuming customer_id is stored in the token
+        next();
+    });
+};
 
 // Routes
 import authRoutes from './routes/authRoutes.js';
@@ -31,7 +41,7 @@ app.use('/transaction', transactionRoutes);
 app.get('/api/accounts', (req, res) => {
     const { customerId } = req.query;
     
-    db.query('SELECT accountId FROM accounts WHERE customerId = ?', [customerId], (error, results) => {
+    db.query('SELECT accountId, balance FROM accounts WHERE customerId = ?', [customerId], (error, results) => {
         if (error) {
             console.error('Error fetching account data:', error);
             return res.status(500).json({ message: 'Internal server error' });
@@ -45,10 +55,37 @@ app.get('/api/accounts', (req, res) => {
     });
 });
 
+// Endpoint to handle deposit
+app.post('/account/deposit', verifyToken, (req, res) => {
+    const { amount } = req.body;
+    const customer_id = req.customer_id;
+
+    db.query('UPDATE accounts SET balance = balance + ? WHERE customerId = ?', [amount, customer_id], (error, results) => {
+        if (error) {
+            console.error('Error processing deposit:', error);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+        res.status(200).json({ message: 'Deposit successful' });
+    });
+});
+
+// Endpoint to handle withdrawal
+app.post('/account/withdraw', verifyToken, (req, res) => {
+    const { amount } = req.body;
+    const customer_id = req.customer_id;
+
+    db.query('UPDATE accounts SET balance = balance - ? WHERE customerId = ?', [amount, customer_id], (error, results) => {
+        if (error) {
+            console.error('Error processing withdrawal:', error);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+        res.status(200).json({ message: 'Withdrawal successful' });
+    });
+});
 
 // Endpoint to get loans by accountId
 app.post('/loans', (req, res) => {
-    const accountId=req.body.accountId;
+    const accountId = req.body.accountId;
 
     db.query('SELECT * FROM loans WHERE account_id = ?', [accountId], (error, results) => {
         if (error) {
@@ -56,7 +93,6 @@ app.post('/loans', (req, res) => {
             return res.status(500).json({ message: 'Internal server error' });
         }
         res.send(results);
-        
     });
 });
 
@@ -70,7 +106,7 @@ app.post('/apply-loan', (req, res) => {
     }
 
     // Get token from headers
-    const token = req.headers.authorization?.split(' ')[1]; // Ensure token format is "Bearer <token>"
+    const token = req.headers.authorization?.split(' ')[1]; // Ensure token format "Bearer <token>"
     if (!token) {
         return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
@@ -78,7 +114,7 @@ app.post('/apply-loan', (req, res) => {
     // Decode token to get user ID
     let userId;
     try {
-        const decodedToken = jwt.verify(token, 'yourSecretKey'); // Replace 'yourSecretKey' with your actual secret key
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET); // Replace 'yourSecretKey' with your actual secret key
         userId = decodedToken.userId; // Ensure you use the same key you used when signing the token
     } catch (err) {
         console.log('Invalid token:', err);
@@ -127,260 +163,193 @@ app.post('/apply-loan', (req, res) => {
     );
 });
 
+// Endpoint to handle physical loan application
+app.post("/phy_loan", (req, res) => {
+    const { acc_no, amount, duration, date, reason } = req.body;
 
-// Root Endpoint
-app.get('/', (req, res) => {
-    res.send('Welcome to the Banking API');
-});
+    const physical_loan = `CALL physical_loan(?,?,?,?,?,@loan_state)`;
 
-// Start Server
-const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}.`);
-});
-
-
-
-
-
-app.post("/phy_loan",(req,res)=>{
-    const acc_no=req.body.acc_no;
-    const amount=req.body.amount;
-    const duration=req.body.duration;
-    const date=req.body.date;
-    const reason=req.body.reason;
-
-    const physical_loan=`CALL physical_loan(?,?,?,?,?,@loan_state)`;
-
-    db.execute(physical_loan,[
-        amount,acc_no,duration,date,reason
-    ],(err,result)=>{
-        if(err){
-            console.log("procedure error.",err);
+    db.execute(physical_loan, [amount, acc_no, duration, date, reason], (err, result) => {
+        if (err) {
+            console.log("Procedure error.", err);
             return res.status(500).json({ message: 'Internal server error' });
         }
         console.log(result);
-        db.query("SELECT @loan_state AS state",(err,result)=>{
-            if(err){
-                console.log("error of fetching status",err);
+        db.query("SELECT @loan_state AS state", (err, result) => {
+            if (err) {
+                console.log("Error fetching status", err);
                 return res.status(500).json({ message: 'Internal server error' });
             }
-            const status=result[0].status;
-            res.send({success:1});
-            console.log("success");
-        })
-    })
+            const status = result[0].state;
+            res.send({ success: 1 });
+            console.log("Success");
+        });
+    });
 });
 
-app.post("/loan_list",(req,res)=>{
-    const type=req.body.type;
+// Endpoint to get loan list
+app.post("/loan_list", (req, res) => {
+    const { type } = req.body;
     console.log(type);
-    if(type==="1"){
-        db.execute(`SELECT * FROM loans WHERE type="online"`,
-            (err,result)=>{
-                if(err){
-                    console.log("error getting loan details");
-                    return;
-                }
-                console.log(result);
-                res.send(result);
-                
+    if (type === "1") {
+        db.execute(`SELECT * FROM loans WHERE type="online"`, (err, result) => {
+            if (err) {
+                console.log("Error getting loan details");
+                return;
             }
-        );
-    }
-    else if(type==="2"){
-        db.execute("SELECT * FROM loans WHERE type='physical'",
-            (err,result)=>{
-                if(err){
-                    console.log("error getting loan details");
-                    return;
-                }
-                res.send(result);
-                
-            }
-        );
-    }
-    else if(type==="3"){
-        db.execute("SELECT * FROM loans WHERE type='physical' AND status='pending'",
-            (err,result)=>{
-                if(err){
-                    console.log("error getting loan details");
-                    return;
-                }
-                res.send(result);
-                
-            }
-        );
-    }
-    
-});
-
-app.post("/approve",(req,res)=>{
-    const loan_id=req.body.loan_id;
-    console.log(loan_id);
-    db.execute(`SELECT * FROM loans  WHERE loan_id=? AND loans.type="physical" AND loans.status="pending"`,
-        [loan_id],
-        (err,result)=>{
-            if(err){
-                console.log("error executing ",err);
+            console.log(result);
+            res.send(result);
+        });
+    } else if (type === "2") {
+        db.execute("SELECT * FROM loans WHERE type='physical'", (err, result) => {
+            if (err) {
+                console.log("Error getting loan details");
                 return;
             }
             res.send(result);
-            console.log(result);
-        }
-    )
+        });
+    } else if (type === "3") {
+        db.execute("SELECT * FROM loans WHERE type='physical' AND status='pending'", (err, result) => {
+            if (err) {
+                console.log("Error getting loan details");
+                return;
+            }
+            res.send(result);
+        });
+    }
 });
 
-app.post("/manager_approve",(req,res)=>{
-    const loan_id=req.body.loan_id;
-    const acc_id=req.body.acc_id;
-    const manager_id=req.body.manager_id;
-    console.log(loan_id,acc_id,manager_id);
-    const manager_apply=`CALL approve_loan(?,?,?,@status)`
-    db.execute(manager_apply,
-        [acc_id,loan_id,manager_id],
-        (err,result)=>{
-            if(err){
-                console.log("error procedure call",err);
-                res.send({success:0,message:"loan approve error!"});
+// Endpoint to approve loan
+app.post("/approve", (req, res) => {
+    const { loan_id } = req.body;
+    console.log(loan_id);
+    db.execute(`SELECT * FROM loans WHERE loan_id=? AND loans.type="physical" AND loans.status="pending"`, [loan_id], (err, result) => {
+        if (err) {
+            console.log("Error executing ", err);
+            return;
+        }
+        res.send(result);
+        console.log(result);
+    });
+});
+
+// Endpoint to manager approve loan
+app.post("/manager_approve", (req, res) => {
+    const { loan_id, acc_id, manager_id } = req.body;
+    console.log(loan_id, acc_id, manager_id);
+    const manager_apply = `CALL approve_loan(?,?,?,@status)`;
+    db.execute(manager_apply, [acc_id, loan_id, manager_id], (err, result) => {
+        if (err) {
+            console.log("Error procedure call", err);
+            res.send({ success: 0, message: "Loan approve error!" });
+            return;
+        }
+        console.log(result);
+        db.query("SELECT @status AS status", (err, result) => {
+            if (err) {
+                console.log("Error fetching status", err);
+                return;
+            }
+            const status = result[0].status;
+
+            if (status === 1) {
+                res.send({ success: 1, message: "Loan approve completed" });
+            }
+        });
+    });
+});
+
+// Endpoint to manager reject loan
+app.post("/manager_reject", (req, res) => {
+    const { loan_id, manager_id, acc_id } = req.body;
+    console.log(acc_id, loan_id, manager_id);
+    const reject_loan = `CALL reject_loan(?,?,?,@status)`;
+    db.execute(reject_loan, [loan_id, manager_id, acc_id], (err, result) => {
+        if (err) {
+            console.log("Error executing procedure", err);
+            res.send({ success: 0, message: "Loan reject error!" });
+            return;
+        }
+        console.log(result);
+        db.query("SELECT @status AS status", (err, result) => {
+            if (err) {
+                console.log("Error fetching status", err);
+                return;
+            }
+            const status = result[0].status;
+            if (status === 1) {
+                res.send({ success: 1, message: "Loan reject completed" });
+            }
+        });
+    });
+});
+
+// Endpoint to view information
+app.post("/viewinfo", (req, res) => {
+    const { no: number, viewOption } = req.body;
+    console.log(number, viewOption);
+    if (viewOption === "2") {
+        const nic = `CALL detail_nic(?)`;
+        db.execute(nic, [number], (err, result) => {
+            if (err) {
+                console.log("Error getting data ", err);
+                res.send({ success: 0 });
                 return;
             }
             console.log(result);
-            db.query("SELECT @status AS status",(err,result)=>{
-                if(err){
-                    console.log("error of fetching status",err);
-                    return;
-                }
-                const status=result[0].status;
-
-                if(status===1){
-                    res.send({success:1,message:"loan approve completed"});
-                }
-
-            })
-        }
-    )
-});
-
-app.post("/manager_reject",(req,res)=>{
-    const loan_id=req.body.loan_id;
-    const manager_id=req.body.manager_id;
-    const acc_id=req.body.acc_id;
-    console.log(acc_id,loan_id,manager_id);
-    const reject_loan=`CALL reject_loan(?,?,?,@status)`;
-    db.execute(reject_loan,
-        [loan_id,manager_id,acc_id],
-        (err,result)=>{
-            if(err){
-                console.log("error executing procedure",err);
-                res.send({success:0,message:"loan reject error!"});
+            res.send({ success: 2, outcome: result });
+        });
+    } else if (viewOption === "3") {
+        const nic = `CALL detail_reg_no(?)`;
+        db.execute(nic, [number], (err, result) => {
+            if (err) {
+                console.log("Error getting data ", err);
+                res.send({ success: 0 });
                 return;
             }
             console.log(result);
-            db.query("SELECT @status AS status",(err,result)=>{
-                if(err){
-                    console.log("error fetching status",err);
-                    return;
-                }
-                const status=result[0].status;
-                if(status===1){
-                    res.send({success:1,message:"loan reject completed"});
-                }
-            })
-        }
-    )
+            res.send({ success: 3, outcome: result });
+        });
+    } else if (viewOption === "1") {
+        const nic = `CALL detail_acc_no(?)`;
+        db.execute(nic, [number], (err, result) => {
+            if (err) {
+                console.log("Error getting data ", err);
+                res.send({ success: 0 });
+                return;
+            }
+            console.log(result[0]);
+            res.send({ success: 1, outcome: result });
+        });
+    }
 });
 
-app.post("/viewinfo",(req,res)=>{
-    const number=req.body.no;
-    const viewOption=req.body.viewOption;
-    console.log(number,viewOption);
-    if(viewOption==="2"){
-        const nic=`CALL detail_nic(?)`;
-        db.execute(nic,
-            [number],
-            (err,result)=>{
-                if(err){
-                    console.log("error getting data ",err);
-                    res.send({success:0});
-                    return;
-                }
-                console.log(result);
-                res.send({success:2,outcome:result});
-            }
-        )
-    }
-    else if(viewOption==="3"){
-        const nic=`CALL detail_reg_no(?)`;
-        db.execute(nic,
-            [number],
-            (err,result)=>{
-                if(err){
-                    console.log("error getting data ",err);
-                    res.send({success:0});
-                    return;
-                }
-                console.log(result);
-                res.send({success:3,outcome:result});
-            }
-        )
-    }else if(viewOption==="1"){
-        const nic=`CALL detail_acc_no(?)`;
-        db.execute(nic,
-            [number],
-            (err,result)=>{
-                if(err){
-                    console.log("error getting data ",err);
-                    res.send({success:0});
-                    return;
-                }
-                console.log(result[0]);
-                res.send({success:1,outcome:result});
-            }
-        )
-    }
-
-})
-
-
-
-
+// Endpoint to get user loans
 app.get('/user-loans', (req, res) => {
     const customer_id = req.query.customer_id;
-  
-    if (!email) {
-      return res.status(400).send({ message: 'Customer_id is required' });
+
+    if (!customer_id) {
+        return res.status(400).send({ message: 'Customer_id is required' });
     }
-  
+
     db.execute("SELECT * FROM loans WHERE customer_id = ?", [customer_id], (err, result) => {
-      if (err) {
-        console.log("Error getting loan details:", err);
-        return res.status(500).send({ message: 'Error getting loan details' });
-      }
-  
-      // Assuming you have a way to get installments for each loan
-      const loansWithInstallments = result.map(loan => {
-        // Fetch installments for each loan
-        const installments = db.execute("SELECT * FROM installments WHERE loan_id = ?", [loan.loan_id]);
-        return { ...loan, installments };
-      });
-  
-      res.send(loansWithInstallments);
+        if (err) {
+            console.log("Error getting loan details:", err);
+            return res.status(500).send({ message: 'Error getting loan details' });
+        }
+
+        // Assuming you have a way to get installments for each loan
+        const loansWithInstallments = result.map(loan => {
+            // Fetch installments for each loan
+            const installments = db.execute("SELECT * FROM installments WHERE loan_id = ?", [loan.loan_id]);
+            return { ...loan, installments };
+        });
+
+        res.send(loansWithInstallments);
     });
-  });
+});
 
-// Middleware to verify JWT and extract customer_id
-const verifyToken = (req, res, next) => {
-    const token = req.headers['authorization'];
-    if (!token) return res.sendStatus(403);
-
-    jwt.verify(token, 'yourSecretKey', (err, decoded) => {
-        if (err) return res.sendStatus(403);
-        req.customer_id = decoded.customer_id; // Assuming customer_id is stored in the token
-        next();
-    });
-};
-
+// Endpoint to get due installments
 app.get('/loans/due-installments/:customer_id', (req, res) => {
     const customer_id = req.params.customer_id; // Get customer_id from route parameters
 
@@ -406,9 +375,7 @@ app.get('/loans/due-installments/:customer_id', (req, res) => {
     });
 });
 
-
-
-
+// Endpoint to pay installment
 app.get('/pay-installment/:loan_id/:installmentId', (req, res) => {
     const loan_id = req.params.loan_id;
     const installmentId = req.params.installmentId;
@@ -421,8 +388,7 @@ app.get('/pay-installment/:loan_id/:installmentId', (req, res) => {
     db.query(callProcedure, [loan_id, installmentId], (err) => {
         if (err) {
             console.error('Error executing payment procedure:', err);
-            return res.status(500).json({ error:'Insufficient funds for installment payment' });
-
+            return res.status(500).json({ error: 'Insufficient funds for installment payment' });
         }
 
         // Then, retrieve the output parameter
@@ -449,3 +415,13 @@ app.get('/pay-installment/:loan_id/:installmentId', (req, res) => {
     });
 });
 
+// Root Endpoint
+app.get('/', (req, res) => {
+    res.send('Welcome to the Banking API');
+});
+
+// Start Server
+const PORT = process.env.PORT || 3002;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}.`);
+});

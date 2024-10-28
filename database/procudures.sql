@@ -281,14 +281,10 @@ DELIMITER ;
 
 
 -------------------------online loan apply
-
 DELIMITER //
-CREATE PROCEDURE apply_online_loan(
-    IN accountNo INT,
-    IN loan_amount DECIMAL(15, 2),
-    IN duration INT,
-    OUT loan_status VARCHAR(255)
-)
+create procedure apply_online_loan(IN accountNo int, IN loan_amount decimal(15, 2),
+                                                         IN duration int, IN loanReason varchar(255),
+                                                         OUT loan_status varchar(255))
 BEGIN
     DECLARE fd_amount DECIMAL(15, 2);
     DECLARE savings_account_id INT;
@@ -296,9 +292,9 @@ BEGIN
     DECLARE loan_rate DECIMAL(4, 2);
     DECLARE monthly_installment_ DECIMAL(15, 2);
     DECLARE new_loan_id INT;
-    
+
     -- Exit handler for SQL exceptions
-    
+
 
     -- Start the transaction
     START TRANSACTION;
@@ -349,15 +345,15 @@ BEGIN
             -- Insert the loan into the loans table
             INSERT INTO loans (
                 loan_id, account_id, amount, rate, monthly_installment,
-                duration_months, start_date, type, status
+                duration_months, start_date, type, status,description,months_left
             )
             VALUES (
                 new_loan_id, accountNo, loan_amount, loan_rate,
-                monthly_installment_, duration, CURDATE(), 'online', 'approved'
-            );
+                monthly_installment_, duration, CURDATE(), 'online', 'pending'
+            ,loanReason,duration);
 
             -- Update the balance of the linked savings account
-            UPDATE account
+            UPDATE saving_account
             SET balance = balance + loan_amount
             WHERE account_id = savings_account_id;
 
@@ -372,13 +368,13 @@ BEGIN
         END IF;
     END IF;
 
-END//
-DELIMITER ;
+END //
+DELIMITER;
 
 
 ----------------------------physical loan apply
 DELIMITER //
-CREATE PROCEDURE physical_loan(IN amount DECIMAL(15,2),IN acc_id INT,IN duration INT,IN date DATE,OUT loan_state VARCHAR(50))
+CREATE PROCEDURE physical_loan(IN amount DECIMAL(15,2),IN acc_id INT,IN duration INT,IN date DATE,IN l_description VARCHAR(255),OUT loan_state VARCHAR(50))
 BEGIN
   DECLARE loan_rate DECIMAL(4, 2);
   DECLARE monthly_installment DECIMAL(15, 2);
@@ -389,8 +385,8 @@ BEGIN
   SET monthly_installment= (amount * (1 + (loan_rate / 100))) / duration;
   SELECT IFNULL(MAX(loan_id), 0) + 1 INTO new_loan_id FROM loans;
 
-  INSERT INTO loans(loan_id,amount,account_id,rate,monthly_installment,duration_months,start_date,type,status)
-  VALUES (new_loan_id,amount,acc_id,loan_rate,monthly_installment,duration,date,"physical","pending");
+  INSERT INTO loans(loan_id,amount,account_id,rate,monthly_installment,duration_months,start_date,type,status,description,months_left)
+  VALUES (new_loan_id,amount,acc_id,loan_rate,monthly_installment,duration,date,"physical","pending",l_description,duration);
   SELECT ROW_COUNT() INTO affected_rows;
 
   IF affected_rows > 0 THEN

@@ -148,11 +148,12 @@ app.post("/phy_loan",(req,res)=>{
     const amount=req.body.amount;
     const duration=req.body.duration;
     const date=req.body.date;
+    const reason=req.body.reason;
 
-    const physical_loan=`CALL physical_loan(?,?,?,?,@loan_state)`;
+    const physical_loan=`CALL physical_loan(?,?,?,?,?,@loan_state)`;
 
     db.execute(physical_loan,[
-        amount,acc_no,duration,date
+        amount,acc_no,duration,date,reason
     ],(err,result)=>{
         if(err){
             console.log("procedure error.",err);

@@ -610,8 +610,8 @@ BEGIN
                 duration_months, start_date, type, status,description,months_left
             )
             VALUES (
-                new_loan_id, accountNo, loan_amount, loan_rate,
-                monthly_installment_, duration, CURDATE(), 'online', 'pending'
+                new_loan_id, savings_account_id, loan_amount, loan_rate,
+                monthly_installment_, duration, CURDATE(), 'online', 'approved'
             ,loanReason,duration);
 
             -- Update the balance of the linked savings account
@@ -685,9 +685,9 @@ FROM
 JOIN
     loans l ON loan_installment_log.loan_id = l.loan_id
 JOIN
-    fixed_deposit f ON l.account_id = f.account_id
+    fixed_deposit f ON l.account_id = f.fd_id
 JOIN
-    account a ON f.account_id = a.customer_id
+    account a ON f.account_id = a.account_id
 WHERE
     a.customer_id = p_customer_id AND loan_installment_log.status = 'pending' AND loan_installment_log.due_date <= LAST_DAY(CURRENT_DATE);
 END

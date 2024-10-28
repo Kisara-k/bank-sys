@@ -2,10 +2,10 @@
 import db from '../config/database.js';
 
 export const withdraw = (req, res) => {
-    const { withdraw_amount, Acc_ID, Acc_type } = req.body;
+    const {amount, acc_id, type } = req.body;
 
     const withdrawProcedure = `CALL withdraw_money(?, ?, ?, @status_w)`;
-    db.execute(withdrawProcedure, [withdraw_amount, Acc_ID, Acc_type], (err, result) => {
+    db.execute(withdrawProcedure, [amount, acc_id, type], (err, result) => {
         if (err) {
             console.error("Error executing withdrawal:", err);
             return res.status(500).send({ success: 0, error: "Withdrawal failed." });
@@ -28,10 +28,11 @@ export const withdraw = (req, res) => {
 };
 
 export const deposit = (req, res) => {
-    const { deposite_amount, Acc_ID, Acc_type } = req.body;
+    const { amount, acc_id, Acc_type } = req.body;
+    console.log(amount,acc_id);
 
     const depositProcedure = `CALL deposit(?, ?, @status_d)`;
-    db.execute(depositProcedure, [deposite_amount, Acc_ID], (err, result) => {
+    db.execute(depositProcedure, [amount, acc_id], (err, result) => {
         if (err) {
             console.error("Error in deposit:", err);
             return res.status(500).send({ success: 0, error: "Deposit failed." });

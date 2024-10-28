@@ -16,6 +16,23 @@ body{
     color: white;
     font-weight: 600;
     border: 1px solid black;
+    border-radius: 5px;
+}
+#atmBtn{
+    float: right;
+    margin-right: 2rem;
+    height: 2rem;
+    font-weight: 600;
+    padding-bottom: 0.1rem;
+    width: 5rem;
+    background-color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    color: white;
+}
+#atmBtn:hover,#fdBtn:hover{
+    transform: scale(1.1,1.1);
+    transition: transform ease 0.2s;
 }
 #userImg{
     width: 2rem;

@@ -1,0 +1,119 @@
+.deposit-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+}
+
+.deposit-card {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: left; /* Align text to the left */
+}
+
+.card-header {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.logo {
+    height: 24px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.input-label {
+    display: block;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #333;
+    margin-bottom: 0.25rem;
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.otp-button,
+.deposit-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+.deposit-button:hover,#dash_btn:hover{
+    transform: scale(1.1,1.1);
+    transition: transform ease 0.2s;
+}
+#back_dash{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    bottom: 5rem;
+}
+#dash_btn{
+    background-color: black;
+    border: 1px solid black;
+}
+
+.otp-button:hover,
+.deposit-button:hover {
+    background-color: #45A049;
+}
+
+.success-message,
+.error-message {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.success-message {
+    background-color: rgb(144, 238, 144);
+    color: white;
+}
+
+.error-message {
+    background-color: rgb(255, 204, 204);
+    color: black;
+    border: 1px solid rgb(255, 204, 204);
+    font-weight: 600;
+}
+
+/* Background styling for full profile page */
+#profile-page {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

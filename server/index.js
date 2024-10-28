@@ -383,6 +383,7 @@ const verifyToken = (req, res, next) => {
 
 app.get('/loans/due-installments/:customer_id', (req, res) => {
     const customer_id = req.params.customer_id; // Get customer_id from route parameters
+    console.log(customer_id);
 
     // Call the stored procedure to fetch due installments
     const sql = 'CALL get_due_installments(?)'; // Update this according to your stored procedure
@@ -413,7 +414,7 @@ app.get('/pay-installment/:loan_id/:installmentId', (req, res) => {
     const loan_id = req.params.loan_id;
     const installmentId = req.params.installmentId;
 
-    // First, call the stored procedure `PayInstallment`
+    // First, call the stored procedure PayInstallment
     const callProcedure = 'CALL PayInstallment(?, ?, @process);';
     const getProcess = 'SELECT @process AS answer;';
 
@@ -422,28 +423,21 @@ app.get('/pay-installment/:loan_id/:installmentId', (req, res) => {
         if (err) {
             console.error('Error executing payment procedure:', err);
             return res.status(500).json({ error:'Insufficient funds for installment payment' });
-
         }
 
         // Then, retrieve the output parameter
         db.query(getProcess, (err, results) => {
             if (err) {
                 console.error('Error fetching process result:', err);
-                return res.status(500).json({ error: 'Database error occurred during processing' });
+                return res.status(500).json({ error: err });
             }
 
             // Check the answer from the output parameter
-            const result = results[0]?.answer;
-
-            // Handle different scenarios based on result value
+            const result = results[0].answer;
             if (result === 1) {
                 res.status(200).json({ message: 'Payment successful' });
-            } else if (result === 0) {
-                res.status(400).json({ error: 'Insufficient funds for installment payment' });
-            } else if (result === -1) {
-                res.status(400).json({ error: 'Unable to maintain required minimum balance after payment' });
             } else {
-                res.status(400).json({ error: 'Payment could not be processed due to an unknown error' });
+                res.status(400).json({ error: 'Payment could not be processed' });
             }
         });
     });

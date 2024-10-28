@@ -1,0 +1,49 @@
+.atm-profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.atm-profile-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.atm-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.atm-button-link {
+    text-decoration: none;
+}
+
+.atm-button {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.atm-button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 600px) {
+    .atm-profile-container {
+        padding: 10px;
+    }
+
+    .atm-button {
+        font-size: 1rem;
+        padding: 8px 16px;
+    }
+}

@@ -5,7 +5,7 @@ STARTS '2024-10-13 00:00:00' ON COMPLETION PRESERVE
 ENABLE
 DO 
     UPDATE saving_account 
-    SET monthly_withdrawals=5
+    SET monthly_withdrawals=5;
 
 ----------------update monthly rates
 CREATE EVENT update_monthly_rates 

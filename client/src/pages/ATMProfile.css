@@ -25,6 +25,21 @@
     text-align: center;
     margin-right: 15rem;
 }
+#atm-page {
+    background-image: url('./img/ATM 1.webp'); /* Ensure the image path is correct */
+    background-size: cover; /* Make the image cover the container */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
+   
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    align-items: flex-end; /* Align content to the right */
+    justify-content: flex-start; /* Align content to the top */
+    height: 100vh; /* Ensure the container covers the full viewport height */
+    min-width: 100vw; /* Ensure the container covers the full viewport width */
+    min-height: 100vh; /* Fallback to ensure it covers the full viewport */
+    padding: 20px; /* Add padding to the container */
+}
 
 /* Button Container */
 .atm-buttons {

@@ -4,7 +4,7 @@ import './ATMProfile.css';
 
 const ATMProfile = () => {
     return (
-        <div className="atm-profile-container">
+        <div id="atm-page"  className="atm-profile-container">
             <header>
                 <h1 className="atm-profile-title">ATM Options</h1>
             </header>

@@ -66,7 +66,7 @@ const Deposit = () => {
     return (
         <><div className="deposit-container">
             <div className="deposit-card">
-                <h2>withdraw</h2>
+                <h2>Withdraw</h2>
 
                 <label className="input-label">Account Number</label>
                 <input

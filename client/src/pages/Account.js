@@ -185,6 +185,9 @@ export default function Account() {
     const fixedDepo = () => {
         window.location.href = "/FD";
     };
+    const goATM=()=>{
+        window.location.href = "/atm";
+    }
 
     const logout = () => {
         window.location.href = "/";
@@ -200,6 +203,7 @@ export default function Account() {
                 <Link to={linkto}><img src="user.png" id="userImg" /></Link>
                 <img src="logout.png" onClick={logout} id="logoutImg" />
                 <input type="button" onClick={fixedDepo} id="fdBtn" value="start FD"></input>
+                <input type="button" id="atmBtn" value="ATM" onClick={goATM}></input>
             </nav>
 
             <div className="row">

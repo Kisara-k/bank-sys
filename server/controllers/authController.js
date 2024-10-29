@@ -86,13 +86,23 @@ export const employeeLogin = (req, res) => {
         }
 
         if (result.length !== 0) {
-            const token = jwt.sign({ id: result[0].employee_id }, secretKey, { expiresIn: '1h' });
-            console.log("Success");
-            return res.send({ result: result, token });
+            const user = result[0];
+            const passwordMatch = await bcrypt.compare(employeepasskey, user.hashed_password);
+
+            if (passwordMatch) {
+                const token = jwt.sign(
+                    { userId: user.employee_id, role: 'employee' },
+                    secretKey,
+                    { expiresIn: '20m' }
+                );
+                return res.send({ token, result });
+            } else {
+                return res.status(401).send({ error: "Invalid credentials." });
+            }
         } else {
             return res.status(401).send({ error: "Invalid credentials." });
         }
     });
 };
 
-export default { employeeLogin };
+export default { login, employeeLogin };

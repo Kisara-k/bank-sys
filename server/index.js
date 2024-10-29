@@ -429,17 +429,22 @@ app.get('/pay-installment/:loan_id/:installmentId', (req, res) => {
         db.query(getProcess, (err, results) => {
             if (err) {
                 console.error('Error fetching process result:', err);
-                return res.status(500).json({ error: err });
+                return res.status(500).json({ error: 'Database error occurred during processing' });
             }
 
             // Check the answer from the output parameter
-            const result = results[0].answer;
+            const result = results[0]?.answer;
+
+            // Handle different scenarios based on result value
             if (result === 1) {
                 res.status(200).json({ message: 'Payment successful' });
+            } else if (result === 0) {
+                res.status(400).json({ error: 'Insufficient funds for installment payment' });
+            } else if (result === -1) {
+                res.status(400).json({ error: 'Unable to maintain required minimum balance after payment' });
             } else {
-                res.status(400).json({ error: 'Payment could not be processed.Minumum balance insufficient' });
+                res.status(400).json({ error: 'Payment could not be processed due to an unknown error' });
             }
         });
     });
 });
-

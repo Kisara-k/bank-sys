@@ -100,8 +100,8 @@ export default function Account() {
     window.history.forward();
 
     return (
-        
-            <div className="account-container">
+        <div>
+           
             <nav id="nav2">
                 <Link className="link2" to="/account">Home</Link>
                 <Link className="link2" to="/loans">Loans</Link>

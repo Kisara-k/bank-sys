@@ -670,6 +670,7 @@ DELIMITER ;
 
 
 ------------------------------   get loan installments
+DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_due_installments`(IN p_customer_id int)
 BEGIN
     -- Select installments that are pending and due up to the current month
@@ -690,7 +691,8 @@ JOIN
     account a ON f.account_id = a.customer_id
 WHERE
     a.customer_id = p_customer_id AND loan_installment_log.status = 'pending' AND loan_installment_log.due_date <= LAST_DAY(CURRENT_DATE);
-END
+END //
+DELIMITER ;
 
 
 

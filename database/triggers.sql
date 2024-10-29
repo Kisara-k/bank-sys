@@ -1,5 +1,7 @@
 
+
 -- Trigger to Block Expired Accounts
+DELIMITER //
 CREATE TRIGGER block_expired_accounts
 BEFORE UPDATE ON account
 FOR EACH ROW
@@ -9,9 +11,10 @@ BEGIN
     SET set_status_action = 'block', date = NOW()
     WHERE account_id = NEW.account_id;
   END IF;
-END;
+END //
 
---Trigger to Update Loan Status after Installment Payments
+-- Trigger to Update Loan Status after Installment Payments
+
 CREATE TRIGGER update_loan_status_after_payment
 AFTER UPDATE ON loan_installment_log
 FOR EACH ROW
@@ -24,13 +27,12 @@ BEGIN
     SET status = 'paid'
     WHERE loan_id = NEW.loan_id;
   END IF;
-END;
+END //
 
-------------------------------------------------------------------------------------
-                                --implemented triggers
+------------------------------------------------------------------------------------ 
+-- implemented triggers
 
---insert into checking account
--- DELIMITER //
+-- insert into checking account
 -- CREATE TRIGGER insert_checking
 -- AFTER INSERT ON account
 -- FOR EACH ROW
@@ -54,11 +56,10 @@ END;
 --         UPDATE checking_account SET balance = NEW.balance WHERE account_id = NEW.account_id;
 --     END IF;
 -- END//
--- DELIMITER ;
 
 
----------------------after physical loan approve
-DELIMITER //
+--------------------- after physical loan approve
+
 CREATE TRIGGER after_physical_loan_approval
 AFTER UPDATE ON loans
 FOR EACH ROW
@@ -74,13 +75,11 @@ BEGIN
             SET i = i + 1;
         END WHILE;
     END IF;
-END //
-DELIMITER ;
+END//
 
 
-------------------after loan insert(online)
-use project;
-DELIMITER //
+------------------ after loan insert(online)
+
 CREATE TRIGGER after_loan_insert
 AFTER INSERT ON loans
 FOR EACH ROW
@@ -101,17 +100,12 @@ BEGIN
           SET i = i + 1;
       END WHILE;
     END IF;
-END//
+END //
 
-DELIMITER ;
-
-
-DELIMITER //
 CREATE TRIGGER create_loan_installments AFTER INSERT ON loans
 FOR EACH ROW
 BEGIN
     CALL calculate_loan_installment(NEW.loan_id);
 END //
+
 DELIMITER ;
-
-

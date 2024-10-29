@@ -4,7 +4,15 @@
     align-items: center;
     min-height: 100vh;
     background-color: #f9f9f9;
+
+    background-image: url('./img/deposite.png'); /* Add this line */
+    background-size: cover; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
 }
+
+
+
 
 .deposit-card {
     background-color: #fff;

@@ -29,7 +29,7 @@ VALUES
 (100003, 'Pierre', 'Ravelo', '1984-08-22', 'RAVPE082284', '/images/pierre.jpg'),
 (100005, 'Liam', 'Leclerc', '1990-02-17', 'LECLL021790', '/images/liam.jpg'),
 (100007, 'Malaika', 'Ngema', '1987-09-15', 'NGEMM091587', '/images/malaika.jpg'),
-(100009, 'Ethan', 'Davies', '1995-12-02', 'DAVIE120295', '/images/ethan.jpg');
+(100009, 'Ethan', 'Davies', '1995-12-02', 'DAVIE120295', '/pages/customer profiles/c1.webp');
 
 -- Insert data into `branches`
 INSERT INTO branches (branch_id, city, address)

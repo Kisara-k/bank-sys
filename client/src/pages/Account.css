@@ -217,6 +217,15 @@ select{
     margin-right: 0; /* Align table to the right */
 }
 
+.customer-profile-img {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
 
 .Transaction_detail thead {
     color: white; /* Text color for the header */

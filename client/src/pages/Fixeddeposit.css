@@ -9,6 +9,7 @@
     margin-top: 10vh;
     font-family: monospace;
     font-weight: 600;
+    gap: 4rem; /* Increased gap between boxes */
 }
     #fdPage {
         background-image: url('./img/fd.jpg'); /* Path to your background image */
@@ -29,6 +30,7 @@
     position: relative;
     right: 2rem;
     margin-top: 1rem;
+    
     
 }
 #startFD{
@@ -61,6 +63,12 @@
     color: white;
     display: none;
     font-size: small;
+}
+label {
+    font-size: 1.2rem; /* Increase label letter size */
+    font-family: 'Times New Roman', Times, serif;
+    
+    
 }
 #fdOk,#fderror{
     width: 5rem;

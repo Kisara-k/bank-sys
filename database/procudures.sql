@@ -1,4 +1,3 @@
-
 --------------------------------------------------------------------------
 
 --------------procedure for get balance
@@ -609,6 +608,87 @@ BEGIN
     -- Find the earliest unpaid installment for this loan
     SELECT MIN(installment_id) INTO earliest_installment_id
     FROM loan_installment_log
+    WHERE loan_id = p_loan_id AND status = 'unpaid';
+
+    -- Check if the provided installment ID is the earliest unpaid one
+    IF p_installment_id != earliest_installment_id THEN
+        SET p_answer = -3; -- Error code indicating it's not the earliest installment
+        ROLLBACK;
+    ELSE
+        -- Get the installment amount for the specified installment
+        SELECT amount INTO p_installment_amount
+        FROM loan_installment_log
+        WHERE installment_id = p_installment_id AND loan_id = p_loan_id;
+
+        -- Retrieve the associated account ID from the loans table
+        SELECT account_id INTO p_account_id
+        FROM loans
+        WHERE loan_id = p_loan_id;
+
+        -- Check the current balance of the associated savings account
+        SELECT balance INTO p_current_balance
+        FROM saving_account
+        WHERE account_id = p_account_id;
+
+        -- Get the plan ID and minimum balance for this account
+        SELECT plan_id INTO p_plan_id
+        FROM fixed_deposit
+        WHERE account_id = p_account_id;
+
+        SELECT min_balance INTO p_min_balance
+        FROM saving_account_plans
+        WHERE plan_id = p_plan_id;
+
+        -- Check if there are enough funds for the payment
+        IF p_current_balance >= p_installment_amount THEN
+            -- Deduct the installment amount from the balance
+            SET p_current_balance = p_current_balance - p_installment_amount;
+
+            -- Check if the new balance is above the minimum required
+            IF p_current_balance >= p_min_balance THEN
+                -- Update the balance in the saving_account table
+                UPDATE saving_account
+                SET balance = p_current_balance
+                WHERE account_id = p_account_id;
+
+                -- Mark the installment as 'paid' and update the payment date
+                UPDATE loan_installment_log
+                SET status = 'paid', payment_date = NOW()
+                WHERE installment_id = p_installment_id;
+
+                -- Decrement the months_left for the loan
+                UPDATE loans
+                SET months_left = months_left - 1
+                WHERE loan_id = p_loan_id;
+
+                -- Check remaining months
+                SELECT months_left INTO p_months_left
+                FROM loans
+                WHERE loan_id = p_loan_id;
+
+                -- If all installments are paid, mark the loan as fully paid
+                IF p_months_left = 0 THEN
+                    UPDATE loans
+                    SET status = 'paid'
+                    WHERE loan_id = p_loan_id;
+                END IF;
+
+                -- Commit the transaction
+                COMMIT;
+                SET p_answer = 1; -- Payment successful
+            ELSE
+                -- Rollback if balance would drop below minimum
+                ROLLBACK;
+                SET p_answer = -1; -- Not enough balance after payment
+            END IF;
+        ELSE
+            -- Rollback if insufficient funds for payment
+            ROLLBACK;
+            SET p_answer = 0; -- Insufficient funds
+        END IF;
+    END IF; -- Close the outer IF statement
+END;
+
     WHERE loan_id = p_loan_id AND status = 'unpaid';
 
     -- Check if the provided installment ID is the earliest unpaid one

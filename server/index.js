@@ -442,4 +442,3 @@ app.get('/pay-installment/:loan_id/:installmentId', (req, res) => {
         });
     });
 });
-

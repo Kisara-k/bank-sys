@@ -18,12 +18,13 @@
 
 /* Profile Title */
 .atm-profile-title {
-    font-size: 2.5rem;
+    font-size: 4.5rem;
     color: #333;
     margin-bottom: 25px;
+    margin-top: 35px;
     font-weight: 600;
     text-align: center;
-    margin-right: 15rem;
+    margin-right: 18rem;
 }
 #atm-page {
     background-image: url('./img/ATM 1.webp'); /* Ensure the image path is correct */
@@ -44,8 +45,9 @@
 /* Button Container */
 .atm-buttons {
     display: flex;
-    gap: 20px;
+    gap: 50px;
     margin-top: 20px;
+    margin-right: 150px;
 }
 
 /* Link Style */
@@ -56,7 +58,7 @@
 /* Button Style */
 .atm-button {
     padding: 12px 28px;
-    font-size: 1.2rem;
+    font-size: 2.2rem;
     font-weight: 500;
     color: #fff;
     background-color: #007bff;
@@ -84,11 +86,14 @@
     }
 
     .atm-profile-title {
-        font-size: 2rem;
+        font-size: 8rem;
     }
 
     .atm-button {
-        font-size: 1rem;
+        font-size: 2rem;
         padding: 10px 20px;
+    }
+    h1 {
+        font-size: 8.5rem; /* Adjust the size for smaller screens */
     }
 }

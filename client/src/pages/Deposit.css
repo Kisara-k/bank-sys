@@ -2,9 +2,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    
     background-color: #f9f9f9;
-
+    height: 100vh; /* Ensure the container covers the full viewport height */
+    min-width: 100vw; /* Ensure the container covers the full viewport width */
+    min-height: 90vh; /* Fallback to ensure it covers the full viewport */
     background-image: url('./img/deposite.png'); /* Add this line */
     background-size: cover; /* Ensure the image covers the entire container */
     background-position: center; /* Center the background image */

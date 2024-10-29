@@ -74,7 +74,9 @@ export default function Fixeddeposite() {
         <div id="fdPage">
             {/* FD Plans Section */}
             <div id="fdPlansSection">
-                <h2>Enjoy High Returns</h2>
+                <h2 >Enjoy</h2>
+                <h2 >High Returns with </h2>
+                
                 <h2>Fixed Deposits</h2>
                 <div style={{ marginBottom: "20px" }}></div> {/* Added gap */}
                 <ul>

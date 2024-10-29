@@ -66,7 +66,7 @@
 }
 label {
     font-size: 1.2rem; /* Increase label letter size */
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Times New Roman';
     
     
 }
@@ -74,20 +74,20 @@ label {
     margin-bottom: 2rem;
     border-radius: 8px;
     text-align: left; /* Align text to the left */
-    font-family: 'Times New Roman', Times, serif;
+    font-family:   Arial;
     position: absolute; /* Position the section absolutely */
     top: 0; /* Align to the top */
     left: 0; /* Align to the left */
-}
+    }
 
-#fdPlansSection h2 {
-    color: #0071e3;
-    font-weight: bold;
-    font-size: 2.5rem;
-}
+    #fdPlansSection h2 {
+        color: #0071e3;
+        font-weight: bold;
+        font-size: 2.5rem;
+    }
 
-#fdPlansSection ul {
-    list-style-type: none;
+    #fdPlansSection ul {
+        list-style-type: none;
     padding: 0;
     color: #ff0000; /* Bright red color */
     align: left;

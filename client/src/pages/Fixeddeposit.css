@@ -1,6 +1,7 @@
 
 #fdForm{
-    width: 60vw;
+    width: 40vw;
+    height: 50vh; /* Increased box height */
     background-color: rgba(211, 188, 188, 0.309);
     padding: 2rem;
     align-items: center;
@@ -8,7 +9,7 @@
     margin-top: 10vh;
     font-family: monospace;
     font-weight: 600;
-    }
+}
     #fdPage {
         background-image: url('./img/fd.jpg'); /* Path to your background image */
         background-size: cover; /* Ensure the image covers the entire container */
@@ -23,11 +24,12 @@
     }
 
 #fdplans{
-    width: 55vw;
+    width: 36vw;
     height: 2.5rem;
     position: relative;
     right: 2rem;
     margin-top: 1rem;
+    
 }
 #startFD{
     margin-top: 2rem;

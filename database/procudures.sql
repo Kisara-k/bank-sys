@@ -39,8 +39,8 @@ BEGIN
     SET new_account_id = LAST_INSERT_ID();
 
     IF acc_type = 'saving' THEN
-        INSERT INTO saving_account(account_id, monthly_withdrawals, plan_id, balance, start_date)
-        VALUES(new_account_id, 5, plan_id, amount, start_date);
+        INSERT INTO saving_account(account_id, monthly_withdrawals, plan_id)
+        VALUES(new_account_id, 5, plan_id);
     END IF;
 END //
 DELIMITER ;
@@ -353,7 +353,7 @@ BEGIN
             ,loanReason,duration);
 
             -- Update the balance of the linked savings account
-            UPDATE saving_account
+            UPDATE account
             SET balance = balance + loan_amount
             WHERE account_id = savings_account_id;
 
@@ -615,7 +615,7 @@ BEGIN
             ,loanReason,duration);
 
             -- Update the balance of the linked savings account
-            UPDATE saving_account
+            UPDATE account
             SET balance = balance + loan_amount
             WHERE account_id = savings_account_id;
 

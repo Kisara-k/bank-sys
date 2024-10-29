@@ -30,31 +30,31 @@ END;
                                 --implemented triggers
 
 --insert into checking account
-DELIMITER //
-CREATE TRIGGER insert_checking
-AFTER INSERT ON account
-FOR EACH ROW
-BEGIN
-  IF NEW.type='checking' THEN
-    INSERT INTO checking_account(account_id,start_date,balance)
-    VALUES(NEW.account_id,NEW.start_date,NEW.balance);
-    END IF;
-END //
-DELIMITER ;
+-- DELIMITER //
+-- CREATE TRIGGER insert_checking
+-- AFTER INSERT ON account
+-- FOR EACH ROW
+-- BEGIN
+--   IF NEW.type='checking' THEN
+--     INSERT INTO checking_account(account_id,start_date,balance)
+--     VALUES(NEW.account_id,NEW.start_date,NEW.balance);
+--     END IF;
+-- END //
+-- DELIMITER ;
 
 -- update saving and checking account when update account
-DELIMITER //
-CREATE TRIGGER update_account_after_saving_or_checking_update
-AFTER UPDATE ON account
-FOR EACH ROW
-BEGIN
-    IF EXISTS (SELECT 1 FROM saving_account WHERE saving_account.account_id = NEW.account_id) THEN
-        UPDATE saving_account SET balance = NEW.balance WHERE account_id = NEW.account_id;
-    ELSEIF EXISTS (SELECT 1 FROM checking_account WHERE checking_account.account_id = NEW.account_id) THEN
-        UPDATE checking_account SET balance = NEW.balance WHERE account_id = NEW.account_id;
-    END IF;
-END//
-DELIMITER ;
+-- DELIMITER //
+-- CREATE TRIGGER update_account_after_saving_or_checking_update
+-- AFTER UPDATE ON account
+-- FOR EACH ROW
+-- BEGIN
+--     IF EXISTS (SELECT 1 FROM saving_account WHERE saving_account.account_id = NEW.account_id) THEN
+--         UPDATE saving_account SET balance = NEW.balance WHERE account_id = NEW.account_id;
+--     ELSEIF EXISTS (SELECT 1 FROM checking_account WHERE checking_account.account_id = NEW.account_id) THEN
+--         UPDATE checking_account SET balance = NEW.balance WHERE account_id = NEW.account_id;
+--     END IF;
+-- END//
+-- DELIMITER ;
 
 
 ---------------------after physical loan approve

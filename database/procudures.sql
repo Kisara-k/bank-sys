@@ -615,7 +615,7 @@ BEGIN
             ,loanReason,duration);
 
             -- Update the balance of the linked savings account
-            UPDATE saving_account
+            UPDATE account
             SET balance = balance + loan_amount
             WHERE account_id = savings_account_id;
 

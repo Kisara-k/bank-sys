@@ -67,7 +67,8 @@ export default function Loans() {
         const data = await response.json();
 
         if (response.ok) {
-            setSuccessMessage(data.message); // Set success message from the backend
+                setSuccessMessage(data.message);
+             // Set success message from the backend
         } else {
             setErrorMessage(data.message || 'Something went wrong. Please try again.');
         }

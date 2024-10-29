@@ -6,7 +6,7 @@ const ATMProfile = () => {
     return (
         <div id="atm-page"  className="atm-profile-container">
             <header>
-                <h1 className="atm-profile-title">ATM Options</h1>
+                <h1 className="atm-profile-title">ATM</h1>
             </header>
             <section className="atm-buttons">
                     <Link to="/deposit" className="atm-button-link">

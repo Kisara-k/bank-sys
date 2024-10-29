@@ -8,6 +8,19 @@ body{
     padding-top: 0.5rem;
 
 }
+.account-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ensure the container covers the full viewport height */
+    background-image: url('./img/account.jpg'); /* Path to your background image */
+    background-size: cover; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    padding: 20px;
+    position: relative; /* Add relative positioning */
+}
 #fdBtn{
     float: right;
     margin-right: 2rem;

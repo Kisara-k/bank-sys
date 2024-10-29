@@ -100,7 +100,7 @@ export default function Account() {
     window.history.forward();
 
     return (
-        <>
+        <div>
             <nav id="nav2">
                 <Link className="link2" to="/account">Home</Link>
                 <Link className="link2" to="/loans">Loans</Link>
@@ -182,6 +182,6 @@ export default function Account() {
                 <p>Your transfer request has been successed. Thank you!</p>
                 <input type="button" onClick={() => window.location.href = "/account"} id="ok" value="OK" className="btn btn-info"></input>
             </div>
-        </>
+        </div>
     );
 }

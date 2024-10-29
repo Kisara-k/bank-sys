@@ -78,6 +78,23 @@
 .atm-button:active {
     transform: scale(0.98);
 }
+.back-button-container {
+    margin-top: 50px;
+    margin-right: 350px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Different styling for the back button */
+.atm-back-button {
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    color: #ffffff;
+    background-color: #0e0d0d; /* Different color for the Back button */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
 /* Responsive Styles */
 @media (max-width: 600px) {

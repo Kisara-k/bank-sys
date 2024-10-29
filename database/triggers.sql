@@ -1,5 +1,7 @@
 
+
 -- Trigger to Block Expired Accounts
+DELIMITER //
 CREATE TRIGGER block_expired_accounts
 BEFORE UPDATE ON account
 FOR EACH ROW
@@ -9,9 +11,10 @@ BEGIN
     SET set_status_action = 'block', date = NOW()
     WHERE account_id = NEW.account_id;
   END IF;
-END;
+END //
 
---Trigger to Update Loan Status after Installment Payments
+-- Trigger to Update Loan Status after Installment Payments
+
 CREATE TRIGGER update_loan_status_after_payment
 AFTER UPDATE ON loan_installment_log
 FOR EACH ROW
@@ -24,41 +27,39 @@ BEGIN
     SET status = 'paid'
     WHERE loan_id = NEW.loan_id;
   END IF;
-END;
-
-------------------------------------------------------------------------------------
-                                --implemented triggers
-
---insert into checking account
-DELIMITER //
-CREATE TRIGGER insert_checking
-AFTER INSERT ON account
-FOR EACH ROW
-BEGIN
-  IF NEW.type='checking' THEN
-    INSERT INTO checking_account(account_id,start_date,balance)
-    VALUES(NEW.account_id,NEW.start_date,NEW.balance);
-    END IF;
 END //
-DELIMITER ;
+
+------------------------------------------------------------------------------------ 
+-- implemented triggers
+
+-- insert into checking account
+-- CREATE TRIGGER insert_checking
+-- AFTER INSERT ON account
+-- FOR EACH ROW
+-- BEGIN
+--   IF NEW.type='checking' THEN
+--     INSERT INTO checking_account(account_id,start_date,balance)
+--     VALUES(NEW.account_id,NEW.start_date,NEW.balance);
+--     END IF;
+-- END //
+-- DELIMITER ;
 
 -- update saving and checking account when update account
-DELIMITER //
-CREATE TRIGGER update_account_after_saving_or_checking_update
-AFTER UPDATE ON account
-FOR EACH ROW
-BEGIN
-    IF EXISTS (SELECT 1 FROM saving_account WHERE saving_account.account_id = NEW.account_id) THEN
-        UPDATE saving_account SET balance = NEW.balance WHERE account_id = NEW.account_id;
-    ELSEIF EXISTS (SELECT 1 FROM checking_account WHERE checking_account.account_id = NEW.account_id) THEN
-        UPDATE checking_account SET balance = NEW.balance WHERE account_id = NEW.account_id;
-    END IF;
-END//
-DELIMITER ;
+-- DELIMITER //
+-- CREATE TRIGGER update_account_after_saving_or_checking_update
+-- AFTER UPDATE ON account
+-- FOR EACH ROW
+-- BEGIN
+--     IF EXISTS (SELECT 1 FROM saving_account WHERE saving_account.account_id = NEW.account_id) THEN
+--         UPDATE saving_account SET balance = NEW.balance WHERE account_id = NEW.account_id;
+--     ELSEIF EXISTS (SELECT 1 FROM checking_account WHERE checking_account.account_id = NEW.account_id) THEN
+--         UPDATE checking_account SET balance = NEW.balance WHERE account_id = NEW.account_id;
+--     END IF;
+-- END//
 
 
----------------------after physical loan approve
-DELIMITER //
+--------------------- after physical loan approve
+
 CREATE TRIGGER after_physical_loan_approval
 AFTER UPDATE ON loans
 FOR EACH ROW
@@ -74,13 +75,11 @@ BEGIN
             SET i = i + 1;
         END WHILE;
     END IF;
-END //
-DELIMITER ;
+END//
 
 
-------------------after loan insert(online)
-use project;
-DELIMITER //
+------------------ after loan insert(online)
+
 CREATE TRIGGER after_loan_insert
 AFTER INSERT ON loans
 FOR EACH ROW
@@ -101,17 +100,12 @@ BEGIN
           SET i = i + 1;
       END WHILE;
     END IF;
-END//
+END //
 
-DELIMITER ;
-
-
-DELIMITER //
 CREATE TRIGGER create_loan_installments AFTER INSERT ON loans
 FOR EACH ROW
 BEGIN
     CALL calculate_loan_installment(NEW.loan_id);
 END //
+
 DELIMITER ;
-
-

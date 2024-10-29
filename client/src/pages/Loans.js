@@ -6,7 +6,7 @@ export default function Loans() {
     const email = "user@example.com"; // Assume this is set when the user logs in
     const [accountNo, setAccountNo] = useState('');
     const [loanType, setLoanType] = useState('Personal loan');
-    const [duration, setDuration] = useState('');
+    const [duration, setDuration] = useState('6'); // Default to 6 months
     const [loanAmount, setLoanAmount] = useState('');
     const [loanReason, setLoanReason] = useState(''); // New state for loan reason
     const [errorMessage, setErrorMessage] = useState('');
@@ -152,16 +152,17 @@ export default function Loans() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="duration">Enter duration (6, 12, or 24 months):</label>
-                        <input 
-                            type="text" 
+                        <label htmlFor="duration">Enter duration:</label>
+                        <select 
                             className="form-control" 
                             id="duration" 
                             value={duration} 
-                            onChange={(e) => setDuration(e.target.value)} 
-                        />
+                            onChange={(e) => setDuration(e.target.value)}>
+                            <option value="6">6 months - 10% rate</option>
+                            <option value="12">12 months - 7% rate</option>
+                            <option value="24">24 months - 5% rate</option>
+                        </select>
                     </div>
-
 
                     <div className="form-group">
                         <label htmlFor="amount">Loan amount:</label>

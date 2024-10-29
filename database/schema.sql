@@ -86,21 +86,20 @@ CREATE TABLE `saving_account` (
   `account_id` INT UNSIGNED NOT NULL PRIMARY KEY,
   `monthly_withdrawals` INT UNSIGNED NOT NULL,
   `plan_id` TINYINT UNSIGNED NOT NULL,
-  `balance` NUMERIC(15,2) NOT NULL,
-  `start_date` DATE NOT NULL,
+  -- `balance` NUMERIC(15,2) NOT NULL,
+  -- `start_date` DATE NOT NULL,
   FOREIGN KEY (`account_id`) REFERENCES `account`(`account_id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
   FOREIGN KEY (`plan_id`) REFERENCES `saving_account_plans`(`plan_id`)
-  ON DELETE CASCADE
   ON UPDATE CASCADE
 );
 
-CREATE TABLE `checking_account` (
-  `account_id` INT UNSIGNED NOT NULL PRIMARY KEY,
-  `start_date` DATE NOT NULL,
-  `balance` NUMERIC(15,2) NOT NULL
-);
+-- CREATE TABLE `checking_account` (
+--   `account_id` INT UNSIGNED NOT NULL PRIMARY KEY,
+--   `start_date` DATE NOT NULL,
+--   `balance` NUMERIC(15,2) NOT NULL
+-- );
 
 CREATE TABLE `loans` (
   `loan_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -167,7 +166,6 @@ CREATE TABLE `fixed_deposit` (
   ON DELETE CASCADE
   ON UPDATE CASCADE,
   FOREIGN KEY (`plan_id`) REFERENCES `fd_plans`(`plan_id`)
-  ON DELETE CASCADE
   ON UPDATE CASCADE
 );
 

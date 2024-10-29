@@ -19,6 +19,10 @@ import NicDetail from './pages/NicDetail';
 import RegDetail from './pages/RegDetail';
 import LoanInstallments from './pages/LoanInstallments';
 
+import ATMProfile from './pages/ATMProfile'; // Import the ATMProfile component
+import Deposit from './pages/Deposit'; // Import the Deposit component
+import Withdraw from './pages/Withdraw';
+
 
 function App() {
   return (
@@ -51,6 +55,10 @@ function App() {
           <Route path='/NicDetail' element={<NicDetail/>}></Route>
           <Route path='/RegDetail' element={<RegDetail/>}></Route>
           <Route path='/loan-installments' element={<LoanInstallments/>}></Route>
+
+          <Route path="/atm" element={<ATMProfile/>} /> {/* Add route for ATMProfile */}
+          <Route path="/deposit" element={<Deposit />} /> {/* Add route for Deposit */}
+          <Route path="/withdraw" element={<Withdraw />} /> {/* Add route for Withdraw */}
 
         </Routes>
       </div>

@@ -31,11 +31,11 @@
 }
 
 .success-message {
-    color: green;
+    color: rgb(144, 238, 144);
     margin-top: 20px;
 }
 
 .error-message {
-    color: red;
+    color: rgb(255, 204, 204);
     margin-top: 20px;
 }

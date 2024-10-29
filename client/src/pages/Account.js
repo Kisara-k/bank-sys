@@ -51,7 +51,7 @@ export default function Account() {
 
             Axios.get("http://localhost:3002/transaction/trans_detail", {
                 params: { Id: Acc_ID },
-                headers: { Authorization: `Bearer ${token} `}
+                headers: { Authorization: `Bearer ${token}` }
             })
             .then((response) => {
                 console.log(response.data);
@@ -89,7 +89,7 @@ export default function Account() {
                 Acc_ID: Acc_ID,
                 Acc_type: Acc_type,
             }, {
-                headers: { Authorization: `Bearer ${token} `}
+                headers: { Authorization: `Bearer ${token}` }
             }).then((response) => {
                 console.log(response.data);
                 if (response.data.success === 1) {
@@ -185,6 +185,9 @@ export default function Account() {
     const fixedDepo = () => {
         window.location.href = "/FD";
     };
+    const goATM=()=>{
+        window.location.href = "/atm";
+    }
 
     const logout = () => {
         window.location.href = "/";
@@ -195,15 +198,13 @@ export default function Account() {
     return (
         <>
             <nav id="nav2">
-    <Link className="link2" to="/account">Home</Link>
-    <Link className="link2" to="/loans">Loans</Link>
-    <Link className="link2" to="/ATM">ATM</Link>
-    <Link to={linkto}><img src="user.png" id="userImg" /></Link>
-    <img src="logout.png" onClick={logout} id="logoutImg" />
-    <input type="button" onClick={fixedDepo} id="fdBtn" value="start FD" />
-   
-</nav>
-
+                <Link className="link2" to="/account">Home</Link>
+                <Link className="link2" to="/loans">Loans</Link>
+                <Link to={linkto}><img src="user.png" id="userImg" /></Link>
+                <img src="logout.png" onClick={logout} id="logoutImg" />
+                <input type="button" onClick={fixedDepo} id="fdBtn" value="start FD"></input>
+                <input type="button" id="atmBtn" value="ATM" onClick={goATM}></input>
+            </nav>
 
             <div className="row">
                 <div id="detail" className="col-sm-4">
@@ -230,7 +231,7 @@ export default function Account() {
                     <div className="row-sm-4" id="withdraw">
                         <span id="T1">Withdraw section</span><br></br><br></br>
                         <label for="withAmount">Enter amount : </label>
-                        <p><input type="text" onChange={(event) => { setWithAmount(event.target.value); }} id="amount" placeholder="5000.00"></input></p>
+                        <p><input type="text" className="form-control" onChange={(event) => { setWithAmount(event.target.value); }} id="amountC" placeholder="5000.00"></input></p>
                         <span id="msgW">please enter amount!</span>
                         <input type="submit" onClick={withdraw} id="withBtn" value="withdraw"></input>
                     </div>
@@ -238,7 +239,7 @@ export default function Account() {
                     <div className="row-sm-4" id="Deposite">
                         <span id="T1">Deposite section</span><br></br><br></br>
                         <label for="DepositeAmount">Enter amount : </label>
-                        <p><input type="text" onChange={(event) => { setDepoAmount(event.target.value); }} id="amount" placeholder="5000.00"></input></p>
+                        <p><input type="text" className="form-control" onChange={(event) => { setDepoAmount(event.target.value); }} id="amountC" placeholder="5000.00"></input></p>
                         <span id="msgD">please enter amount!</span>
                         <input type="submit" onClick={deposite} id="withBtn" value="Deposite"></input>
                     </div>
@@ -247,9 +248,9 @@ export default function Account() {
                 <div className="col-sm-4" id="transfer">
                     <span id="T1">Transfer section</span><br></br><br></br>
                     <label for="DepositeAmount">To : </label>
-                    <p><input type="text" onChange={(event) => { setTransAcc(event.target.value) }} id="AccTo" placeholder="AC001"></input></p><br></br>
+                    <p><input type="text" className="form-control" onChange={(event) => { setTransAcc(event.target.value) }} id="AccTo" placeholder="AC001"></input></p><br></br>
                     <label for="transferMoney">Enter Amount :</label>
-                    <p><input type="text" onChange={(event) => { setTransAmount(event.target.value); }} id="transfetAmount" placeholder="1000.00"></input></p>
+                    <p><input type="text" className="form-control" onChange={(event) => { setTransAmount(event.target.value); }} id="transfetAmount" placeholder="1000.00"></input></p>
                     <input type="submit" onClick={transfer} id="transferBtn" className="btn btn-info" value="Transfer"></input>
                     <span id="msgT">please enter amount!</span>
                     <span id="msgt">please enter account number!</span>

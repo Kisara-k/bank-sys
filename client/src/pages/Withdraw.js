@@ -1,21 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Axios from 'axios';
-import {jwtDecode} from 'jwt-decode'; // Correct import
-import './Withdraw.css'; // Import the CSS file for styling
+import { jwtDecode } from 'jwt-decode';
+import './Deposit.css'; // Adjust path as necessary
 
-const Withdraw = () => {
-    const [withdrawAmount, setWithdrawAmount] = useState(0);
-    const [successMessage, setSuccessMessage] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+const Deposit = () => {
+    const [depositAmount, setDepositAmount] = useState('');
+    const [message, setMessage] = useState({ text: '', type: '' });
+    const [acc_id, setID] = useState("");
+    const [passkey, setkey] = useState("");
+    const [type,setType]=useState("");
+    const [real_id,setReal]=useState("");
 
     const isTokenExpired = (token) => {
         if (!token) return true;
         const decodedToken = jwtDecode(token);
-        const currentTime = Date.now() / 1000;
-        return decodedToken.exp < currentTime;
+        return decodedToken.exp < Date.now() / 1000;
     };
 
-    const handleWithdraw = () => {
+    useEffect(()=>{
+        const getData = localStorage.getItem("logdetails");
+
+        if (getData) {
+            const pasedData = JSON.parse(getData);
+            setType(pasedData[0].type);
+            setReal(pasedData[0].account_id);
+        }
+    })
+
+    const handleDeposit = () => {
         const token = localStorage.getItem("token");
 
         if (isTokenExpired(token)) {
@@ -24,38 +36,66 @@ const Withdraw = () => {
             return;
         }
 
-        if (withdrawAmount === 0) {
-            setErrorMessage("Withdrawal amount cannot be zero.");
+        if (!depositAmount || isNaN(depositAmount) || depositAmount <= 0) {
+            setMessage({ text: "Please enter a valid deposit amount.", type: "error" });
+            return;
+        }
+        if(acc_id!=real_id){
+            setMessage({ text: "Account number mismatch.", type: "error" });
             return;
         }
 
-        Axios.post("http://localhost:3002/account/withdraw", { amount: withdrawAmount }, {
+        Axios.post("http://localhost:3002/account/withdraw", { amount: depositAmount, acc_id: acc_id, passkey: passkey ,type:type}, {
             headers: { Authorization: `Bearer ${token}` }
         })
-        .then(response => {
-            setSuccessMessage("Withdrawal successful!");
-            setErrorMessage('');
+        .then(() => {
+            setMessage({ text: "Withdraw successful!", type: "success" });
+            setDepositAmount('');
+            setID('');
+            setkey('');
         })
-        .catch(error => {
-            setErrorMessage("Withdrawal failed. Please try again.");
-            setSuccessMessage('');
+        .catch(() => {
+            setMessage({ text: "Withdraw failed. Please try again.", type: "error" });
         });
     };
 
+    const back_dash=()=>{
+        window.location.href="/account";
+    }
+
     return (
-        <div className="withdraw-container">
-            <h1>Withdraw</h1>
-            <input
-                type="number"
-                value={withdrawAmount}
-                onChange={(e) => setWithdrawAmount(e.target.value)}
-                placeholder="Enter withdrawal amount"
-            />
-            <button onClick={handleWithdraw}>Withdraw</button>
-            {successMessage && <p className="success-message">{successMessage}</p>}
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
+        <><div className="deposit-container">
+            <div className="deposit-card">
+                <h2>Deposit</h2>
+
+                <label className="input-label">Account Number</label>
+                <input
+                    type="text"
+                    onChange={(event) => { setID(event.target.value); } }
+                    placeholder="Account Number"
+                    className="input-field" />
+
+                <label className="input-label">Amount</label>
+                <input
+                    type="text"
+                    value={depositAmount}
+                    onChange={(e) => setDepositAmount(e.target.value)}
+                    placeholder="Enter withdraw amount"
+                    className="input-field" />
+
+                <button onClick={handleDeposit} className="deposit-button">Submit</button>
+
+                {message.text && (
+                    <p className={message.type === "success" ? "success-message" : "error-message"}>
+                        {message.text}
+                    </p>
+                )}
+            </div>
         </div>
+        <div id="back_dash">
+        <input type='button' className='btn btn-primary' onClick={back_dash} id="dash_btn" value="Back to dashboard" ></input>
+        </div></>
     );
 };
 
-export default Withdraw;
+export default Deposit;

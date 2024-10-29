@@ -142,6 +142,9 @@ h1{
     margin-left: 20rem;
     margin-bottom: 2rem;
 }
+#createForm h1{
+    margin-left: 20rem;
+}
 #physical_loan{
     padding-left: 20rem;
 }

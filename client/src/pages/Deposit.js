@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import './Deposit.css'; // Adjust path as necessary
 
+
+
 const Deposit = () => {
     const [depositAmount, setDepositAmount] = useState('');
-    const [otp, setOtp] = useState('');
-    const [otpSent, setOtpSent] = useState(false);
     const [message, setMessage] = useState({ text: '', type: '' });
+    const [acc_id, setID] = useState("");
+    const [passkey, setkey] = useState("");
+    const [real_id,setReal]=useState("");
 
     const isTokenExpired = (token) => {
         if (!token) return true;
@@ -15,26 +18,14 @@ const Deposit = () => {
         return decodedToken.exp < Date.now() / 1000;
     };
 
-    const handleSendOtp = () => {
-        const token = localStorage.getItem("token");
+    useEffect(()=>{
+        const getData = localStorage.getItem("logdetails");
 
-        if (isTokenExpired(token)) {
-            alert("Session expired. Please log in again.");
-            window.location.href = "/";
-            return;
+        if (getData) {
+            const pasedData = JSON.parse(getData);
+            setReal(pasedData[0].account_id);
         }
-
-        Axios.post("http://localhost:3002/send-otp", {}, {
-            headers: { Authorization: `Bearer ${token}` }
-        })
-        .then(response => {
-            setOtpSent(true);
-            setMessage({ text: "OTP sent to your registered phone number.", type: "success" });
-        })
-        .catch(() => {
-            setMessage({ text: "Failed to send OTP. Please try again.", type: "error" });
-        });
-    };
+    })
 
     const handleDeposit = () => {
         const token = localStorage.getItem("token");
@@ -49,69 +40,51 @@ const Deposit = () => {
             setMessage({ text: "Please enter a valid deposit amount.", type: "error" });
             return;
         }
-
-        if (!otp) {
-            setMessage({ text: "Please enter the OTP.", type: "error" });
+        if(acc_id!=real_id){
+            setMessage({ text: "Account number mismatch.", type: "error" });
             return;
         }
 
-        Axios.post("http://localhost:3002/account/deposit", { amount: depositAmount, otp }, {
+        Axios.post("http://localhost:3002/account/deposite", { amount: depositAmount, acc_id: acc_id, passkey: passkey }, {
             headers: { Authorization: `Bearer ${token}` }
         })
         .then(() => {
             setMessage({ text: "Deposit successful!", type: "success" });
             setDepositAmount('');
-            setOtp('');
-            setOtpSent(false);
+            setID('');
+            setkey('');
         })
         .catch(() => {
             setMessage({ text: "Deposit failed. Please try again.", type: "error" });
         });
     };
 
+    const back_dash=()=>{
+        window.location.href="/account";
+    }
+
     return (
-        <div className="deposit-container">
+        <><div className="deposit-container">
             <div className="deposit-card">
                 <h2>Deposit</h2>
-                
+
                 <label className="input-label">Account Number</label>
                 <input
                     type="text"
+                    onChange={(event) => { setID(event.target.value); } }
                     placeholder="Account Number"
-                    className="input-field"
-                />
-                <div style={{ marginBottom: '1rem' }}></div> {/* Added gap */}
-                <label className="input-label">Password</label>
-                <input
-                    type="password"
-                    placeholder="Password"
-                    className="input-field"
-                />
-                
-                <div style={{ marginBottom: '1rem' }}></div> {/* Added gap */}
+                    className="input-field" />
 
-                <label className="input-label">Deposit Amount</label>
+                <label className="input-label">Amount</label>
                 <input
                     type="text"
                     value={depositAmount}
                     onChange={(e) => setDepositAmount(e.target.value)}
-                    placeholder="Amount"
-                    className="input-field"
-                />
-                
-                <button onClick={handleSendOtp} className="otp-button">Get OTP Code</button>
-                
-               
-                <input
-                    type="text"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    placeholder="Enter OTP"
-                    className="input-field"
-                    disabled={!otpSent}
-                />
-                
+                    placeholder="Enter deposit amount"
+                    className="input-field" />
+
                 <button onClick={handleDeposit} className="deposit-button">Submit</button>
+
                 {message.text && (
                     <p className={message.type === "success" ? "success-message" : "error-message"}>
                         {message.text}
@@ -119,6 +92,9 @@ const Deposit = () => {
                 )}
             </div>
         </div>
+        <div id="back_dash">
+        <input type='button' className='btn btn-primary' onClick={back_dash} id="dash_btn" value="Back to dashboard" ></input>
+        </div></>
     );
 };
 

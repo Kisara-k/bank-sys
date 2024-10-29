@@ -1,77 +1,79 @@
-body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
-
-#atm-page {
-    background-image: url('./img/ATM 1.webp'); /* Ensure the image path is correct */
-    background-size: cover; /* Make the image cover the container */
-    background-position: center; /* Center the background image */
-    background-repeat: no-repeat; /* Prevent the background image from repeating */
-   
-    display: flex;
-    flex-direction: column; /* Stack children vertically */
-    align-items: flex-end; /* Align content to the right */
-    justify-content: flex-start; /* Align content to the top */
-    height: 100vh; /* Ensure the container covers the full viewport height */
-    min-width: 100vw; /* Ensure the container covers the full viewport width */
-    min-height: 100vh; /* Fallback to ensure it covers the full viewport */
-    padding: 20px; /* Add padding to the container */
-}
-
+/* ATM Profile Container */
 .atm-profile-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-end; /* Align items to the right within the container */
-    padding: 2px;
+    align-items: center;
+    padding: 30px;
     max-width: 500px;
-    background: rgba(255, 255, 255, 0.8); /* Add a semi-transparent background for readability */
-    border-radius: 0px;
-    color: #333; /* Text color to contrast against the background */
+    margin: 0 auto;
+    background: linear-gradient(135deg, #f3f4f6, #e2e8f0);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
 }
 
+.atm-profile-container:hover {
+    transform: translateY(-5px);
+}
+
+/* Profile Title */
 .atm-profile-title {
-    font-size: 4.5rem; /* Increased font size */
+    font-size: 2.5rem;
     color: #333;
-    margin: 0 0 20px; /* Margin below the title */
-    text-align: right; /* Align title text to the right */
+    margin-bottom: 25px;
+    font-weight: 600;
+    text-align: center;
+    margin-right: 15rem;
 }
 
+/* Button Container */
 .atm-buttons {
     display: flex;
-    flex-direction: column; /* Stack buttons vertically */
-    align-items: flex-end; /* Align buttons to the right */
-    gap: 20px; /* Space between buttons */
+    gap: 20px;
+    margin-top: 20px;
 }
 
+/* Link Style */
 .atm-button-link {
     text-decoration: none;
 }
 
+/* Button Style */
 .atm-button {
-    padding: 10px 30px;
+    padding: 12px 28px;
     font-size: 1.2rem;
-    border: none;
-    border-radius: 5px;
+    font-weight: 500;
+    color: #fff;
     background-color: #007bff;
-    color: white;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .atm-button:hover {
     background-color: #0056b3;
+    box-shadow: 0 6px 12px rgba(0, 86, 179, 0.4);
+    transform: scale(1.05);
 }
 
+.atm-button:active {
+    transform: scale(0.98);
+}
+
+/* Responsive Styles */
 @media (max-width: 600px) {
     .atm-profile-container {
-        padding: 10px;
+        padding: 20px;
+    }
+
+    .atm-profile-title {
+        font-size: 2rem;
     }
 
     .atm-button {
         font-size: 1rem;
-        padding: 8px 16px;
+        padding: 10px 20px;
     }
 }

@@ -72,18 +72,13 @@ export const employeeLogin = (req, res) => {
         }
 
         if (result.length !== 0) {
-            const user = result[0];
-                    const token = jwt.sign(
-                        { userId: user.customer_id, role: 'organization' },
-                        secretKey,
-                        { expiresIn: '20000m' }
-                    );
+            const token = jwt.sign({ id: result[0].employee_id }, secretKey, { expiresIn: '1h' });
             console.log("Success");
-            return res.send({ token, result });
+            return res.send({ result: result, token });
         } else {
             return res.status(401).send({ error: "Invalid credentials." });
         }
     });
 };
 
-export default { login, employeeLogin };
+export default { employeeLogin };

@@ -107,7 +107,7 @@ export default function LoanInstallments() {
             </div>
           ))
         ) : (
-          <p>No loans found.</p>
+          <p>No due loan installments.</p>
         )}
       </div>
     </div>

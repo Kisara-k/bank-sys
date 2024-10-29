@@ -72,7 +72,7 @@ export default function Fixeddeposite() {
     };
 
     return (
-        <>
+        <div id="fdPage">
             <form id="fdForm">
                 <div className="form-group">
                     <label htmlFor="account_id">Enter account no :</label>
@@ -114,6 +114,6 @@ export default function Fixeddeposite() {
                 <p>Error starting fixed deposit. Please check input details!</p>
                 <input id="fderror" className="btn btn-info" type="submit" value="ok2" onClick={ok3}></input>
             </div>
-        </>
+            </div>
     );
 }

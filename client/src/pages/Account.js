@@ -100,7 +100,8 @@ export default function Account() {
     window.history.forward();
 
     return (
-        <div>
+        
+            <div className="account-container">
             <nav id="nav2">
                 <Link className="link2" to="/account">Home</Link>
                 <Link className="link2" to="/loans">Loans</Link>
@@ -109,7 +110,7 @@ export default function Account() {
                 <input type="button" onClick={fixedDepo} id="fdBtn" value="start FD"></input>
                 <input type="button" id="atmBtn" value="ATM" onClick={goATM}></input>
             </nav>
-
+            
             <div className="row">
                 <div id="detail" className="col-sm-4">
                     {[detail].map((value, key) => (
@@ -182,6 +183,7 @@ export default function Account() {
                 <p>Your transfer request has been successed. Thank you!</p>
                 <input type="button" onClick={() => window.location.href = "/account"} id="ok" value="OK" className="btn btn-info"></input>
             </div>
-        </div>
+            </div>
+        
     );
 }

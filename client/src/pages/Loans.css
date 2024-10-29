@@ -75,7 +75,7 @@
 }
 
 /* Form input fields alignment */
-#accNo, #lamount, #ltype, #duration, #password {
+#accNo, #lamount, #ltype, #duration, #password,#reason {
     width: 90%;
     padding: 0.8rem;
     margin-bottom: 1.2rem;
@@ -110,6 +110,7 @@
     cursor: pointer;
     font-weight: 600;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 2rem;
 }
 
 /* Error message styling */
@@ -148,7 +149,7 @@
     justify-content: center; /* Center the buttons horizontally */
     align-items: center; /* Vertically align the buttons */
     margin-top: 2rem;
-    margin-left: 5%;
+    margin-left: 20%;
     margin-right: 5%;
     gap: 1px; /* Add space between the buttons */
     width: 100%; /* Ensure the buttons span across the available width */
@@ -180,7 +181,7 @@
     color: white; /* Text color */
     cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover */
-    margin: 0; /* Remove auto margin to align left */
+    margin:0; /* Remove auto margin to align left */
     display: block; /* Ensure it's a block element for proper alignment */
 }
 
@@ -196,6 +197,7 @@
     #oprionBtns {
         flex-direction: column; /* Stack buttons vertically */
         gap: 1rem; /* Space between buttons when stacked */
+        margin-left: 1%;
     }
 
     #statustBtn, #installmentBtn {
@@ -222,8 +224,19 @@
         flex-direction: column; /* Stack buttons vertically */
         gap: 1rem;
     }
+    #installmentBtn{
+        margin-top: 1rem;
+    }
+
+    #reqBtn {
+        font-size: 1rem;
+
+    }
 
     #reqBtn {
         font-size: 1rem;
     }
 }
+
+
+    

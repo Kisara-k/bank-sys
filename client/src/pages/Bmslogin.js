@@ -19,9 +19,9 @@ export default function Bmslogin() {
             employeepasskey: employeepasskey
         }).then((response) => {
             // Assuming the backend responds with a JWT token and employee details
-            if (response.data.result.length === 1 && response.data.token) {
-                localStorage.setItem("employeeDetail", JSON.stringify(response.data.result));
-                localStorage.setItem("token", response.data.token); // Store the JWT token
+            if (response.data.length === 1 && response.data[0].token) {
+                localStorage.setItem("employeeDetail", JSON.stringify(response.data));
+                localStorage.setItem("token", response.data[0].token); // Store the JWT token
                 window.location.href = "BMS";
             } else {
                 alert("Please enter valid login details.");

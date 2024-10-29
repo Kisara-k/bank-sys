@@ -7,7 +7,6 @@ export default function RegDetail(){
     const [type,setType]=useState("");
 
     useEffect(()=>{
-        
         const getData=localStorage.getItem("regDetail");
         if(getData){
             const DataArray=JSON.parse(getData);

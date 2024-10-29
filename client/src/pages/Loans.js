@@ -112,16 +112,21 @@ export default function Loans() {
             </div>
 
             <div className="row" id="oprionBtns">
-                <div className="col-sm-4" id="installments1">
-                    <input type="button" id="installmentBtn" className="btn-btn-primary" value="Pay Loan Installments" onClick={handleInstallmentClick} />
+                <div className="row" id="installments2">
+                    <div className="col-sm-4">
+                        <Link to="/loan-status">
+                            <input type="button" id="statustBtn" className="btn-btn-primary" value="loan status" />
+                        </Link>
+                    </div>
+                    <div className="col-sm-4">
+                        <input type="button" id="installmentBtn" className="btn-btn-primary" value="Pay Loan Installments" onClick={handleInstallmentClick} />
+                    </div>
                 </div>
-                <div className="col-sm-4" id="installments2">
-                    <input type="button" id="statustBtn" className="btn-btn-primary" value="loan status" />
-                </div>
+                
             </div>
 
             <div id="loanform">
-                <h1 id="loanhead"> Loan Application___</h1>
+                <h1 id="loanhead"><center> Loan Application </center></h1>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="acc">Enter fixed deposit account no:</label>
@@ -156,6 +161,7 @@ export default function Loans() {
                             onChange={(e) => setDuration(e.target.value)} 
                         />
                     </div>
+
 
                     <div className="form-group">
                         <label htmlFor="amount">Loan amount:</label>

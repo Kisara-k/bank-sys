@@ -28,8 +28,8 @@ export default function Profile(){
     }
 
     return(
-        <>
-            <h2>Bank Account Details</h2>
+        <div id="profile-page">
+            <h2 style={{ fontFamily: "'Times New Roman', Times, serif", textAlign: "center",color: "white" }}>Bank Account Details</h2>
 
             <div class="row" id="set">
                 <div id="Left" class="col-sm-4">
@@ -45,7 +45,7 @@ export default function Profile(){
 
                 <div id="Right" class="col-sm-4">
                     {userDetail.map((val,key)=>(
-                        <><span >Account no : <span id="ac" >{val.account_id}</span></span><br></br><br></br>
+                        <><span >Account no : <span  id="ac">{val.account_id}</span></span><br></br><br></br>
                         <span >Account type : <span id="ac_type" >{val.type}</span></span><br></br><br></br>
                         <span >NIC no : <span id="nic"> {val.nic}</span></span><br></br><br></br>
                         <span >Branch ID : <span id="bid" >{val.branch_id}</span></span><br></br>
@@ -54,11 +54,11 @@ export default function Profile(){
                 </div>
             </div>
 
-            <div id="btns">
+            <div id="btns" style={{ textAlign: "center" }}>
                 <span><input id="save" type="submit" className="btn btn-info" value="Save"></input>    <input id="back" type="submit" onClick={back} className="btn btn-info" value="Back"></input>  </span>
             </div>
             
         
-        </>
+            </div>
     )
 }

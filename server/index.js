@@ -1,10 +1,12 @@
-// index.js
 import dotenv from 'dotenv'; // Load environment variables
 dotenv.config();
 import express, { json } from 'express';
 import cors from 'cors';
-import db from './config/database.js';
+
+import db from './config/database.js'; // Ensure this file exports a configured database connection
+
 import jwt from 'jsonwebtoken';
+
 const app = express();
 
 // Middleware
@@ -25,19 +27,40 @@ app.use('/customer', customerRoutes);
 app.use('/employee', employeeRoutes);
 app.use('/transaction', transactionRoutes);
 
-// Root Endpoint
-app.get('/', (req, res) => {
-    res.send('Welcome to the Banking API');
+// Endpoint to get account by customerId
+app.get('/api/accounts', (req, res) => {
+    const { customerId } = req.query;
+    
+    db.query('SELECT accountId FROM accounts WHERE customerId = ?', [customerId], (error, results) => {
+        if (error) {
+            console.error('Error fetching account data:', error);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'No accounts found for this customer' });
+        }
+
+        res.json(results); // Return all accounts related to the customerId
+    });
 });
 
-// Start Server
-const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}.`);
+
+// Endpoint to get loans by accountId
+app.post('/loans', (req, res) => {
+    const accountId=req.body.accountId;
+
+    db.query('SELECT * FROM loans WHERE account_id = ?', [accountId], (error, results) => {
+        if (error) {
+            console.error('Error fetching loan data:', error);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+        res.send(results);
+        
+    });
 });
 
-
-// Endpoint to apply for an online loan
+// Endpoint to apply for a loan
 app.post('/apply-loan', (req, res) => {
     const { accountNo, loanAmount, duration, loanReason } = req.body;
 
@@ -105,6 +128,19 @@ app.post('/apply-loan', (req, res) => {
 });
 
 
+// Root Endpoint
+app.get('/', (req, res) => {
+    res.send('Welcome to the Banking API');
+});
+
+// Start Server
+const PORT = process.env.PORT || 3002;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}.`);
+});
+
+
+
 
 
 app.post("/phy_loan",(req,res)=>{
@@ -112,11 +148,12 @@ app.post("/phy_loan",(req,res)=>{
     const amount=req.body.amount;
     const duration=req.body.duration;
     const date=req.body.date;
+    const reason=req.body.reason;
 
-    const physical_loan=`CALL physical_loan(?,?,?,?,@loan_state)`;
+    const physical_loan=`CALL physical_loan(?,?,?,?,?,@loan_state)`;
 
     db.execute(physical_loan,[
-        amount,acc_no,duration,date
+        amount,acc_no,duration,date,reason
     ],(err,result)=>{
         if(err){
             console.log("procedure error.",err);
@@ -305,6 +342,9 @@ app.post("/viewinfo",(req,res)=>{
 
 })
 
+
+
+
 app.get('/user-loans', (req, res) => {
     const customer_id = req.query.customer_id;
   
@@ -355,6 +395,7 @@ app.get('/loans/due-installments/:customer_id', (req, res) => {
 
         // The first result set from the procedure contains the installments
         const installments = results[0]; // Extract the first element
+        console.log(installments);
 
         // Check if installments is an array and send response
         if (Array.isArray(installments)) {
@@ -381,6 +422,7 @@ app.get('/pay-installment/:loan_id/:installmentId', (req, res) => {
         if (err) {
             console.error('Error executing payment procedure:', err);
             return res.status(500).json({ error:'Insufficient funds for installment payment' });
+
         }
 
         // Then, retrieve the output parameter
@@ -400,3 +442,4 @@ app.get('/pay-installment/:loan_id/:installmentId', (req, res) => {
         });
     });
 });
+

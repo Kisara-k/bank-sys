@@ -177,5 +177,3 @@ VALUES
 -- For loan_id 4 (online loan, amount: 2000, monthly_installment: 100)
 (4, 1, '2023-05-01', 100.00, '2023-05-01 12:00:00', 'paid'),
 (4, 2, '2023-06-01', 100.00, NULL, 'pending');  -- Next installment
-
-

@@ -117,6 +117,13 @@ select{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: gray;
 }
+#amountC{
+    width: 15rem;
+    border: 1px solid grey;
+}
+#AccTo,#transfetAmount{
+    border: 1px solid grey;
+}
 #transfer{
     background-color: white;
     border-radius: 10px;
@@ -172,11 +179,11 @@ select{
     border: 1px solid rgb(50, 50, 210);
     color: white;
     border-radius: 5px;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
     font-size: 0.7rem;
     padding: 0.3rem;
     font-weight: 600;
-    margin-left: 9rem;
+    margin-left: 11rem;
 }
 #transferBtn:hover{
     background-color: black;
@@ -277,7 +284,7 @@ select{
 #withSuccess,#depoSuccess,#transferSuccess{
     position: fixed;
     left: 35vw;
-    top:1vh;
+    top:0vh;
     z-index: 2;
     padding-left: 2rem;
     padding-right: 2rem;
@@ -286,7 +293,9 @@ select{
     font-weight: 600;
     display: none;
     font-size: small;
+    font-family: monospace;
 }
+
 #sucImg{
     width: 3rem;
     margin-left: 8rem;

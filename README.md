@@ -31,7 +31,7 @@ This project is a Bank Management System (BMS) that allows users to manage their
 ## Tech Stack
 
 - **Frontend**: React, Axios
-- **Backend**: Node.js with Express, SQL (MySQL or PostgreSQL)
+- **Backend**: Node.js with Express, MySQL 
 - **Database**: SQL, with emphasis on ACID compliance, primary and foreign keys, and indexing.
 
 ## Getting Started

@@ -1,70 +1,97 @@
-/* LoanInstallment.css */
+/* LoanInstallments.css */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f8ff; /* Light pastel blue */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
 
 .loan-installment-container {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    max-width: 600px;
-    margin: 20px auto;
-  }
-  
-  .loan-installment-container h1 {
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .loan-installment-container .loan-details {
-    margin-bottom: 20px;
-  }
-  
-  .loan-installment-container .loan-details input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  .loan-installment-container .installment-list {
-    margin-top: 20px;
-  }
-  
-  .loan-installment-container .installment-item {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  }
-  
-  .loan-installment-container .installment-item.pending {
-    background-color: #fff3cd;
-  }
-  
-  .loan-installment-container .installment-item.paid {
-    background-color: #d4edda;
-  }
-  
-  .loan-installment-container .installment-item button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .loan-installment-container .installment-item button:hover {
-    background-color: #0056b3;
-  }
-  
-  .error-message {
-    color: red;
-    margin-top: 10px;
-  }
-  
-  .success-message {
-    color: green;
-    margin-top: 10px;
-  }
+  width: 90%;
+  max-width: 900px; /* Increased max width */
+  padding: 20px 20px 30px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-top: 30px;
+}
+
+.loan-installment-container h1 {
+  color: #2a7fbc;
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin: 0 0 20px;
+  padding-top: 10px;
+  border-bottom: 2px solid #2a7fbc;
+  display: inline-block;
+}
+
+.loan-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.loan-item {
+  width: 100%; /* Make loan items full width of the container */
+  background-color: #e3f2fd; /* Very light blue */
+  border-radius: 12px;
+  padding: 20px; /* Increased padding for wider content display */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.loan-item:hover {
+  transform: scale(1.02);
+}
+
+.loan-item p {
+  color: #333;
+  margin: 8px 0; /* Slightly increased spacing for wider boxes */
+  font-weight: 500;
+}
+
+button {
+  background-color: #4caf50;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #388e3c;
+}
+
+.error-message, .success-message {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  display: inline-block;
+  text-align: center;
+}
+
+.error-message {
+  background-color: #e57373; /* Light red */
+}
+
+.success-message {
+  background-color: #81c784; /* Light green */
+}
+
+p {
+  font-size: 1rem;
+}

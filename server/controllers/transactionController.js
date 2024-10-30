@@ -82,6 +82,7 @@ export const fixDeposit = (req, res) => {
                 res.send({ success: 1 });
             } else {
                 res.send({ success: 0 });
+                console.log("nothing");
             }
         });
     });

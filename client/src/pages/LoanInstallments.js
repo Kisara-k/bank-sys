@@ -64,7 +64,7 @@ export default function LoanInstallments() {
     const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch(`http://localhost:3002/pay-installment/${loan_id}/${installmentId}`, {
+      const response = await fetch(`http://localhost:3002/loans/pay-installment/${loan_id}/${installmentId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

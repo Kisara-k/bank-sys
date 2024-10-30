@@ -57,6 +57,9 @@ export default function Fixeddeposite() {
                 }
             });
         }
+        else{
+            document.getElementById("error_msg2").style.display = "block";
+        }
     };
 
     const ok = () => {
@@ -107,12 +110,12 @@ export default function Fixeddeposite() {
             <div id="error_msg">
                 <img src="error.png" id="fderror" alt="error"></img>
                 <p>Error starting fixed deposit. Please check account balance is sufficient!</p>
-                <input id="fderror" className="btn btn-info" type="submit" value="ok2" onClick={ok2}></input>
+                <input id="fderrorBtn" className="btn btn-info" type="submit" value="ok2" onClick={ok2}></input>
             </div>
             <div id="error_msg2">
                 <img src="error.png" id="fderror" alt="error"></img>
                 <p>Error starting fixed deposit. Please check input details!</p>
-                <input id="fderror" className="btn btn-info" type="submit" value="ok2" onClick={ok3}></input>
+                <input id="fderrorBtn" className="btn btn-info" type="submit" value="ok2" onClick={ok3}></input>
             </div>
         </>
     );

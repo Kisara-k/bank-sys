@@ -3,7 +3,6 @@
 /* General styles */
 body {
     font-family: 'Arial', sans-serif;
-    
     margin: 0;
     padding: 0;
     
@@ -18,7 +17,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
+    min-width: 100vw;
 }
 
 h2 {

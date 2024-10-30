@@ -292,7 +292,7 @@ BEGIN
   FROM loans
   JOIN loan_installment_log ON loans.loan_id = loan_installment_log.loan_id
   JOIN account ON account.account_id = loans.account_id
-  WHERE loan_installment_log.status = 'overdue' OR loan_installment_log.due_date < loan_installment_log.payment_date;
+  WHERE loan_installment_log.status = 'overdue' OR loan_installment_log.due_date < loan_installment_log.payment_date AND account.branch_id=branch_id;
 END
 
 

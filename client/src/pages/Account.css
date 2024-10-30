@@ -6,7 +6,7 @@ body{
     width: 100%;
     height: 2.8rem;
     padding-top: 0.5rem;
-
+    min-width: 100vw;
 }
 #fdBtn{
     float: right;
@@ -103,7 +103,7 @@ select{
 }
 #accNo{
     font-weight: 400;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 #acc{
     font-size: 0.6rem;
@@ -152,7 +152,7 @@ select{
     padding-top: 1rem;
     padding-bottom: 1rem;
     position: relative;
-    right: 8rem;
+    left: 5rem;
     height: 25rem;
 }
 #T1{
@@ -211,7 +211,7 @@ select{
 #history{
     margin-top: 3rem;
     position: relative;
-    right: 3rem;
+    left: 12rem;
 }
 .Transaction_detail {
     width: 100%; /* Table takes full width of the parent */

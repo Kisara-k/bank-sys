@@ -306,7 +306,10 @@ BEGIN
   DECLARE new_loan_id INT;
   DECLARE affected_rows INT;
 
-  SET loan_rate = 5.00;
+  SELECT rate INTO loan_rate
+  FROM loan_rates
+  WHERE duration_months = duration;
+
   SET monthly_installment= (amount * (1 + (loan_rate / 100))) / duration;
   SELECT IFNULL(MAX(loan_id), 0) + 1 INTO new_loan_id FROM loans;
 
@@ -459,8 +462,8 @@ END
 
 
 --------------------online  loan
-create
-    definer = root@localhost procedure apply_online_loan(IN accountNo int, IN loan_amount decimal(15, 2),
+delimiter //
+create procedure apply_online_loan(IN accountNo int, IN loan_amount decimal(15, 2),
                                                          IN duration int, IN loanReason varchar(255),
                                                          OUT loan_status varchar(255))
 BEGIN
@@ -471,9 +474,14 @@ BEGIN
     DECLARE monthly_installment_ DECIMAL(15, 2);
     DECLARE new_loan_id INT;
     DECLARE total_previous_loans DECIMAL(15, 2);
+    DECLARE out_state INT;
 
     -- Exit handler for SQL exceptions
-
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SET loan_status = 'An error occurred. Transaction rolled back.';
+    END;
 
     -- Start the transaction
     START TRANSACTION;
@@ -484,76 +492,74 @@ BEGIN
     FROM fixed_deposit fd
     WHERE fd.fd_id = accountNo;
 
-    -- Debug output: FD amount and savings account ID
-    SELECT CONCAT('FD amount: ', fd_amount, ', Savings Account ID: ', savings_account_id);
-
     -- Check if the FD exists
     IF fd_amount IS NULL THEN
         SET loan_status = 'No Fixed Deposit account found for this customer.';
         ROLLBACK;
+        -- Exit the procedure early by setting loan_status and rolling back
     ELSE
-         -- Calculate the maximum loan the customer can apply for (60% of FD or max 500,000)
+        -- Calculate the maximum loan the customer can apply for (60% of FD or max 500,000)
         SET max_loan_amount = LEAST(fd_amount * 0.60, 500000.00);
 
         -- Calculate total of previous loans with the same FD ID
         SELECT IFNULL(SUM(loans.amount), 0) INTO total_previous_loans
-        FROM loans JOIN boc.fixed_deposit f on loans.account_id = f.account_id
+        FROM loans
+        JOIN boc.fixed_deposit f ON loans.account_id = f.account_id
         WHERE loans.account_id = savings_account_id;
 
         -- Adjust maximum loan amount by subtracting previous loan amounts
         SET max_loan_amount = max_loan_amount - total_previous_loans;
 
-
         -- Check if requested loan exceeds maximum allowed
         IF loan_amount > max_loan_amount THEN
             SET loan_status = CONCAT('Loan amount exceeds the limit. Maximum allowed: ', max_loan_amount);
             ROLLBACK;
+            -- Exit the procedure early by setting loan_status and rolling back
         ELSE
-            -- Set loan interest rate (Example: 5%)
-            SET loan_rate = 5.00;
+            -- Retrieve the loan interest rate based on the duration
+            SELECT rate INTO loan_rate
+            FROM loan_rates
+            WHERE duration_months = duration;  -- Ensure this matches the column name in the table
 
-            -- Debug output: Loan rate
-            SELECT CONCAT('Loan Rate: ', loan_rate);
+            -- Check if a valid rate is found
+            IF loan_rate IS NULL THEN
+                SET loan_status = 'No rate found for the selected duration.';
+                ROLLBACK;
+                -- Exit the procedure early by setting loan_status and rolling back
+            ELSE
+                -- Calculate the monthly installment
+                SET monthly_installment_ = (loan_amount * (1 + (loan_rate / 100))) / duration;
 
-            -- Calculate the monthly installment
-            SET monthly_installment_ = (loan_amount * (1 + (loan_rate / 100))) / duration;
+                -- Generate a new loan_id (assuming auto-increment is not used)
+                SELECT IFNULL(MAX(loan_id), 0) + 1 INTO new_loan_id FROM loans;
 
-            -- Debug output: Monthly installment
-            SELECT CONCAT('Monthly Installment: ', monthly_installment_);
+                -- Insert the loan into the loans table
+                INSERT INTO loans (
+                    loan_id, account_id, amount, rate, monthly_installment,
+                    duration_months, start_date, type, status, description, months_left
+                )
+                VALUES (
+                    new_loan_id, savings_account_id, loan_amount, loan_rate,
+                    monthly_installment_, duration, CURDATE(), 'online', 'approved', loanReason, duration
+                );
 
-            -- Generate a new loan_id (assuming auto-increment is not used)
-            SELECT IFNULL(MAX(loan_id), 0) + 1 INTO new_loan_id FROM loans;
+                -- Update the balance of the linked savings account
+                CALL deposit(loan_amount, savings_account_id, out_state);
 
-            -- Debug output: New loan ID
-            SELECT CONCAT('New Loan ID: ', new_loan_id);
+                -- Commit the transaction
+                IF out_state > 0
+                COMMIT;
 
-            -- Insert the loan into the loans table
-            INSERT INTO loans (
-                loan_id, account_id, amount, rate, monthly_installment,
-                duration_months, start_date, type, status,description,months_left
-            )
-            VALUES (
-                new_loan_id, savings_account_id, loan_amount, loan_rate,
-                monthly_installment_, duration, CURDATE(), 'online', 'pending'
-            ,loanReason,duration);
+                ELSE 
+                  ROLLBACK;
 
-            -- Update the balance of the linked savings account
-            UPDATE account
-            SET balance = balance + loan_amount
-            WHERE account_id = savings_account_id;
-
-            -- Debug output: Loan approved and balance updated
-            SELECT 'Loan approved and savings account balance updated';
-
-            -- Commit the transaction
-            COMMIT;
-
-            -- Set loan status to success
-            SET loan_status = 'Loan approved and deposited into the savings account.';
+                -- Set loan status to success
+                SET loan_status = 'Loan approved and deposited into the savings account.';
+            END IF;
         END IF;
     END IF;
-
-END;
+END //
+delimiter ;
 
 
 
@@ -580,7 +586,7 @@ BEGIN
         account a ON f.account_id = a.account_id
     WHERE
         a.customer_id = p_customer_id
-        AND loan_installment_log.status = 'pending'
+        AND loan_installment_log.status = 'approved'
         AND loan_installment_log.due_date <= LAST_DAY(CURRENT_DATE)
     ORDER BY
         loan_installment_log.due_date ASC  -- Sort by due date

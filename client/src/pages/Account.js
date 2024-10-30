@@ -80,6 +80,8 @@ export default function Account() {
                     setBalance(response.data.Balance);
                 } else if (response.data.success === 2) {
                     alert("Insufficient balance or minimum balance not met");
+                }else{
+                    alert("Enter valid account number");
                 }
             }).catch((error) => {
                 console.error("Error during transfer:", error);

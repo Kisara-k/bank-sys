@@ -85,6 +85,10 @@
     font-size: 1rem;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+#duration{
+    position: relative;
+    right: 2rem;
+}
 #ltype{
     position: relative;
     right: 2rem;

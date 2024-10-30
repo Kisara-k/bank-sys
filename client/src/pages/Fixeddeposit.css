@@ -1,37 +1,21 @@
 
 #fdForm{
-    width: 40vw;
-    height: 50vh; /* Increased box height */
-    background-color: rgba(211, 188, 188, 0.309);
+    width: 60vw;
+    background-color: rgba(200, 200, 200, 0.309);
     padding: 2rem;
     align-items: center;
-    margin-left: 10vw;
-    margin-top: 10vh;
+    margin-left: 20vw;
+    margin-top: 20vh;
     font-family: monospace;
     font-weight: 600;
-    gap: 4rem; /* Increased gap between boxes */
 }
-    #fdPage {
-        background-image: url('./img/fd.jpg'); /* Path to your background image */
-        background-size: cover; /* Ensure the image covers the entire container */
-        background-position: center; /* Center the background image */
-        background-repeat: no-repeat; /* Prevent the image from repeating */
-        min-height: 100vh; /* Ensure the container covers the full viewport height */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        filter: brightness(100%); /* Adjust brightness to make the image clearer */
-        opacity: 1; /* Adjust opacity to make the image clearer */
-    }
 
 #fdplans{
-    width: 36vw;
+    width: 55vw;
     height: 2.5rem;
     position: relative;
     right: 2rem;
     margin-top: 1rem;
-    
-    
 }
 #startFD{
     margin-top: 2rem;
@@ -50,6 +34,9 @@
     margin-bottom: 1rem;
     
 }
+#success_msg p{
+    margin-left: 1.5rem;
+}
 #success_msg,#error_msg,#error_msg2{
     width: 20rem;
     position: fixed;
@@ -64,43 +51,24 @@
     display: none;
     font-size: small;
 }
-label {
-    font-size: 1.2rem; /* Increase label letter size */
-    font-family: 'Times New Roman';
-    
-    
-}
-#fdPlansSection {
-    margin-bottom: 2rem;
-    border-radius: 8px;
-    text-align: left; /* Align text to the left */
-    font-family:   Arial;
-    position: absolute; /* Position the section absolutely */
-    top: 0; /* Align to the top */
-    left: 0; /* Align to the left */
-    }
-
-    #fdPlansSection h2 {
-        color: #0071e3;
-        font-weight: bold;
-        font-size: 2.5rem;
-    }
-
-    #fdPlansSection ul {
-        list-style-type: none;
-    padding: 0;
-    color: #ff0000; /* Bright red color */
-    align: left;
-}
-
-#fdPlansSection ul ul {
-    margin-left: 1rem;
-    font-size: 1rem;
-}
-
-#fdOk,#fderror{
+#fdOk,#fderrorBtn{
     width: 5rem;
+    margin-left: 6rem;
+}
+#fderror{
+    width: 2rem;
+    margin-left: 7rem;
+}
+@media screen and (max-width:600px){
+    #fdplans{
+        width: 47vw;
+    }
+}   width: 5rem;
     margin-left: 2rem;
+}
+#fderror{
+    width: 2rem;
+    margin-left: 7rem;
 }
 @media screen and (max-width:600px){
     #fdplans{

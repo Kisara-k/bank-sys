@@ -16,6 +16,7 @@ body {
     background-repeat: no-repeat; /* Prevent the image from repeating */
     min-height: 100vh; /* Ensure the container covers the full viewport height */
     display: flex;
+    min-width: 100vw; /* Ensure the container covers the full viewport width */
     flex-direction: column;
     justify-content: center;
     

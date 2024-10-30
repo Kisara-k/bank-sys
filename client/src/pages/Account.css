@@ -8,6 +8,26 @@ body{
     padding-top: 0.5rem;
 
 }
+.account-container {
+    position: relative; /* Establish a positioning context */
+    min-height: 100vh; /* Ensure the container covers the full viewport height */
+}
+
+/*.account-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('./img/account.jpg');
+    background-size: cover;  Ensure the image covers the entire container 
+    background-position: center; /* Center the background image 
+    background-repeat: no-repeat; /* Prevent the image from repeating 
+   
+    z-index: -1; /* Place the background image behind the content 
+}*/
+
 #fdBtn{
     float: right;
     margin-right: 2rem;
@@ -92,6 +112,7 @@ select{
     background-color: white;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+    padding-left: 20px;
     padding-top: 0.6rem;
     padding-bottom: 0.6rem;
 }
@@ -122,18 +143,8 @@ select{
     font-size: 1.2rem;
 }
 
-#withdraw,#Deposite{
-    padding-left: 2rem;
-    padding-top: 1rem;
-    margin-top: 3rem;
-    padding-bottom: 1rem;
-    width: 20rem;
-    background-color: white;
-    border-radius: 10px;
-    margin-left: 2rem;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    color: gray;
-}
+
+
 #amountC{
     width: 15rem;
     border: 1px solid grey;
@@ -141,7 +152,7 @@ select{
 #AccTo,#transfetAmount{
     border: 1px solid grey;
 }
-#transfer{
+#transfer {
     background-color: white;
     border-radius: 10px;
     margin-top: 3rem;
@@ -151,8 +162,9 @@ select{
     padding-left: 2rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
-    position: relative;
-    right: 8rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     height: 25rem;
 }
 #T1{
@@ -169,6 +181,7 @@ select{
     font-size: 0.7rem;
     padding: 0.3rem;
     font-weight: 600;
+    align : center;
 }
 #withBtn:hover{
     background-color: black;
@@ -196,11 +209,13 @@ select{
     border: 1px solid rgb(50, 50, 210);
     color: white;
     border-radius: 5px;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 0.7rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1rem;
     padding: 0.3rem;
     font-weight: 600;
-    margin-left: 11rem;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
 }
 #transferBtn:hover{
     background-color: black;
@@ -218,7 +233,11 @@ select{
     border-collapse: separate; /* Keep separate borders */
     border-spacing: 0 1rem; /* Space between rows */
     font-family: 'Verdana', 'Geneva', 'Tahoma', sans-serif; /* Consistent font */
+    margin-left:1100px; /* Align table to the right */
+    margin-right: 0; /* Align table to the right */
 }
+
+
 
 .Transaction_detail thead {
     color: white; /* Text color for the header */
@@ -297,8 +316,7 @@ select{
     }
 }
 
-
-#withSuccess,#depoSuccess,#transferSuccess{
+#transferSuccess{
     position: fixed;
     left: 35vw;
     top:0vh;

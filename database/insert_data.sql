@@ -29,7 +29,7 @@ VALUES
 (100003, 'Pierre', 'Ravelo', '1984-08-22', 'RAVPE082284', '/images/pierre.jpg'),
 (100005, 'Liam', 'Leclerc', '1990-02-17', 'LECLL021790', '/images/liam.jpg'),
 (100007, 'Malaika', 'Ngema', '1987-09-15', 'NGEMM091587', '/images/malaika.jpg'),
-(100009, 'Ethan', 'Davies', '1995-12-02', 'DAVIE120295', '/images/ethan.jpg');
+(100009, 'Ethan', 'Davies', '1995-12-02', 'DAVIE120295', '/pages/customer profiles/c1.webp');
 
 -- Insert data into `branches`
 INSERT INTO branches (branch_id, city, address)
@@ -40,32 +40,93 @@ VALUES
 (4, 'La Digue', '34 Port Launay, La Digue, Seychelles'),
 (5, 'Dubai', '123 Sheikh Zayed Rd, Dubai, UAE');
 
--- Insert data into `employees`
 INSERT INTO employees (employee_id, name, role, branch_id, hashed_password, email, address, contact_number)
 VALUES 
-(101, 'Emile Dubois', 'employee', 1, 'bf4a9f67e37e892', 'emile.dubois@seybank.com', '1010 Beau Vallon St', '+248 2512345'),
+-- Managers
+(101, 'Emile Dubois', 'manager', 1, 'bf4a9f67e37e892', 'emile.dubois@seybank.com', '1010 Beau Vallon St', '+248 2512345'),
 (102, 'Clara Fournier', 'manager', 2, 'cde42e89b1a64fc', 'clara.fournier@seybank.com', '2020 Victoria Ave', '+248 2523456'),
-(103, 'Paul Roche', 'employee', 3, 'd1e29b3c6f8f4ea', 'paul.roche@seybank.com', '3030 La Digue Rd', '+248 2534567'),
+(103, 'Paul Roche', 'manager', 3, 'd1e29b3c6f8f4ea', 'paul.roche@seybank.com', '3030 La Digue Rd', '+248 2534567'),
 (104, 'Nadia Marcel', 'manager', 4, 'e37cbf1a249fe3a', 'nadia.marcel@seybank.com', '4040 Praslin St', '+248 2545678'),
-(105, 'Pierre Valois', 'employee', 5, 'f1c93e56b479ef1', 'pierre.valois@seybank.com', '5050 Mahe Lane', '+248 2556789');
+(105, 'Pierre Valois', 'manager', 5, 'f1c93e56b479ef1', 'pierre.valois@seybank.com', '5050 Mahe Lane', '+248 2556789'),
+
+-- Employees for Branch 1
+(106, 'Alice Martin', 'employee', 1, 'a1b2c3d4e5f6g7h8', 'alice.martin@seybank.com', '1011 Beau Vallon St', '+248 2512346'),
+(107, 'Bob Dupont', 'employee', 1, 'b2c3d4e5f6g7h8i9', 'bob.dupont@seybank.com', '1012 Beau Vallon St', '+248 2512347'),
+(108, 'Charlie Durand', 'employee', 1, 'c3d4e5f6g7h8i9j0', 'charlie.durand@seybank.com', '1013 Beau Vallon St', '+248 2512348'),
+(109, 'David Moreau', 'employee', 1, 'd4e5f6g7h8i9j0k1', 'david.moreau@seybank.com', '1014 Beau Vallon St', '+248 2512349'),
+(110, 'Eve Lefevre', 'employee', 1, 'e5f6g7h8i9j0k1l2', 'eve.lefevre@seybank.com', '1015 Beau Vallon St', '+248 2512350'),
+(111, 'Frank Lambert', 'employee', 1, 'f6g7h8i9j0k1l2m3', 'frank.lambert@seybank.com', '1016 Beau Vallon St', '+248 2512351'),
+(112, 'Grace Simon', 'employee', 1, 'g7h8i9j0k1l2m3n4', 'grace.simon@seybank.com', '1017 Beau Vallon St', '+248 2512352'),
+(113, 'Hank Bernard', 'employee', 1, 'h8i9j0k1l2m3n4o5', 'hank.bernard@seybank.com', '1018 Beau Vallon St', '+248 2512353'),
+(114, 'Ivy Girard', 'employee', 1, 'i9j0k1l2m3n4o5p6', 'ivy.girard@seybank.com', '1019 Beau Vallon St', '+248 2512354'),
+(115, 'Jack Lefevre', 'employee', 1, 'j0k1l2m3n4o5p6q7', 'jack.lefevre@seybank.com', '1020 Beau Vallon St', '+248 2512355'),
+
+-- Employees for Branch 2
+(116, 'Karen Dubois', 'employee', 2, 'k1l2m3n4o5p6q7r8', 'karen.dubois@seybank.com', '2021 Victoria Ave', '+248 2523457'),
+(117, 'Leo Fournier', 'employee', 2, 'l2m3n4o5p6q7r8s9', 'leo.fournier@seybank.com', '2022 Victoria Ave', '+248 2523458'),
+(118, 'Mia Roche', 'employee', 2, 'm3n4o5p6q7r8s9t0', 'mia.roche@seybank.com', '2023 Victoria Ave', '+248 2523459'),
+(119, 'Nina Marcel', 'employee', 2, 'n4o5p6q7r8s9t0u1', 'nina.marcel@seybank.com', '2024 Victoria Ave', '+248 2523460'),
+(120, 'Oscar Valois', 'employee', 2, 'o5p6q7r8s9t0u1v2', 'oscar.valois@seybank.com', '2025 Victoria Ave', '+248 2523461'),
+(121, 'Pauline Martin', 'employee', 2, 'p6q7r8s9t0u1v2w3', 'pauline.martin@seybank.com', '2026 Victoria Ave', '+248 2523462'),
+(122, 'Quentin Dupont', 'employee', 2, 'q7r8s9t0u1v2w3x4', 'quentin.dupont@seybank.com', '2027 Victoria Ave', '+248 2523463'),
+(123, 'Rachel Durand', 'employee', 2, 'r8s9t0u1v2w3x4y5', 'rachel.durand@seybank.com', '2028 Victoria Ave', '+248 2523464'),
+(124, 'Steve Moreau', 'employee', 2, 's9t0u1v2w3x4y5z6', 'steve.moreau@seybank.com', '2029 Victoria Ave', '+248 2523465'),
+(125, 'Tina Lefevre', 'employee', 2, 't0u1v2w3x4y5z6a7', 'tina.lefevre@seybank.com', '2030 Victoria Ave', '+248 2523466'),
+
+-- Employees for Branch 3
+(126, 'Ursula Lambert', 'employee', 3, 'u1v2w3x4y5z6a7b8', 'ursula.lambert@seybank.com', '3031 La Digue Rd', '+248 2534568'),
+(127, 'Victor Simon', 'employee', 3, 'v2w3x4y5z6a7b8c9', 'victor.simon@seybank.com', '3032 La Digue Rd', '+248 2534569'),
+(128, 'Wendy Bernard', 'employee', 3, 'w3x4y5z6a7b8c9d0', 'wendy.bernard@seybank.com', '3033 La Digue Rd', '+248 2534570'),
+(129, 'Xavier Girard', 'employee', 3, 'x4y5z6a7b8c9d0e1', 'xavier.girard@seybank.com', '3034 La Digue Rd', '+248 2534571'),
+(130, 'Yvonne Lefevre', 'employee', 3, 'y5z6a7b8c9d0e1f2', 'yvonne.lefevre@seybank.com', '3035 La Digue Rd', '+248 2534572'),
+(131, 'Zach Martin', 'employee', 3, 'z6a7b8c9d0e1f2g3', 'zach.martin@seybank.com', '3036 La Digue Rd', '+248 2534573'),
+(132, 'Amy Dubois', 'employee', 3, 'a7b8c9d0e1f2g3h4', 'amy.dubois@seybank.com', '3037 La Digue Rd', '+248 2534574'),
+(133, 'Brian Fournier', 'employee', 3, 'b8c9d0e1f2g3h4i5', 'brian.fournier@seybank.com', '3038 La Digue Rd', '+248 2534575'),
+(134, 'Cathy Roche', 'employee', 3, 'c9d0e1f2g3h4i5j6', 'cathy.roche@seybank.com', '3039 La Digue Rd', '+248 2534576'),
+(135, 'Daniel Marcel', 'employee', 3, 'd0e1f2g3h4i5j6k7', 'daniel.marcel@seybank.com', '3040 La Digue Rd', '+248 2534577'),
+
+-- Employees for Branch 4
+(136, 'Evelyn Valois', 'employee', 4, 'e1f2g3h4i5j6k7l8', 'evelyn.valois@seybank.com', '4041 Praslin St', '+248 2545679'),
+(137, 'Felix Martin', 'employee', 4, 'f2g3h4i5j6k7l8m9', 'felix.martin@seybank.com', '4042 Praslin St', '+248 2545680'),
+(138, 'Gloria Dupont', 'employee', 4, 'g3h4i5j6k7l8m9n0', 'gloria.dupont@seybank.com', '4043 Praslin St', '+248 2545681'),
+(139, 'Henry Durand', 'employee', 4, 'h4i5j6k7l8m9n0o1', 'henry.durand@seybank.com', '4044 Praslin St', '+248 2545682'),
+(140, 'Iris Moreau', 'employee', 4, 'i5j6k7l8m9n0o1p2', 'iris.moreau@seybank.com', '4045 Praslin St', '+248 2545683'),
+(141, 'Jackie Lefevre', 'employee', 4, 'j6k7l8m9n0o1p2q3', 'jackie.lefevre@seybank.com', '4046 Praslin St', '+248 2545684'),
+(142, 'Kevin Lambert', 'employee', 4, 'k7l8m9n0o1p2q3r4', 'kevin.lambert@seybank.com', '4047 Praslin St', '+248 2545685'),
+(143, 'Lily Simon', 'employee', 4, 'l8m9n0o1p2q3r4s5', 'lily.simon@seybank.com', '4048 Praslin St', '+248 2545686'),
+(144, 'Mike Bernard', 'employee', 4, 'm9n0o1p2q3r4s5t6', 'mike.bernard@seybank.com', '4049 Praslin St', '+248 2545687'),
+(145, 'Nora Girard', 'employee', 4, 'n0o1p2q3r4s5t6u7', 'nora.girard@seybank.com', '4050 Praslin St', '+248 2545688'),
+
+-- Employees for Branch 5
+(146, 'Oscar Lefevre', 'employee', 5, 'o1p2q3r4s5t6u7v8', 'oscar.lefevre@seybank.com', '5051 Mahe Lane', '+248 2556789'),
+(147, 'Pamela Martin', 'employee', 5, 'p2q3r4s5t6u7v8w9', 'pamela.martin@seybank.com', '5052 Mahe Lane', '+248 2556790'),
+(148, 'Quincy Dubois', 'employee', 5, 'q3r4s5t6u7v8w9x0', 'quincy.dubois@seybank.com', '5053 Mahe Lane', '+248 2556791'),
+(149, 'Rachel Fournier', 'employee', 5, 'r4s5t6u7v8w9x0y1', 'rachel.fournier@seybank.com', '5054 Mahe Lane', '+248 2556792'),
+(150, 'Sam Roche', 'employee', 5, 's5t6u7v8w9x0y1z2', 'sam.roche@seybank.com', '5055 Mahe Lane', '+248 2556793'),
+(151, 'Tina Marcel', 'employee', 5, 't6u7v8w9x0y1z2a3', 'tina.marcel@seybank.com', '5056 Mahe Lane', '+248 2556794'),
+(152, 'Uma Valois', 'employee', 5, 'u7v8w9x0y1z2a3b4', 'uma.valois@seybank.com', '5057 Mahe Lane', '+248 2556795'),
+(153, 'Vera Martin', 'employee', 5, 'v8w9x0y1z2a3b4c5', 'vera.martin@seybank.com', '5058 Mahe Lane', '+248 2556796'),
+(154, 'Walter Dupont', 'employee', 5, 'w9x0y1z2a3b4c5d6', 'walter.dupont@seybank.com', '5059 Mahe Lane', '+248 2556797'),
+(155, 'Xena Durand', 'employee', 5, 'x0y1z2a3b4c5d6e7', 'xena.durand@seybank.com', '5060 Mahe Lane', '+248 2556798');
+
 
 -- Insert data into `account`
 
 INSERT INTO account (account_id, customer_id, branch_id, type, balance, start_date, status)
 VALUES 
-(10000001, 100001, 1, 'saving', 2500.00, '2022-12-20', 'active'),
-(10000002, 100002, 2, 'checking', 8000.00, '2023-01-10', 'active'),
-(10000003, 100003, 3, 'saving', 6000.00, '2023-02-15', 'blocked'),
-(10000004, 100004, 4, 'checking', 12000.00, '2023-03-05', 'deactivated'),
-(10000005, 100005, 5, 'saving', 9000.00, '2023-03-25', 'expired'),
-(10000006, 100006, 1, 'checking', 18000.00, '2023-04-10', 'active'),
-(10000007, 100007, 2, 'saving', 5000.00, '2023-05-08', 'active'),
-(10000008, 100008, 3, 'checking', 20000.00, '2023-06-12', 'blocked'),
-(10000009, 100009, 4, 'saving', 7500.00, '2023-07-01', 'active'),
-(10000010, 100010, 5, 'checking', 15000.00, '2023-07-22', 'active');
-(10000011, 100009, 4, 'saving', 20000.00, '2023-07-01', 'active'),
-(10000012, 100002, 2, 'saving', 45000.00, '2023-07-01', 'active'),
-(10000013, 100006, 1, 'saving', 7000.00, '2023-07-01', 'active'),
+(10000001, 100001, 1, 'saving', 3500.00, '2022-12-20', 'active'),
+(10000002, 100002, 2, 'checking', 9000.00, '2023-01-10', 'active'),
+(10000003, 100003, 3, 'saving', 7000.00, '2023-02-15', 'blocked'),
+(10000004, 100004, 4, 'checking', 13000.00, '2023-03-05', 'deactivated'),
+(10000005, 100005, 5, 'saving', 10000.00, '2023-03-25', 'expired'),
+(10000006, 100006, 1, 'checking', 19000.00, '2023-04-10', 'active'),
+(10000007, 100007, 2, 'saving', 6000.00, '2023-05-08', 'active'),
+(10000008, 100008, 3, 'checking', 21000.00, '2023-06-12', 'blocked'),
+(10000009, 100009, 4, 'saving', 8500.00, '2023-07-01', 'active'),
+(10000010, 100010, 5, 'checking', 16000.00, '2023-07-22', 'active'),
+(10000011, 100009, 4, 'saving', 21000.00, '2023-07-01', 'active'),
+(10000012, 100002, 2, 'saving', 46000.00, '2023-07-01', 'active'),
+(10000013, 100006, 1, 'saving', 8000.00, '2023-07-01', 'active');
 
 
 -- Insert data into `saving_account_plans`
@@ -113,7 +174,7 @@ VALUES
 (1, 10000.00, 10000001, 3.50, 500, 24, '2023-01-01', 'physical', 'pending'),  
 (2, 5000.00, 10000005, 2.00, 300, 12, '2023-02-01', 'online', 'overdue'),       
 (3, 15000.00, 10000003, 4.00, 700, 36, '2023-03-01', 'physical', 'paid'),       
-(4, 2000.00, 10000009, 1.50, 100, 6, '2023-04-01', 'online', 'pending'),        
+(4, 2000.00, 10000009, 1.50, 100, 6, '2023-04-01', 'online', 'pending');     
 
 
 

@@ -7,13 +7,18 @@ body, html {
 }
 
 /* Centering styles scoped to the loan status page */
+
 #loan-status-page {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh; /* Ensure the container covers the full viewport height */
+    background-image: url('./img/loanstaus.webp');
+    min-width: 100vw; /* Ensure the container covers the full viewport width */
+    background-size: cover; /* Ensure the image covers the entire container */
     background-color: #f4f4f4; /* Optional: Add a subtle background color */
 }
+
 
 .table-container {
     display: flex;
@@ -22,7 +27,7 @@ body, html {
     justify-content: center;
     margin: 0; /* Remove any margin */
     padding: 20px; /* Add some padding around the container */
-    background-color: #fff; /* Add a white background for the content */
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background for the content */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a card-like effect */
     border-radius: 8px; /* Rounded corners */
 }
@@ -52,15 +57,17 @@ table {
 
 th, td {
     padding: 12px; /* Slightly increased padding for larger touch targets */
-    text-align: left;
+    text-align: center; /* Center-align column content */
     border: 1px solid #ddd;
     color: #333; /* Ensure text color contrasts well */
+    white-space: nowrap; /* Prevent column names from breaking into two lines */
 }
 
 /* Style table headers */
 th {
     background-color: #f1f1f1; /* Subtle background for headers */
     font-weight: bold;
+    text-align: center; /* Center-align column names */
 }
 
 /* Add zebra striping to rows */

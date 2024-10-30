@@ -34,6 +34,9 @@
     margin-bottom: 1rem;
     
 }
+#success_msg p{
+    margin-left: 1.5rem;
+}
 #success_msg,#error_msg,#error_msg2{
     width: 20rem;
     position: fixed;
@@ -48,9 +51,13 @@
     display: none;
     font-size: small;
 }
-#fdOk,#fderror{
+#fdOk,#fderrorBtn{
     width: 5rem;
     margin-left: 6rem;
+}
+#fderror{
+    width: 2rem;
+    margin-left: 7rem;
 }
 @media screen and (max-width:600px){
     #fdplans{

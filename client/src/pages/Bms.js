@@ -269,11 +269,11 @@ export default function Bms(){
                             <div className="form-group">
                                 <select id="branches" value={branch} onChange={(event)=>{setbranch(event.target.value);}} className="form-control">
                                     <option value="" disabled>choose branch :</option>
-                                    <option value="1">Colombo</option>
-                                    <option value="2" >Gampaha</option>
-                                    <option value="3" >Galle</option>
-                                    <option value="4" >Kandy</option>
-                                    <option value="5" >Hambanthota</option>
+                                    <option value="1">Victoria</option>
+                                    <option value="2" >Praslin</option>
+                                    <option value="3" >Mahe</option>
+                                    <option value="4" >La Digue</option>
+                                    <option value="5" >Duba</option>
                                 </select>
                             </div>
 

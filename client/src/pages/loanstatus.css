@@ -14,7 +14,7 @@ body, html {
     align-items: center;
     min-height: 100vh; /* Ensure the container covers the full viewport height */
     background-image: url('./img/loanstaus.webp');
-
+    min-width: 100vw; /* Ensure the container covers the full viewport width */
     background-size: cover; /* Ensure the image covers the entire container */
     background-color: #f4f4f4; /* Optional: Add a subtle background color */
 }

@@ -1,7 +1,7 @@
 #full{
     background-image: url('./img/bms.jpeg');
     height:100vh;
-    background-size: cover;
+    width: 100vw;
     overflow-y: hidden;
 }
 h1{

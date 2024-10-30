@@ -20,7 +20,7 @@ export default function LoanApprove() {
     })
 
     const show = () => {
-        Axios.post("http://localhost:3002/loan_list", {
+        Axios.post("http://localhost:3002/loans/loan_list", {
             type: type
         }).then((response) => {
             setLoanList(response.data);
@@ -31,7 +31,7 @@ export default function LoanApprove() {
 
     const approve = () => {
         document.getElementById("loanmsg").style.display="none";
-        Axios.post("http://localhost:3002/approve", {
+        Axios.post("http://localhost:3002/loans/approve", {
             loan_id: loanID
         }).then((response) => {
             setDetail(response.data);
@@ -55,7 +55,7 @@ export default function LoanApprove() {
     
 
     const approveByManger=()=>{
-        Axios.post("http://localhost:3002/manager_approve",{
+        Axios.post("http://localhost:3002/loans/manager_approve",{
             acc_id:acc_id,
             loan_id:loanID,
             manager_id:manager_id
@@ -74,7 +74,7 @@ export default function LoanApprove() {
     };
 
     const rejectByManger=()=>{
-        Axios.post("http://localhost:3002/manager_reject",{
+        Axios.post("http://localhost:3002/loans/manager_reject",{
             loan_id:loanID,
             acc_id:acc_id,
             manager_id:manager_id

@@ -154,7 +154,7 @@ export default function Bms(){
     };
 
     const physical_loan=()=>{
-        Axios.post("http://localhost:3002/phy_loan",{
+        Axios.post("http://localhost:3002/loans/phy_loan",{
             acc_no:acc_no,
             amount:Amount,
             duration:duration,

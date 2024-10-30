@@ -50,7 +50,7 @@ export default function Loans() {
         }
 
         // Call backend API to submit the loan application
-        const response = await fetch('http://localhost:3002/apply-loan', {
+        const response = await fetch('http://localhost:3002/loans/apply-loan', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -229,7 +229,7 @@ export default function Account() {
             </div>
 
             <div className="row" id="sections">
-                <div className="col" id="transaction">
+                {/*<div className="col" id="transaction">
                     <div className="row-sm-4" id="withdraw">
                         <span id="T1">Withdraw section</span><br></br><br></br>
                         <label for="withAmount">Enter amount : </label>
@@ -245,7 +245,7 @@ export default function Account() {
                         <span id="msgD">please enter amount!</span>
                         <input type="submit" onClick={deposite} id="withBtn" value="Deposite"></input>
                     </div>
-                </div>
+                </div>*/}
 
                 <div className="col-sm-4" id="transfer">
                     <span id="T1">Transfer section</span><br></br><br></br>

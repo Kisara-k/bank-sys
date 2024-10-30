@@ -56,7 +56,7 @@ const LoanTable = () => {
                                     <td>{loan.rate}</td>
                                     <td>{loan.monthly_installment}</td>
                                     <td>{loan.duration_months}</td>
-                                    <td>{loan.start_date}</td>
+                                    <td>{new Date(loan.start_date).toLocaleDateString()}</td>
                                     <td>{loan.type}</td>
                                     <td>{loan.status}</td>
                                 </tr>
